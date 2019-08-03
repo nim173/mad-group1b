@@ -4,18 +4,26 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AfterUpload" android:parentActivityName=".AfterUpload"></activity>
-        <activity android:name=".ViewPaper" android:parentActivityName=".ViewPaper" />
-        <activity android:name=".PapersAfterSearch" android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".AddQuestionOrAnswer"/>
+        <activity
+            android:name=".Forum" />
+        <activity
+            android:name=".AfterUpload" />
+        <activity
+            android:name=".ViewPaper" />
+        <activity
+            android:name=".PapersAfterSearch" />
         <activity android:name=".MainActivity">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

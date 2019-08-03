@@ -6,8 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ViewPaper extends AppCompatActivity {
+
+    public static final String FORUM_KEY = "PASTPAPERPORTAL.FORUM";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,5 +22,13 @@ public class ViewPaper extends AppCompatActivity {
         Intent intentUpload =  new Intent(this, AfterUpload.class);
         Button uploadButton = findViewById(R.id.uploadButton);
         startActivity(intentUpload);
+    }
+
+    public void goToForum(View view){
+        Intent intentForum = new Intent(this, Forum.class);
+        TextView textView5 = findViewById(R.id.textView5);                  //@Dinuli change textView5 to have the module name as well maybe?
+        String heading = textView5.getText().toString();
+        intentForum.putExtra(FORUM_KEY, heading);
+        startActivity(intentForum);
     }
 }
