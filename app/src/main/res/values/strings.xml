@@ -1,7 +1,28 @@
 <resources>
     <string name="app_name">Past Paper Portal - Group 1b</string>
-    <string name="viewPaper">View Details</string>
+    <string name="viewPaper">View</string>
     <string name="upload_document">Upload</string>
     <string name="download_paper">Download</string>
     <string name="paper_discuss">Paper discussion forum</string>
+    <string name="module_paper">Module Name - Paper Name</string>
+    <string name="discussion_board">Discussion Board</string>
+    <string name="q1"><u>[June-Q2 - Differenciation] How to differenciate log?</u></string>
+    <string name="profile_avatar">Profile Avatar</string>
+    <string name="username123">Username123</string>
+    <string name="date1">3 days ago</string>
+    <string name="q2"><u>[June - Part A] Doubt regarding Question 2</u></string>
+    <string name="username456">Username456</string>
+    <string name="date2">6 days ago</string>
+    <string name="add_question">Add a Question!</string>
+    <string name="body_optional">body (optional)</string>
+    <string name="qa">Ask a Question / Add an answer :</string>
+    <string name="submit">Submit</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="title">title</string>
+    <string name="results">Results</string>
+    <string name="edit_button">Edit</string>
+    <string name="delete_button">Delete</string>
+    <string name="upload_doc">Upload PDF</string>
+    <string name="UploadOREdit">Upload/Edit</string>
 </resources>
