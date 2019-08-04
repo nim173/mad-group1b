@@ -18,7 +18,7 @@ public class AfterUpload extends AppCompatActivity {
 
     public void EditAnswer(View view){
         Intent intentUpload =  new Intent(this, UploadOrEdit.class);
-        Button uploadButton = findViewById(R.id.edit_button1);
+        Button uploadButton = findViewById(R.id.EditButton);
         startActivity(intentUpload);
     }
 }
