@@ -7,6 +7,7 @@
     <string name="module_paper">Module Name - Paper Name</string>
     <string name="discussion_board">Discussion Board</string>
     <string name="q1"><u>[June-Q2 - Differenciation] How to differenciate log?</u></string>
+    <string name="q1_no_underline">[June-Q2 - Differenciation] How to differenciate log?</string>
     <string name="profile_avatar">Profile Avatar</string>
     <string name="username123">Username123</string>
     <string name="date1">3 days ago</string>
@@ -20,4 +21,17 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="title">title</string>
+    <string name="lorem1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</string>
+    <string name="lorem2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="a_week_ago">a week ago</string>
+    <string name="submit_answer">Submit Answer</string>
+    <string name="replies_sorted_by_date">Replies (sorted by date):</string>
+    <string name="_4">4</string>
+    <string name="username679">username679</string>
+    <string name="_2_weeks_ago">2 weeks ago</string>
+    <string name="todo">TODO</string>
+    <string name="lorem3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip.</string>
+    <string name="lorem4">Lorem ipsum dolor sit amet</string>
+    <string name="lorem5">Lorem ipsum dolor sit amet</string>
+    <string name="no_comments">Number of comments</string>
 </resources>
