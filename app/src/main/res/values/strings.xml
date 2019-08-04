@@ -25,4 +25,12 @@
     <string name="delete_button">Delete</string>
     <string name="upload_doc">Upload PDF</string>
     <string name="UploadOREdit">Upload/Edit</string>
+    <string name="FacSpec">Faculty and Specialization</string>
+    <string name="AcademicY">AcademicYear</string>
+    <string name="StoreFac">Faculty</string>
+    <string name="StoreSpec">Specialization</string>
+    <string name="StoreYear">Academic Year</string>
+    <string name="Search_Head">Search for papers</string>
+    <string name="StoreSem">Semester</string>
+    <string name="SearchButton">GO</string>
 </resources>

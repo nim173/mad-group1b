@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UploadOrEditPaperPage"></activity>
+        <activity android:name=".SearchCommon"></activity>
+        <activity android:name=".UploadOrEditPaperPage" />
         <activity android:name=".AddQuestionOrAnswer" />
         <activity android:name=".Forum" />
         <activity android:name=".AfterUpload" />
