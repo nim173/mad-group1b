@@ -19,7 +19,7 @@ public class ViewPaper extends AppCompatActivity {
     }
 
     public void uploadAnswer(View view){
-        Intent intentUpload =  new Intent(this, AfterUpload.class);
+        Intent intentUpload =  new Intent(this, UploadOrEdit.class);
         Button uploadButton = findViewById(R.id.uploadButton);
         startActivity(intentUpload);
     }

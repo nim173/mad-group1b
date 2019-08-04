@@ -7,18 +7,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class AfterUpload extends AppCompatActivity {
+public class UploadOrEdit extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_after_upload);
+        setContentView(R.layout.activity_upload_or_edit);
     }
 
 
-    public void EditAnswer(View view){
-        Intent intentUpload =  new Intent(this, UploadOrEdit.class);
-        Button uploadButton = findViewById(R.id.edit_button1);
+    public void uploadAnswer(View view){
+        Intent intentUpload =  new Intent(this, AfterUpload.class);
+        Button uploadButton = findViewById(R.id.uploadEdit);
         startActivity(intentUpload);
     }
+
+
 }
