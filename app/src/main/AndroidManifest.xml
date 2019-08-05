@@ -10,7 +10,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".send_message"></activity>
+        <activity android:name=".ChangedPassword"></activity>
+        <activity android:name=".send_message" />
         <activity android:name=".requests" />
         <activity android:name=".manage_users" />
         <activity android:name=".admin_dashboard" />

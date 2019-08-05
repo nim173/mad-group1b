@@ -29,4 +29,9 @@ public class Comments_Image extends AppCompatActivity {
         tabs.setupWithViewPager(viewPager);
     }
 
+    public void toprofile(View view){
+        Intent intent=new Intent(this,Profile.class);
+        startActivity(intent);
+    }
+
 }

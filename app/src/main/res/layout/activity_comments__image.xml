@@ -21,11 +21,12 @@
             android:textSize="30sp" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnEdit"
             android:layout_width="112dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="130sp"
-            android:text="Button" />
+            android:onClick="toprofile"
+            android:text="@string/edit" />
 
 
         <com.google.android.material.tabs.TabLayout
