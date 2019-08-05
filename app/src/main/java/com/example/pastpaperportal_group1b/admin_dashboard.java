@@ -6,27 +6,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+public class admin_dashboard extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_admin_dashboard);
     }
 
-    public void onClick(View view){
-        Intent intent = new Intent(this, SearchCommon.class);
+    public void onclick(View view){
+
+        Intent intent = new Intent(this, manage_users.class);
+        startActivity(intent);
+
+    }
+
+    public void onrequests(View view) {
+        Intent intent = new Intent(this, requests.class);
         startActivity(intent);
     }
 
-    public void toSignUp(View view){
-        Intent intent = new Intent(this, SignUp.class);
-        startActivity(intent);
-    }
 
-    public void toadmin(View view) {
+    public void sendMsg(View view) {
 
-        Intent intent = new Intent(this, admin_dashboard.class);
+        Intent intent = new Intent(this, send_message.class);
         startActivity(intent);
     }
 }

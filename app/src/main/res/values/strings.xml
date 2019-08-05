@@ -47,11 +47,38 @@
     <string name="Search_Head">Search for papers</string>
     <string name="StoreSem">Semester</string>
     <string name="SearchButton">GO</string>
-
     <string name="Comments">Comments</string>
     <string name="Image">Image</string>
-
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="or">or</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="Hello">Hello,</string>
+    <string name="admin">System Administrator</string>
+    <string name="manage_users">Manage Users</string>
+    <string name="requests">Requests</string>
+    <string name="view_ques">View Questions</string>
+    <string name="view_pastp">View Pastpapers</string>
+    <string name="upload_ques">Upload Question</string>
+    <string name="upload_answer">Upload Answer</string>
+    <string name="upload_pastp">Upload PastPaper</string>
+    <string name="send_msg">Send Message</string>
+    <string name="user1">User_1</string>
+    <string name="user2">User_2</string>
+    <string name="user3">User_3</string>
+    <string name="view">View</string>
+    <string name="remove">Remove</string>
+    <string name="upload1">Upload_1</string>
+    <string name="upload2">Upload_2</string>
+    <string name="upload3">Upload_3</string>
+    <string name="byuser1">by user_1</string>
+    <string name="byuser2">by user_2</string>
+    <string name="byuser3">by user_3</string>
+    <string name="confirm">Confirm</string>
+    <string name="reject">Reject</string>
+    <string name="send_to">Send To : </string>
+    <string name="user_id">User ID :</string>
+    <string name="optional">*only if individual*</string>
+    <string name="subject">Subject :</string>
+    <string name="body">Body :</string>
 </resources>
