@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "197819312699",
+    "firebase_url": "https://past-paper-portal.firebaseio.com",
+    "project_id": "past-paper-portal",
+    "storage_bucket": "past-paper-portal.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197819312699:android:0a4418d65db1eb92",
+        "android_client_info": {
+          "package_name": "com.example.pastpaperportal_group1b"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "197819312699-ua6k5g2hp16f4r002e7avv4lc9h3j124.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtxx9HUps967BCFySYv2lbinYbRQZxMac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "197819312699-ua6k5g2hp16f4r002e7avv4lc9h3j124.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
