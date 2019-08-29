@@ -30,6 +30,7 @@
         <activity android:name=".AfterUpload" />
         <activity android:name=".ViewPaper" />
         <activity android:name=".PapersAfterSearch" />
+        <activity android:name=".FirebaseUIActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

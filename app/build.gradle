@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.example.pastpaperportal_group1b"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -30,4 +30,10 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.firebase:firebase-auth:19.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.google.firebase:firebase-firestore:21.0.0'
+    implementation 'com.facebook.android:facebook-android-sdk:4.41.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

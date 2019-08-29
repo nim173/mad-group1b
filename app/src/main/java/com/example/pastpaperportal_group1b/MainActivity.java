@@ -29,4 +29,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, admin_dashboard.class);
         startActivity(intent);
     }
+
+    public void toFire(View view){
+        Intent intent = new Intent(this, FirebaseUIActivity.class);
+        startActivity(intent);
+    }
 }
