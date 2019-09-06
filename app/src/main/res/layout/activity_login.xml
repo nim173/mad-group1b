@@ -66,7 +66,7 @@
         app:layout_constraintVertical_bias="0.156" />
 
     <TextView
-        android:id="@+id/txtforgetpws"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -89,7 +89,7 @@
         android:text="Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txtforgetpws"
+        app:layout_constraintTop_toTopOf="@+id/title"
         app:layout_constraintVertical_bias="0.19" />
 
     <Button
@@ -107,7 +107,7 @@
         app:layout_constraintVertical_bias="0.831" />
 
     <TextView
-        android:id="@+id/txtSignUp"
+        android:id="@+id/body"
         android:layout_width="318dp"
         android:layout_height="22dp"
         android:layout_marginStart="52dp"
