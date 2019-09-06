@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,9 +23,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ViewQuestion extends AppCompatActivity {
 
+    public static final String EDIT = "edit";
+    public static final String TITLE = "title";
+    public static final String BODY = "body";
+    public static final String PUSH_ID = "id";
     private FirebaseAuth mAuth;
     private DatabaseReference dbRef;
     private String pushId;
@@ -41,7 +45,7 @@ public class ViewQuestion extends AppCompatActivity {
         Intent intent = getIntent();
         pushId = intent.getStringExtra(AddQuestionOrAnswer.ID);
         if (pushId != null) {
-            String uid = intent.getStringExtra(AddQuestionOrAnswer.USER);
+            //String uid = intent.getStringExtra(AddQuestionOrAnswer.USER);     //for profile picture
 
             dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question/" + '/' + pushId);
             dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -55,79 +59,82 @@ public class ViewQuestion extends AppCompatActivity {
                         Date date = new Date();
 
                         if (dataSnapshot.child("title").getValue() != null) {
-                            title.setText(dataSnapshot.child("title").getValue().toString());
-                            username.setText(dataSnapshot.child("username").getValue().toString());
-                            if ((new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)).equals(dataSnapshot.child("date").getValue().toString())) {
-                                dateTime.setText(dataSnapshot.child("time").getValue().toString());
+                            title.setText( Objects.requireNonNull( dataSnapshot.child( "title" ).getValue() ).toString());
+                            username.setText( Objects.requireNonNull( dataSnapshot.child( "username" ).getValue() ).toString());
+                            if ((new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)).equals( Objects.requireNonNull( dataSnapshot.child( "date" ).getValue() ).toString())) {
+                                dateTime.setText( Objects.requireNonNull( dataSnapshot.child( "time" ).getValue() ).toString());
                             } else {
-                                dateTime.setText(dataSnapshot.child("date").getValue().toString());
+                                dateTime.setText( Objects.requireNonNull( dataSnapshot.child( "date" ).getValue() ).toString());
                             }
                         } else {
                             Toast.makeText(getApplicationContext(), "Empty string error", Toast.LENGTH_SHORT).show();
                         }
 
                         if (dataSnapshot.child("body").getValue() != null) {
-                            body.setText(dataSnapshot.child("body").getValue().toString());
+                            body.setText( Objects.requireNonNull( dataSnapshot.child( "body" ).getValue() ).toString());
                         } else {
                             body.setText("");
                         }
                     }
                 }
-
                 @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
+                public void onCancelled(@NonNull DatabaseError databaseError) { }
             });
         }
     }
 
     public void submit(View view){
-        /*Intent intent = new Intent(this, AddAnswer.class);
-        intent.putExtra(AddQuestionOrAnswer.ID, pushId);
-        startActivity(intent);*/
         final EditText taskEditText = new EditText(this);
         taskEditText.setMinLines(3);
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Add a reply")
                 .setView(taskEditText)
-                .setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        FirebaseUser currentUser = mAuth.getCurrentUser();        // These will be added after login integration
-                        if (currentUser == null) {
-                            Toast.makeText(getApplicationContext(), "Please sign in", Toast.LENGTH_SHORT).show();
-                        } else {
-                            String uid = currentUser.getUid();
-                            Date date = new Date();
-                            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
-                            Replies rp = new Replies();
-                            rp.setBody(taskEditText.getText().toString());
-                            rp.setUid(uid);
-                            rp.setDate(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date));
-                            rp.setTime(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(date));
-                            dbRef.push().setValue(rp);
-                            Toast.makeText(getApplicationContext(), "Reply added successfully", Toast.LENGTH_SHORT).show();
-                        }
+                .setPositiveButton("Add", (dialog1, which) -> {
+                    FirebaseUser currentUser = mAuth.getCurrentUser();        // These will be added after login integration
+                    if (currentUser == null) {
+                        Toast.makeText(getApplicationContext(), "Please sign in", Toast.LENGTH_SHORT).show();
+                    } else {
+                        String uid = currentUser.getUid();
+                        Date date = new Date();
+                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
+                        Replies rp = new Replies();
+                        rp.setBody(taskEditText.getText().toString());
+                        rp.setUid(uid);
+                        rp.setDate(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date));
+                        rp.setTime(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(date));
+                        dbRef.push().setValue(rp);
+                        Toast.makeText(getApplicationContext(), "Reply added successfully", Toast.LENGTH_SHORT).show();
                     }
-                })
+                } )
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
     }
 
-    public void onEdit(View view) {
+    public void onDelete(View view) {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Are you sure?")
                 .setView(null)
-                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question");
-                    }
-                })
+                .setPositiveButton("Delete", (dialog1, which) -> {
+                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question").child( pushId );
+                    dbRef.removeValue();
+                    Toast.makeText( getApplicationContext(), "Item deleted successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                } )
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
+
+    }
+
+    public void onEdit(View view) {
+        Intent intent = new Intent(this, AddQuestionOrAnswer.class );
+        TextView title = findViewById( R.id.title);
+        TextView body = findViewById( R.id.body);
+        intent.putExtra( EDIT, "true");
+        intent.putExtra( TITLE, title.getText() );
+        intent.putExtra( BODY,  body.getText());
+        intent.putExtra( PUSH_ID, pushId );
+        startActivity( intent );
     }
 }

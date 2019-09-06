@@ -18,7 +18,7 @@
     <string name="date2">6 days ago</string>
     <string name="add_question">Add a Question!</string>
     <string name="body_optional">body (optional)</string>
-    <string name="qa">Ask a Question / Add an answer :</string>
+    <string name="qa">Ask a Question</string>
     <string name="submit">Submit</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.os.Handler;
@@ -16,7 +15,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.pastpaperportal_group1b.ui.main.PaginationListener;
 import com.example.pastpaperportal_group1b.ui.main.PostRecyclerAdapter;
 import com.example.pastpaperportal_group1b.ui.main.Question;
-import com.google.firebase.FirebaseError;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,8 +24,9 @@ import com.google.firebase.database.ValueEventListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.util.ArrayList;
-import java.util.concurrent.CountDownLatch;
+import java.util.Objects;
 
+import static com.example.pastpaperportal_group1b.ViewQuestion.EDIT;
 import static com.example.pastpaperportal_group1b.ui.main.PaginationListener.PAGE_SIZE;
 import static com.example.pastpaperportal_group1b.ui.main.PaginationListener.PAGE_START;
 
@@ -69,11 +68,11 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        adapter = new PostRecyclerAdapter(new ArrayList<Question>());
+        adapter = new PostRecyclerAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(adapter);
         doFirstApiCall();
 
-        /**
+        /*
          * add scroll listener while user reach in bottom load more will call
          */
         mRecyclerView.addOnScrollListener(new PaginationListener(layoutManager) {
@@ -94,7 +93,6 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                 return isLoading;
             }
         });
-
     }
 
     public void addQuestion(View view){
@@ -102,6 +100,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         TextView header = findViewById(R.id.forum_header);                  //@Dinuli change textView5 to have the module name as well maybe?
         String heading = header.getText().toString();
         intentQuestion.putExtra(HEADER_KEY, heading);
+        intentQuestion.putExtra( EDIT, "false");
         startActivity(intentQuestion);
     }
 
@@ -114,122 +113,112 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
     private void doFirstApiCall() {
         final ArrayList<Question> items = new ArrayList<>();
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question");
-                dbRef
-                        .limitToFirst(PAGE_SIZE+1)
-                        .orderByKey()
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                    Question postItem = new Question();
-                                    postItem.setTitle(postSnapshot.getValue(Question.class).getTitle());
-                                    postItem.setUsername(postSnapshot.getValue(Question.class).getUsername());
-                                    postItem.setDate(postSnapshot.getValue(Question.class).getDate());
-                                    postItem.setPushId(postSnapshot.getKey());
-                                    lastID = postSnapshot.getKey();
-                                    items.add(postItem);
-                                }
-                                if (currentPage != PAGE_START) adapter.removeLoading();
-                                adapter.addItems(items);
-                                swipeRefresh.setRefreshing(false);
-                                // check whether is last page or not
-                                if (currentPage < totalPage) {
-                                    adapter.addLoading();
-                                } else {
-                                    isLastPage = true;
-                                }
-                                isLoading = false;
+        new Handler().postDelayed( () -> {
+            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question");
+            dbRef.limitToFirst(PAGE_SIZE+1).orderByKey()
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                Question postItem = new Question();
+                                postItem.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
+                                postItem.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
+                                postItem.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
+                                postItem.setPushId(postSnapshot.getKey());
+                                lastID = postSnapshot.getKey();
+                                items.add(postItem);
                             }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            if (currentPage != PAGE_START) adapter.removeLoading();
+                            adapter.addItems(items);
+                            swipeRefresh.setRefreshing(false);
+                            // check whether is last page or not
+                            if (currentPage < totalPage) {
+                                adapter.addLoading();
+                            } else {
+                                isLastPage = true;
                             }
-                        });
-            }
+                            isLoading = false;
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
         }, 0);
     }
 
     private void doApiCall() {
         final ArrayList<Question> items = new ArrayList<>();
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question");
-                dbRef
-                        .limitToFirst(PAGE_SIZE+1)
-                        .orderByKey()
-                        .startAt(lastID)
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot snapshot) {
-                                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                    //items.add(postSnapshot.getValue(Question.class));
-                                    Question postItem = new Question();
-                                    postItem.setTitle(postSnapshot.getValue(Question.class).getTitle());
-                                    postItem.setUsername(postSnapshot.getValue(Question.class).getUsername());
-                                    postItem.setDate(postSnapshot.getValue(Question.class).getDate());
-                                    postItem.setPushId(postSnapshot.getKey());
-                                    lastID = postSnapshot.getKey();
-                                    items.add(postItem);
-                                }
-                                if (currentPage != PAGE_START) adapter.removeLoading();
-                                items.remove(0);
-                                adapter.addItems(items);
-                                swipeRefresh.setRefreshing(false);
-                                //isLastPage = true;
-                                // check whether is last page or not
-                                if (currentPage < totalPage) {
-                                    adapter.addLoading();
-                                } else {
-                                    isLastPage = true;
-                                }
-                                isLoading = false;
+        new Handler().postDelayed( () -> {
+            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question");
+            dbRef
+                    .limitToFirst(PAGE_SIZE+1)
+                    .orderByKey()
+                    .startAt(lastID)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                //items.add(postSnapshot.getValue(Question.class));
+                                Question postItem = new Question();
+                                postItem.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
+                                postItem.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
+                                postItem.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
+                                postItem.setPushId(postSnapshot.getKey());
+                                lastID = postSnapshot.getKey();
+                                items.add(postItem);
                             }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            if (currentPage != PAGE_START) adapter.removeLoading();
+                            items.remove(0);
+                            adapter.addItems(items);
+                            swipeRefresh.setRefreshing(false);
+                            //isLastPage = true;
+                            // check whether is last page or not
+                            if (currentPage < totalPage) {
+                                adapter.addLoading();
+                            } else {
+                                isLastPage = true;
                             }
-                        });
-                /*for(Question q: items){
-                    System.out.println("############*****"+q.getTitle());
-                }*/
+                            isLoading = false;
+                        }
 
-               /* for (int i = 0; i < 4; i++) {
-                    itemCount++;
-                    Question postItem = new Question();
-                    postItem.setTitle("Question1" + itemCount);
-                    postItem.setUsername("User123");
-                    postItem.setDate("27-09-2019");
-                    items.add(postItem);
-                }
-*/ /*
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+            /*for(Question q: items){
+                System.out.println("############*****"+q.getTitle());
+            }*/
+
+           /* for (int i = 0; i < 4; i++) {
+                itemCount++;
                 Question postItem = new Question();
                 postItem.setTitle("Question1" + itemCount);
                 postItem.setUsername("User123");
                 postItem.setDate("27-09-2019");
                 items.add(postItem);
-
-                items.add(postItem);
-
-                items.add(postItem);
-
-                items.add(postItem);
-
-                items.add(postItem);
-*/
-                /*
-                 * manage progress view
-                 */
-
             }
+*/ /*
+            Question postItem = new Question();
+            postItem.setTitle("Question1" + itemCount);
+            postItem.setUsername("User123");
+            postItem.setDate("27-09-2019");
+            items.add(postItem);
+
+            items.add(postItem);
+
+            items.add(postItem);
+
+            items.add(postItem);
+
+            items.add(postItem);
+*/
+            /*
+             * manage progress view
+             */
+
         }, 0);
     }
 
@@ -241,5 +230,13 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         adapter.clear();
         doFirstApiCall();
     }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        itemCount = 0;
+        currentPage = PAGE_START;
+        isLastPage = false;
+        adapter.clear();
+        doFirstApiCall();
+    }
 }
-

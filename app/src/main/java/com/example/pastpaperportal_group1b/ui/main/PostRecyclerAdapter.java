@@ -25,7 +25,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
     @NonNull @Override
-    public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
@@ -35,7 +35,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 return new ProgressHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
             default:
-                return null;
+                return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
         }
     }
 
@@ -84,7 +84,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         notifyDataSetChanged();
     }
 
-    Question getItem(int position) {
+    private Question getItem(int position) {
         return mPostItems.get(position);
     }
 
