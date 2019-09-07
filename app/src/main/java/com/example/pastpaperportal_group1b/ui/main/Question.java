@@ -13,6 +13,10 @@ public class Question {
     public Question() {
     }
 
+    public Question(String date) {
+        this.date = date;
+    }
+
     public String getPushId() {
         return pushId;
     }

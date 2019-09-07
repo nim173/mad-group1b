@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pastpaperportal_group1b.R;
@@ -17,6 +18,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
     private boolean isLoaderVisible = false;
+    private int i = 0;
 
     private List<Question> mPostItems;
 
@@ -35,7 +37,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 return new ProgressHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
             default:
-                return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
+                return null;
         }
     }
 
@@ -63,9 +65,10 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         notifyDataSetChanged();
     }
 
-    public void addLoading() {
+    public void addLoading(Question question) {
         isLoaderVisible = true;
-        mPostItems.add(new Question());
+        mPostItems.add(question);
+        System.out.println("#####################"+question.getTitle());
         notifyItemInserted(mPostItems.size() - 1);
     }
 
@@ -95,6 +98,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         TextView textViewUsername;
         @BindView(R.id.date)
         TextView textViewDate;
+        @BindView(R.id.card_view)
+        CardView cardView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -108,7 +113,9 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             super.onBind(position);
             Question item = mPostItems.get(position);
-
+            /*if(("test"+0).equals(item.getDate())) {
+                cardView.setVisibility(View.GONE);
+            }*/
             textViewTitle.setText(item.getTitle());
             textViewUsername.setText(item.getUsername());
             textViewDate.setText(item.getDate());
