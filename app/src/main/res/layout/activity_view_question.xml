@@ -7,142 +7,145 @@
     android:layout_height="match_parent"
     tools:context=".ViewQuestion" >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/q1_no_underline"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/body"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/lorem2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateTime" />
+
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/username123"
+            android:textColor="#BDBDBD"
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <TextView
+            android:id="@+id/dateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/date1"
+            android:textColor="#BDBDBD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title" />
+
+        <ImageButton
+            android:id="@+id/sendbtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:contentDescription="@string/edit"
+            android:onClick="onEdit"
+            app:layout_constraintEnd_toStartOf="@+id/deleteButton"
+            app:layout_constraintTop_toBottomOf="@+id/body"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
+
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:contentDescription="@string/todo"
+            android:onClick="onDelete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/body"
+            app:srcCompat="@android:drawable/ic_menu_delete" />
+
+        <Button
+            android:id="@+id/button23"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/button_background"
+            android:onClick="submit"
+            android:text="@string/submit_answer"
+            android:textColor="#424242 "
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/body" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toEndOf="@+id/button23"
+            app:layout_constraintTop_toBottomOf="@+id/body">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/no_comments"
+
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/gray_comment_icon" />
             <TextView
-                android:id="@+id/txtforgetpws"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@string/q1_no_underline"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:id="@+id/textView16"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:paddingBottom="7.5dp"
+                android:text="@string/_4"
+                android:textColor="@android:color/tertiary_text_light"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true" />
 
-            <TextView
-                android:id="@+id/txtSignUp"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@string/lorem2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-            <TextView
-                android:id="@+id/textView20"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/username123"
-                android:textColor="#BDBDBD"
-                android:textStyle="italic"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtforgetpws" />
-
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:text="@string/date1"
-                android:textColor="#BDBDBD"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtforgetpws" />
-
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:contentDescription="@string/edit"
-                app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-                app:layout_constraintTop_toBottomOf="@+id/txtSignUp"
-                app:srcCompat="@android:drawable/ic_menu_edit" />
-
-            <ImageButton
-                android:id="@+id/imageButton2"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSignUp"
-                app:srcCompat="@android:drawable/ic_menu_delete"
-                android:contentDescription="@string/todo" />
-
-            <Button
-                android:id="@+id/button23"
-                android:layout_width="150dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_background"
-                android:text="@string/submit_answer"
-                android:textColor="#424242 "
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSignUp" />
-
-            <RelativeLayout
-                android:id="@+id/relativeLayout"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="24dp"
-                android:orientation="horizontal"
-                app:layout_constraintStart_toEndOf="@+id/button23"
-                app:layout_constraintTop_toBottomOf="@+id/txtSignUp">
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:contentDescription="@string/no_comments"
-
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true"
-                    android:src="@drawable/gray_comment_icon" />
-                <TextView
-                    android:id="@+id/textView16"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:paddingBottom="7.5dp"
-                    android:text="@string/_4"
-                    android:textColor="@android:color/tertiary_text_light"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true" />
-
-            </RelativeLayout>
+        </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -152,7 +155,7 @@
             android:background="#E0E0E0 "
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageButton">
+            app:layout_constraintTop_toBottomOf="@+id/sendbtn">
 
             <TextView
                 android:id="@+id/textView23"

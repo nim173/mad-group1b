@@ -14,8 +14,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        TextView toSignUp= findViewById(R.id.txtSignUp);
-        TextView tochangepsw= findViewById(R.id.txtforgetpws);
+        TextView toSignUp= findViewById(R.id.txtforgetpws);
+        TextView tochangepsw= findViewById(R.id.title);
 
 
         toSignUp.setOnClickListener(new View.OnClickListener() {
