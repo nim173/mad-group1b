@@ -45,6 +45,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     private int totalPage = 5;
     private boolean isLoading = false;
     int itemCount = 0;
+    private Question question;
 
     //good practice to use the key as capital letters since the data received
     // at the next activity will be eventually treated as immutable
@@ -61,7 +62,10 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         textView.setText(heading);
 
         ButterKnife.bind(this);
+        question = new Question();
 
+        Forum This = this;
+        System.out.println(this+"_________________________________"+This);
         swipeRefresh.setOnRefreshListener(this);
         mRecyclerView.setHasFixedSize(true);
         // use a linear layout manager
@@ -70,8 +74,39 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
         adapter = new PostRecyclerAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(adapter);
-        doFirstApiCall();
+        FirebaseDatabase.getInstance().getReference("Forum/Question").orderByKey().limitToFirst(1)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            question.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
+                            question.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
+                            question.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
+                            question.setPushId(postSnapshot.getKey());
+                            lastID = postSnapshot.getKey();
+                            System.out.println("************************"+question.getTitle());
+                        }
 
+                        doFirstApiCall();
+                        adapter.addLoading(question);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+        });
+
+        /*swipeRefresh.setOnRefreshListener(this);
+        mRecyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+        adapter = new PostRecyclerAdapter(new ArrayList<>());
+        mRecyclerView.setAdapter(adapter);
+        doFirstApiCall();
+        adapter.addLoading(question);*/
         /*
          * add scroll listener while user reach in bottom load more will call
          */
@@ -128,12 +163,13 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                                 lastID = postSnapshot.getKey();
                                 items.add(postItem);
                             }
+                            //adapter.addLoading();
                             if (currentPage != PAGE_START) adapter.removeLoading();
                             adapter.addItems(items);
                             swipeRefresh.setRefreshing(false);
                             // check whether is last page or not
                             if (currentPage < totalPage) {
-                                adapter.addLoading();
+                                adapter.addLoading(question);
                             } else {
                                 isLastPage = true;
                             }
@@ -176,7 +212,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                             //isLastPage = true;
                             // check whether is last page or not
                             if (currentPage < totalPage) {
-                                adapter.addLoading();
+                                adapter.addLoading(question);
                             } else {
                                 isLastPage = true;
                             }
@@ -239,4 +275,6 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         adapter.clear();
         doFirstApiCall();
     }
+
 }
+

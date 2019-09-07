@@ -44,13 +44,26 @@ public class FirebaseUIActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_ui);
 
-        mAuth = FirebaseAuth.getInstance();
-        imgProfile = (ImageView) findViewById(R.id.dp);
-        btnSignIn = (Button) findViewById(R.id.btnSignIn);
-        btnSignOut = (Button) findViewById(R.id.btnSignIn);
+        /*try {
+            PackageInfo info =     getPackageManager().getPackageInfo("com.example.pastpaperportal_group1b",     PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                String sign= Base64.encodeToString(md.digest(), Base64.DEFAULT);
+                System.out.println("_____________________________"+sign);
+                Toast.makeText(getApplicationContext(),sign,     Toast.LENGTH_LONG).show();
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+        } catch (NoSuchAlgorithmException e) {
+        }*/
 
-        txtEmail = (TextView) findViewById(R.id.txtEmail);
-        txtUser = (TextView) findViewById(R.id.txtUser);
+        mAuth = FirebaseAuth.getInstance();
+        imgProfile = findViewById(R.id.dp);
+        btnSignIn = findViewById(R.id.btnSignIn);
+        btnSignOut = findViewById(R.id.btnSignIn);
+
+        txtEmail = findViewById(R.id.txtEmail);
+        txtUser = findViewById(R.id.txtUser);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
 
@@ -59,6 +72,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
                 //updateUi();
             }
         };
+
     }
 
     public void createSignInIntent(View view) {
@@ -102,7 +116,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
     }
     // [END auth_fui_result]
 
-    public void signOut() {
+    public void signOut(View view) {
         // [START auth_fui_signout]
         AuthUI.getInstance()
                 .signOut(this)
