@@ -27,18 +27,16 @@
         app:layout_constraintVertical_bias="0.0" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/loginEmail"
         android:layout_width="397dp"
         android:layout_height="44dp"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
 
         android:layout_marginTop="180dp"
         android:layout_marginEnd="7dp"
-        android:layout_marginRight="7dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="User Name"
+        android:hint="User Email"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +45,7 @@
         app:layout_constraintVertical_bias="0.216" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/loginPassword"
         android:layout_width="394dp"
         android:layout_height="44dp"
         android:layout_marginStart="10dp"
@@ -62,7 +60,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editText3"
+        app:layout_constraintTop_toTopOf="@+id/loginEmail"
         app:layout_constraintVertical_bias="0.156" />
 
     <TextView
@@ -74,12 +72,12 @@
         android:text="Forgot Password?"
         android:textSize="17dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editText4"
+        app:layout_constraintTop_toTopOf="@+id/loginPassword"
         app:layout_constraintVertical_bias="0.173"
         tools:layout_editor_absoluteX="-16dp" />
 
     <Button
-        android:id="@+id/button14"
+        android:id="@+id/btnLogin"
         android:layout_width="333dp"
         android:layout_height="58dp"
         android:layout_marginStart="36dp"
@@ -92,19 +90,19 @@
         app:layout_constraintTop_toTopOf="@+id/txtforgetpws"
         app:layout_constraintVertical_bias="0.19" />
 
-    <Button
-        android:id="@+id/button17"
-        android:layout_width="334dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Login with Google"
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/googleSign"
+        android:layout_width="328dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="112dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.831" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.417"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/txtSignUp"

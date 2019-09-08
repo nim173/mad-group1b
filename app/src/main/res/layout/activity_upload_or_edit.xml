@@ -165,7 +165,7 @@
         app:srcCompat="?attr/colorControlHighlight" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/loginEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

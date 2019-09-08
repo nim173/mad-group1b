@@ -25,37 +25,7 @@
         app:layout_constraintVertical_bias="0.073" />
 
     <EditText
-        android:id="@+id/editText5"
-        android:layout_width="391dp"
-        android:layout_height="57dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="User Name"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.256" />
-
-    <EditText
-        android:id="@+id/editText6"
-        android:layout_width="392dp"
-        android:layout_height="45dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-
-        android:hint="Sliit Id"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.355" />
-
-    <EditText
-        android:id="@+id/editText7"
+        android:id="@+id/regiEmail"
         android:layout_width="387dp"
         android:layout_height="51dp"
         android:layout_marginBottom="8dp"
@@ -70,7 +40,7 @@
         app:layout_constraintVertical_bias="0.449" />
 
     <EditText
-        android:id="@+id/editText8"
+        android:id="@+id/regiPassword"
         android:layout_width="382dp"
         android:layout_height="53dp"
         android:layout_marginBottom="8dp"
@@ -84,25 +54,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.553" />
 
-    <EditText
-        android:id="@+id/editText9"
-        android:layout_width="373dp"
-        android:layout_height="54dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:ems="10"
-        android:hint="Confirm Password"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.651" />
-
     <Button
-        android:id="@+id/button18"
+        android:id="@+id/btnSignUp"
         android:layout_width="340dp"
         android:layout_height="68dp"
         android:layout_marginEnd="8dp"

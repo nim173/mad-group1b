@@ -55,13 +55,13 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:hint=" Sliit ID"
-        app:layout_constraintBottom_toTopOf="@+id/editText13"
+        app:layout_constraintBottom_toTopOf="@+id/edEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText11" />
 
     <EditText
-        android:id="@+id/editText13"
+        android:id="@+id/edEmail"
         android:layout_width="373dp"
         android:layout_height="46dp"
         android:layout_marginStart="19dp"

@@ -134,7 +134,7 @@
         android:layout_marginRight="8dp" />
 
     <EditText
-        android:id="@+id/editText3"
+        android:id="@+id/loginEmail"
         android:layout_width="wrap_content"
         android:layout_height="76dp"
         android:layout_marginStart="8dp"
@@ -170,7 +170,7 @@
         android:layout_marginRight="8dp" />
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/loginPassword"
         android:layout_width="wrap_content"
         android:layout_height="145dp"
         android:layout_marginTop="8dp"
