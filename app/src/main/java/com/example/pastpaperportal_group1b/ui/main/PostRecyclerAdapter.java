@@ -17,10 +17,10 @@ import java.util.List;
 public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
-    private boolean isLoaderVisible = false;
+    public boolean isLoaderVisible = false;
     private int i = 0;
 
-    private List<Question> mPostItems;
+    public List<Question> mPostItems;
 
     public PostRecyclerAdapter(List<Question> postItems) {
         this.mPostItems = postItems;

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 import android.os.Handler;
+import android.widget.Toast;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -20,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.annotations.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,7 +45,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     private PostRecyclerAdapter adapter;
     private int currentPage = 1;
     private boolean isLastPage = false;
-    private int totalPage = 5;
+    private int totalPage = 4;
     private boolean isLoading = false;
     int itemCount = 0;
     private Question question;
@@ -63,9 +66,6 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
         ButterKnife.bind(this);
         question = new Question();
-
-        Forum This = this;
-        System.out.println(this+"_________________________________"+This);
         swipeRefresh.setOnRefreshListener(this);
         mRecyclerView.setHasFixedSize(true);
         // use a linear layout manager
@@ -74,35 +74,40 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
         adapter = new PostRecyclerAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(adapter);
+        adapter.addLoading(question);
         FirebaseDatabase.getInstance().getReference("Forum/Question").orderByKey().limitToFirst(1)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    public void onDataChange(@Nullable DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.getChildrenCount() == 0){
+                            adapter.removeLoading();
+                            findViewById(R.id.row1NoQ).setVisibility(View.VISIBLE);
+                        }else{
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                            findViewById(R.id.row1NoQ).setVisibility(View.GONE);
+                            lastID = postSnapshot.getKey();
+                            System.out.println("first*******************" + lastID);
                             question.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
                             question.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
                             question.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
                             question.setPushId(postSnapshot.getKey());
-                            lastID = postSnapshot.getKey();
-                            System.out.println("************************"+question.getTitle());
                         }
 
-                        doFirstApiCall();
-                        adapter.addLoading(question);
-                    }
+                        doApiCall();
+                    }}
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Toast.makeText(getApplicationContext(), "No data to fetch", Toast.LENGTH_SHORT).show();
                     }
-        });
+                });
+
 
         /*swipeRefresh.setOnRefreshListener(this);
         mRecyclerView.setHasFixedSize(true);
         // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
-
         adapter = new PostRecyclerAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(adapter);
         doFirstApiCall();
@@ -147,44 +152,50 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     }
 
     private void doFirstApiCall() {
+        findViewById(R.id.row1NoQ).setVisibility(View.GONE);
         final ArrayList<Question> items = new ArrayList<>();
         new Handler().postDelayed( () -> {
             dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question");
             dbRef.limitToFirst(PAGE_SIZE+1).orderByKey()
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                Question postItem = new Question();
-                                postItem.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
-                                postItem.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
-                                postItem.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
-                                postItem.setPushId(postSnapshot.getKey());
-                                lastID = postSnapshot.getKey();
-                                items.add(postItem);
+                        public void onDataChange(@Nullable DataSnapshot snapshot) {
+                            if(snapshot.getChildrenCount() == 0){
+                                swipeRefresh.setRefreshing(false);
+                                findViewById(R.id.row1NoQ).setVisibility(View.VISIBLE);
+                            }else{
+                                for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                    lastID = postSnapshot.getKey();
+                                    Question postItem = new Question();
+                                    postItem.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
+                                    postItem.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
+                                    postItem.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
+                                    postItem.setPushId(postSnapshot.getKey());
+                                    items.add(postItem);
+                                }
+                                //adapter.removeLoading();
+                                if (currentPage != PAGE_START) adapter.removeLoading();
+                                adapter.addItems(items);
+                                swipeRefresh.setRefreshing(false);
+                                // check whether is last page or not
+                                if (currentPage < totalPage) {
+                                    adapter.addLoading(question);
+                                } else {
+                                    isLastPage = true;
+                                }
+                                isLoading = false;
                             }
-                            //adapter.addLoading();
-                            if (currentPage != PAGE_START) adapter.removeLoading();
-                            adapter.addItems(items);
-                            swipeRefresh.setRefreshing(false);
-                            // check whether is last page or not
-                            if (currentPage < totalPage) {
-                                adapter.addLoading(question);
-                            } else {
-                                isLastPage = true;
-                            }
-                            isLoading = false;
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
                     });
-        }, 0);
+        }, 1000);
     }
 
     private void doApiCall() {
+        findViewById(R.id.row1NoQ).setVisibility(View.GONE);
         final ArrayList<Question> items = new ArrayList<>();
         new Handler().postDelayed( () -> {
             dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question");
@@ -209,7 +220,6 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                             items.remove(0);
                             adapter.addItems(items);
                             swipeRefresh.setRefreshing(false);
-                            //isLastPage = true;
                             // check whether is last page or not
                             if (currentPage < totalPage) {
                                 adapter.addLoading(question);
@@ -242,13 +252,9 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
             postItem.setUsername("User123");
             postItem.setDate("27-09-2019");
             items.add(postItem);
-
             items.add(postItem);
-
             items.add(postItem);
-
             items.add(postItem);
-
             items.add(postItem);
 */
             /*
@@ -276,5 +282,10 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         doFirstApiCall();
     }
 
-}
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
 
+    }
+}

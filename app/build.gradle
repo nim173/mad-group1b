@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.example.pastpaperportal_group1b"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -44,6 +44,18 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-database:19.0.0'
+    implementation 'com.android.support:multidex:1.0.3'
+    //Paging Libray
+    implementation 'android.arch.paging:runtime:1.0.1'
+    //Firebase Recycler Pagination Library
+    implementation 'com.shreyaspatil:FirebaseRecyclerPagination:1.0.1'
+    implementation 'com.firebaseui:firebase-ui-database:4.3.1'
+    //For Mixing version error
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    //noinspection GradleCompatible
+    implementation "com.android.support:design:28.0.0"
+
 }
 
 apply plugin: 'com.google.gms.google-services'
