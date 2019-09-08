@@ -86,4 +86,6 @@
     <string name="enter_body">enter body</string>
     <string name="enter_subject">enter subject</string>
     <string name="enter">enter</string>
+    <string name="moduleName">Module</string>
+    <string name="SelectDoc">Select file</string>
 </resources>
