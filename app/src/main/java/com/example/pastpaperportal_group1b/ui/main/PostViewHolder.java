@@ -14,8 +14,8 @@ public class PostViewHolder extends RecyclerView.ViewHolder {
 
     public PostViewHolder(@NonNull View itemView) {
         super(itemView);
-        textViewTitle = itemView.findViewById(R.id.textViewTitle);
-        textViewBody = itemView.findViewById(R.id.textViewBody);
+        textViewTitle = itemView.findViewById(R.id.title);
+        textViewBody = itemView.findViewById(R.id.date);
     }
 
     public void setItem(Replies reply){

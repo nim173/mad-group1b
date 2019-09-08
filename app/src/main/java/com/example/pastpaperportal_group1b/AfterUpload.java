@@ -3,11 +3,13 @@ package com.example.pastpaperportal_group1b;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,8 +27,10 @@ public class AfterUpload extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after_upload);
 
-        Intent intent = new Intent();
+        Intent intent = getIntent();
         pushId = intent.getStringExtra(UploadOrEdit.ID);
+        System.out.println("$$$$$$$$$$$$$$$$$$$$" + UploadOrEdit.ID);
+        System.out.println("##########################################" +pushId);
 
             dbRef = FirebaseDatabase.getInstance().getReference("UploadPaper/PastPaper" + '/' + pushId);
 
@@ -34,12 +38,10 @@ public class AfterUpload extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.hasChildren()) {
-                        System.out.println("1");
                         TextView faculty = findViewById(R.id.Faculty);
                         TextView Specialization = findViewById(R.id.specialization);
 
                         if (dataSnapshot.child("faculty").getValue() != null) {
-                            System.out.println("1");
                             faculty.setText(dataSnapshot.child("faculty").getValue().toString());
                         } else {
                             faculty.setText("fail");
@@ -47,7 +49,6 @@ public class AfterUpload extends AppCompatActivity {
 
                         if (dataSnapshot.child("Specialization").getValue() != null) {
                             Specialization.setText(dataSnapshot.child("Specialization").getValue().toString());
-                            Specialization.setText("testing first loop");
                         } else {
                             Specialization.setText("fail");
                         }
@@ -63,13 +64,4 @@ public class AfterUpload extends AppCompatActivity {
             });
         }
 
-    public void Edit(View view){
-        Intent intentUpload =  new Intent(this, UploadOrEdit.class);
-        Button uploadButton = findViewById(R.id.EditButton);
-        startActivity(intentUpload);
-    }
-
-    public void delete(View view) {
-
-    }
 }

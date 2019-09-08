@@ -147,7 +147,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     public void viewQuestion(View view){
         Intent intentViewQ =  new Intent(this, ViewQuestion.class);
         intentViewQ.putExtra(AddQuestionOrAnswer.ID, view.getTag().toString());
-        intentViewQ.putExtra(AddQuestionOrAnswer.USER, "GLjlxJJ9QwbcKsk4iZzYpbFNOaP2");
+        intentViewQ.putExtra(AddQuestionOrAnswer.USER, "GLjlxJJ9QwbcKsk4iZzYpbFNOaP2");     //TODO get uid as parameter and get username from that uid, also this might not be needed now as username gotten when question added
         startActivity(intentViewQ);
     }
 
@@ -191,7 +191,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
                         }
                     });
-        }, 1000);
+        }, 0);
     }
 
     private void doApiCall() {

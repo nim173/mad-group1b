@@ -13,10 +13,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,7 @@ public class ViewQuestion extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference dbRef;
     private static String pushId;
+    private AddPostDialog addPostDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,7 @@ public class ViewQuestion extends AppCompatActivity {
         setContentView(R.layout.activity_view_question);
 
         mAuth = FirebaseAuth.getInstance();
+        addPostDialog = new AddPostDialog();
 
         Intent intent = getIntent();
         pushId = intent.getStringExtra(AddQuestionOrAnswer.ID);
@@ -72,7 +77,7 @@ public class ViewQuestion extends AppCompatActivity {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.hasChildren()) {
                         TextView title = findViewById(R.id.title);
-                        TextView body = findViewById(R.id.editBody);
+                        TextView body = findViewById(R.id.body);
                         TextView username = findViewById(R.id.username);
                         TextView dateTime = findViewById(R.id.dateTime);
                         Date date = new Date();
@@ -129,7 +134,7 @@ public class ViewQuestion extends AppCompatActivity {
                 @NonNull
                 @Override
                 public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                    return new PostViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false));
+                    return new PostViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false));
                 }
 
                 @Override
@@ -187,13 +192,14 @@ public class ViewQuestion extends AppCompatActivity {
             findViewById(R.id.fab_add).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AddPostDialog.show(ViewQuestion.this);
+                    addPostDialog.show(ViewQuestion.this);
                 }
             });
         }
     }
 
     public void submit(View view){
+        /*
         final EditText taskEditText = new EditText(this);
         taskEditText.setMinLines(3);
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -219,6 +225,8 @@ public class ViewQuestion extends AppCompatActivity {
                 .setNegativeButton("Cancel", null)
                 .create();
         dialog.show();
+        */
+        addPostDialog.show(ViewQuestion.this);
     }
 
     public void onDelete(View view) {
@@ -229,7 +237,9 @@ public class ViewQuestion extends AppCompatActivity {
                     dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question").child( pushId );
                     dbRef.removeValue();
                     Toast.makeText( getApplicationContext(), "Item deleted successfully", Toast.LENGTH_SHORT).show();
-                    finish();
+                    //finish();
+                    Intent intent = new Intent(this, Forum.class);
+                    startActivity(intent);
                 } )
                 .setNegativeButton("Cancel", null)
                 .create();
@@ -239,7 +249,7 @@ public class ViewQuestion extends AppCompatActivity {
     public void onEdit(View view) {
         Intent intent = new Intent(this, AddQuestionOrAnswer.class );
         TextView title = findViewById( R.id.title);
-        TextView body = findViewById( R.id.editBody);
+        TextView body = findViewById( R.id.body);
         intent.putExtra( EDIT, "true");
         intent.putExtra( TITLE, title.getText() );
         intent.putExtra( BODY,  body.getText());
@@ -262,12 +272,12 @@ public class ViewQuestion extends AppCompatActivity {
     }
 
     //Dialog to add new posts
-    static class AddPostDialog{
+    class AddPostDialog{
 
-        public static void show(Context mContext){
+        public void show(Context mContext){
             final Dialog mDialog = new Dialog(mContext);
             mDialog.setContentView(R.layout.dialog_add_layout);
-            final EditText mTitleEditText = mDialog.findViewById(R.id.editTextTitle);
+            //final EditText mTitleEditText = mDialog.findViewById(R.id.editTextTitle);
             final EditText mBodyEditText = mDialog.findViewById(R.id.editTextBody);
             Button mAddPostButton = mDialog.findViewById(R.id.buttonAddPost);
             Button mExitButton = mDialog.findViewById(R.id.buttonExit);
@@ -277,18 +287,23 @@ public class ViewQuestion extends AppCompatActivity {
             mAddPostButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String title = mTitleEditText.getText().toString();
+                    FirebaseUser currentUser = mAuth.getCurrentUser();        // These will be added after login integration
+                    if (currentUser == null) {
+                        Toast.makeText(getApplicationContext(), "Please sign in", Toast.LENGTH_SHORT).show();
+                    }
+                    //String title = mTitleEditText.getText().toString();
                     String body = mBodyEditText.getText().toString();
 
                     Replies post = new Replies();
                     post.setBody(body);
-                    post.setDate(title);
+                    //post.setDate(title);
 
                     mDatabase.push().setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            mTitleEditText.setText("");
-                            mBodyEditText.setText("");
+                            Toast.makeText(mContext, "Reply added", Toast.LENGTH_SHORT).show();
+                            mAdapter.refresh();
+                            mDialog.dismiss();
                         }
                     });
                 }
@@ -307,4 +322,21 @@ public class ViewQuestion extends AppCompatActivity {
 
 
     }
+
+    /*public void showMenu(View v) {
+        PopupMenu popup = new PopupMenu(this, v);
+        popup.setOnMenuItemClickListener();
+        popup.inflate(R.menu.menu_example);
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_logout:
+                return true;
+            default:
+                return false;
+        }
+    }*/
 }

@@ -9,8 +9,15 @@ public class PaperUpload {
     private String module;
     private String specialization;
     private String note;
+    private String url;
+    private String pdfName;
 
     public PaperUpload() {
+    }
+
+    public PaperUpload(String url, String pdfName) {
+        this.url = url;
+        this.pdfName = pdfName;
     }
 
     public String getPaperId() {
@@ -68,4 +75,15 @@ public class PaperUpload {
     public void setNote(String note) {
         this.note = note;
     }
+
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getPdfName() {
+        return pdfName;
+    }
+
 }
+
