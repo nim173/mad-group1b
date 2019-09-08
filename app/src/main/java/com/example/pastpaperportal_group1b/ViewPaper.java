@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/*
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+*/
+
 public class ViewPaper extends AppCompatActivity {
 
     public static final String FORUM_KEY = "PASTPAPERPORTAL.FORUM";
@@ -16,6 +21,8 @@ public class ViewPaper extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_paper);
+        /*DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("test");
+        dbRef.push().setValue("hvvt");*/
     }
 
     public void uploadAnswer(View view){

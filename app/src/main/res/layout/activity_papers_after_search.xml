@@ -32,7 +32,7 @@
         tools:targetApi="o" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/userId"
         android:layout_width="198dp"
         android:layout_height="40dp"
         android:layout_marginTop="8dp"

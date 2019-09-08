@@ -54,13 +54,15 @@
         app:layout_constraintVertical_bias="0.2" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/sent_to"
         android:layout_width="151dp"
         android:layout_height="55dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:entries="@array/sending_values"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.549"
@@ -85,7 +87,7 @@
         app:layout_constraintVertical_bias="0.297" />
 
     <TextView
-        android:id="@+id/txtforgetpws"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -100,7 +102,7 @@
         app:layout_constraintVertical_bias="0.352" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/userId"
         android:layout_width="161dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -108,8 +110,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
+        android:hint="@string/enter"
         android:inputType="textPersonName"
-        android:hint="enter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.572"
@@ -118,7 +120,7 @@
         app:layout_constraintVertical_bias="0.319" />
 
     <TextView
-        android:id="@+id/txtSignUp"
+        android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -134,7 +136,7 @@
         android:layout_marginRight="8dp" />
 
     <EditText
-        android:id="@+id/loginEmail"
+        android:id="@+id/subject"
         android:layout_width="wrap_content"
         android:layout_height="76dp"
         android:layout_marginStart="8dp"
@@ -142,8 +144,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="enter subject"
         android:gravity="start|top"
+        android:hint="@string/enter_subject"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -170,26 +172,26 @@
         android:layout_marginRight="8dp" />
 
     <EditText
-        android:id="@+id/loginPassword"
+        android:id="@+id/body"
         android:layout_width="wrap_content"
         android:layout_height="145dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
-        android:hint="enter body"
         android:gravity="start|top"
+        android:hint="@string/enter_body"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.747"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.678"
-        android:layout_marginRight="8dp" />
+        app:layout_constraintVertical_bias="0.678" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/sendbtn"
         android:layout_width="202dp"
         android:layout_height="77dp"
         android:layout_marginStart="8dp"
@@ -203,5 +205,24 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.902"
         app:srcCompat="@drawable/send_icon" />
+
+    <Button
+        android:id="@+id/button26"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="gotoAll"
+        android:text="@string/view"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.96"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.027" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
