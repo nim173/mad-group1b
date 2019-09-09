@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -288,7 +289,11 @@ public class ViewQuestion extends AppCompatActivity {
                     post.setBody(mBodyEditText.getText().toString());
                     post.setUsername(currentUser.getDisplayName());
                     post.setUid(currentUser.getUid());
-                    post.setPhotoUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
+                    Uri uri = currentUser.getPhotoUrl();
+                    if(!(uri == null)) {
+                        post.setPhotoUrl(Objects.requireNonNull(uri.toString()));
+                        post.setPhotoUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
+                    }
                     Date date = new Date();
                     post.setDate( new SimpleDateFormat( "dd-MM-yyyy", Locale.getDefault() ).format( date ) );
                     post.setTime( new SimpleDateFormat( "HH:mm", Locale.getDefault() ).format( date ) );

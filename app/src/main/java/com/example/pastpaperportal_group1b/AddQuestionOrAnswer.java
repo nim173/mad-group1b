@@ -3,6 +3,7 @@ package com.example.pastpaperportal_group1b;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -76,14 +77,12 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
         DatabaseReference dbRef;
         Question question  = new Question();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();        // These will be added after login integration
+        FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             Toast.makeText(getApplicationContext(), "Please sign in", Toast.LENGTH_SHORT).show();
         } else {
             String username = currentUser.getDisplayName();
             String uid = currentUser.getUid();
-            String url = Objects.requireNonNull(currentUser.getPhotoUrl()).toString();
-
             dbRef = FirebaseDatabase.getInstance().getReference( "Forum/Question" );
 
             if(TextUtils.isEmpty(editTitle.getText().toString().trim())) {
@@ -102,7 +101,10 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                     question.setBody( editBody.getText().toString().trim() );
                     question.setUsername( username );
                     question.setUid( uid );
-                    question.setPhotoUrl(url);
+                    Uri uri = currentUser.getPhotoUrl();
+                    if(!(uri == null)) {
+                        question.setPhotoUrl(Objects.requireNonNull(uri.toString()));
+                    }
                     Date date = new Date();
                     question.setDate( new SimpleDateFormat( "dd-MM-yyyy", Locale.getDefault() ).format( date ) );
                     question.setTime( new SimpleDateFormat( "HH:mm", Locale.getDefault() ).format( date ) );

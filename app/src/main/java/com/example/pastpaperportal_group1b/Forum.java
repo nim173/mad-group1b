@@ -86,12 +86,12 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                         for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                             findViewById(R.id.row1NoQ).setVisibility(View.GONE);
                             lastID = postSnapshot.getKey();
-                            System.out.println("first*******************" + lastID);
                             question.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
                             question.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
                             question.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
                             question.setUid(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getUid());
                             question.setPhotoUrl(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getPhotoUrl());
+                            question.setTime(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getTime());
                             question.setPushId(postSnapshot.getKey());
                         }
 
@@ -174,6 +174,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                                     postItem.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
                                     postItem.setUid(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getUid());
                                     postItem.setPhotoUrl(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getPhotoUrl());
+                                    postItem.setTime(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getTime());
                                     postItem.setPushId(postSnapshot.getKey());
                                     items.add(postItem);
                                 }
@@ -218,6 +219,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                                 postItem.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
                                 postItem.setUid(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getUid());
                                 postItem.setPhotoUrl(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getPhotoUrl());
+                                postItem.setTime(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getTime());
                                 postItem.setPushId(postSnapshot.getKey());
                                 lastID = postSnapshot.getKey();
                                 items.add(postItem);

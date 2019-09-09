@@ -14,7 +14,11 @@ import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOADING = 0;
@@ -114,12 +118,14 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             super.onBind(position);
             Question item = mPostItems.get(position);
-            /*if(("test"+0).equals(item.getDate())) {
-                cardView.setVisibility(View.GONE);
-            }*/
             textViewTitle.setText(item.getTitle());
             textViewUsername.setText(item.getUsername());
-            textViewDate.setText(item.getDate());
+            Date date = new Date();
+            if ((new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date)).equals(item.getDate())) {
+                textViewDate.setText(item.getTime());
+            } else {
+                textViewDate.setText(item.getDate());
+            }
             textViewTitle.setTag(item.getPushId());
             System.out.println("******************************************************"+item.getPhotoUrl());
             Picasso.get().load(item.getPhotoUrl()).into(imageView);
