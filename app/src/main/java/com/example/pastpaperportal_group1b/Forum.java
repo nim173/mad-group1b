@@ -90,6 +90,8 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                             question.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
                             question.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
                             question.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
+                            question.setUid(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getUid());
+                            question.setPhotoUrl(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getPhotoUrl());
                             question.setPushId(postSnapshot.getKey());
                         }
 
@@ -147,7 +149,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     public void viewQuestion(View view){
         Intent intentViewQ =  new Intent(this, ViewQuestion.class);
         intentViewQ.putExtra(AddQuestionOrAnswer.ID, view.getTag().toString());
-        intentViewQ.putExtra(AddQuestionOrAnswer.USER, "GLjlxJJ9QwbcKsk4iZzYpbFNOaP2");     //TODO get uid as parameter and get username from that uid, also this might not be needed now as username gotten when question added
+        intentViewQ.putExtra(AddQuestionOrAnswer.USER, "GLjlxJJ9QwbcKsk4iZzYpbFNOaP2");
         startActivity(intentViewQ);
     }
 
@@ -170,6 +172,8 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                                     postItem.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
                                     postItem.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
                                     postItem.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
+                                    postItem.setUid(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getUid());
+                                    postItem.setPhotoUrl(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getPhotoUrl());
                                     postItem.setPushId(postSnapshot.getKey());
                                     items.add(postItem);
                                 }
@@ -212,6 +216,8 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                                 postItem.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
                                 postItem.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
                                 postItem.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
+                                postItem.setUid(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getUid());
+                                postItem.setPhotoUrl(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getPhotoUrl());
                                 postItem.setPushId(postSnapshot.getKey());
                                 lastID = postSnapshot.getKey();
                                 items.add(postItem);

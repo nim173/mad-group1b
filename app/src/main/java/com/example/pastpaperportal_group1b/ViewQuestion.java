@@ -12,20 +12,20 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pastpaperportal_group1b.ui.main.PostViewHolder;
 import com.example.pastpaperportal_group1b.ui.main.Replies;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,8 +44,6 @@ import java.util.Objects;
 
 public class ViewQuestion extends AppCompatActivity {
 
-    private RecyclerView mRecyclerView;
-    private DatabaseReference mDatabase;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     FirebaseRecyclerPagingAdapter<Replies, PostViewHolder> mAdapter;
 
@@ -57,6 +55,7 @@ public class ViewQuestion extends AppCompatActivity {
     private DatabaseReference dbRef;
     private static String pushId;
     private AddPostDialog addPostDialog;
+    TableRow noA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +64,7 @@ public class ViewQuestion extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         addPostDialog = new AddPostDialog();
+        noA = findViewById(R.id.row1NoQ);
 
         Intent intent = getIntent();
         pushId = intent.getStringExtra(AddQuestionOrAnswer.ID);
@@ -107,14 +107,14 @@ public class ViewQuestion extends AppCompatActivity {
             mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
             //Initialize RecyclerView
-            mRecyclerView = findViewById(R.id.recycler_view);
+            RecyclerView mRecyclerView = findViewById(R.id.recycler_view);
             mRecyclerView.setHasFixedSize(true);
 
             LinearLayoutManager mManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mManager);
 
             //Initialize Database
-            mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
 
             //Initialize PagedList Configuration
             PagedList.Config config = new PagedList.Config.Builder()
@@ -134,7 +134,7 @@ public class ViewQuestion extends AppCompatActivity {
                 @NonNull
                 @Override
                 public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                    return new PostViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post, parent, false));
+                    return new PostViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, parent, false));
                 }
 
                 @Override
@@ -142,6 +142,28 @@ public class ViewQuestion extends AppCompatActivity {
                                                 int position,
                                                 @NonNull Replies model) {
                     holder.setItem(model);
+                    holder.textViewBody.setOnClickListener(view -> {
+
+                        //creating a popup menu
+                        PopupMenu popup = new PopupMenu(ViewQuestion.this, holder.textViewBody, Gravity.END);
+                        //inflating menu from xml resource
+                        popup.inflate(R.menu.menu_example);
+                        //adding click listener
+                        popup.setOnMenuItemClickListener(item -> {
+                            switch (item.getItemId()) {
+                                case R.id.delete:
+                                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId + "/" + holder.textViewPush.getText().toString());
+                                    dbRef.removeValue();
+                                    mAdapter.refresh();
+                                    return true;
+                                default:
+                                    return false;
+                            }
+                        });
+                        //displaying the popup
+                        popup.show();
+
+                    });
                 }
 
                 @Override
@@ -150,6 +172,7 @@ public class ViewQuestion extends AppCompatActivity {
                         case LOADING_INITIAL:
                         case LOADING_MORE:
                             // Do your loading animation
+                            noA.setVisibility(View.GONE);
                             mSwipeRefreshLayout.setRefreshing(true);
                             break;
 
@@ -164,7 +187,9 @@ public class ViewQuestion extends AppCompatActivity {
                             break;
 
                         case ERROR:
-                            retry();
+                            //retry();
+                            mSwipeRefreshLayout.setRefreshing(false);
+                            findViewById(R.id.row1NoQ).setVisibility(View.VISIBLE);
                             break;
                     }
                 }
@@ -181,51 +206,17 @@ public class ViewQuestion extends AppCompatActivity {
             mRecyclerView.setAdapter(mAdapter);
 
             //Set listener to SwipeRefreshLayout for refresh action
-            mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    mAdapter.refresh();
-                }
+            mSwipeRefreshLayout.setOnRefreshListener(() -> {
+                mAdapter.refresh();
+                noA.setVisibility(View.GONE);
             });
 
             //Show Dialog to add Items in Database
-            findViewById(R.id.fab_add).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addPostDialog.show(ViewQuestion.this);
-                }
-            });
+            findViewById(R.id.fab_add).setOnClickListener(v -> addPostDialog.show(ViewQuestion.this));
         }
     }
 
     public void submit(View view){
-        /*
-        final EditText taskEditText = new EditText(this);
-        taskEditText.setMinLines(3);
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Add a reply")
-                .setView(taskEditText)
-                .setPositiveButton("Add", (dialog1, which) -> {
-                    FirebaseUser currentUser = mAuth.getCurrentUser();        // These will be added after login integration
-                    if (currentUser == null) {
-                        Toast.makeText(getApplicationContext(), "Please sign in", Toast.LENGTH_SHORT).show();
-                    } else {
-                        String uid = currentUser.getUid();
-                        Date date = new Date();
-                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
-                        Replies rp = new Replies();
-                        rp.setBody(taskEditText.getText().toString());
-                        rp.setUid(uid);
-                        rp.setDate(new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(date));
-                        rp.setTime(new SimpleDateFormat("HH:mm", Locale.getDefault()).format(date));
-                        dbRef.push().setValue(rp);
-                        Toast.makeText(getApplicationContext(), "Reply added successfully", Toast.LENGTH_SHORT).show();
-                    }
-                } )
-                .setNegativeButton("Cancel", null)
-                .create();
-        dialog.show();
-        */
         addPostDialog.show(ViewQuestion.this);
     }
 
@@ -235,6 +226,8 @@ public class ViewQuestion extends AppCompatActivity {
                 .setView(null)
                 .setPositiveButton("Delete", (dialog1, which) -> {
                     dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question").child( pushId );
+                    dbRef.removeValue();
+                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
                     dbRef.removeValue();
                     Toast.makeText( getApplicationContext(), "Item deleted successfully", Toast.LENGTH_SHORT).show();
                     //finish();
@@ -284,37 +277,36 @@ public class ViewQuestion extends AppCompatActivity {
 
             final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + '/' + pushId);
 
-            mAddPostButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FirebaseUser currentUser = mAuth.getCurrentUser();        // These will be added after login integration
-                    if (currentUser == null) {
-                        Toast.makeText(getApplicationContext(), "Please sign in", Toast.LENGTH_SHORT).show();
-                    }
-                    //String title = mTitleEditText.getText().toString();
-                    String body = mBodyEditText.getText().toString();
-
+            mAddPostButton.setOnClickListener(v -> {
+                FirebaseUser currentUser = mAuth.getCurrentUser();        // These will be added after login integration
+                if (currentUser == null) {
+                    Toast.makeText(getApplicationContext(), "Please sign in", Toast.LENGTH_SHORT).show();
+                } else if (TextUtils.isEmpty(mBodyEditText.getText().toString().trim())){
+                    Toast.makeText(mContext, "Reply cannot be empty", Toast.LENGTH_SHORT).show();
+                } else {
                     Replies post = new Replies();
-                    post.setBody(body);
-                    //post.setDate(title);
+                    post.setBody(mBodyEditText.getText().toString());
+                    post.setUsername(currentUser.getDisplayName());
+                    post.setUid(currentUser.getUid());
+                    post.setPhotoUrl(Objects.requireNonNull(currentUser.getPhotoUrl()).toString());
+                    Date date = new Date();
+                    post.setDate( new SimpleDateFormat( "dd-MM-yyyy", Locale.getDefault() ).format( date ) );
+                    post.setTime( new SimpleDateFormat( "HH:mm", Locale.getDefault() ).format( date ) );
 
-                    mDatabase.push().setValue(post).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Toast.makeText(mContext, "Reply added", Toast.LENGTH_SHORT).show();
-                            mAdapter.refresh();
-                            mDialog.dismiss();
-                        }
+                    DatabaseReference newRef = mDatabase.push();
+                    String pushId = newRef.getKey();
+                    post.setPushId(pushId);
+                    newRef.setValue( post );
+
+                    newRef.setValue(post).addOnSuccessListener(aVoid -> {
+                        Toast.makeText(mContext, "Reply added", Toast.LENGTH_SHORT).show();
+                        mAdapter.refresh();
+                        mDialog.dismiss();
                     });
                 }
             });
 
-            mExitButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mDialog.dismiss();
-                }
-            });
+            mExitButton.setOnClickListener(v -> mDialog.dismiss());
 
             //Finally, Show the dialog
             mDialog.show();

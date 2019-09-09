@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 public class AddQuestionOrAnswer extends AppCompatActivity {
 
@@ -81,6 +82,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
         } else {
             String username = currentUser.getDisplayName();
             String uid = currentUser.getUid();
+            String url = Objects.requireNonNull(currentUser.getPhotoUrl()).toString();
 
             dbRef = FirebaseDatabase.getInstance().getReference( "Forum/Question" );
 
@@ -100,6 +102,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                     question.setBody( editBody.getText().toString().trim() );
                     question.setUsername( username );
                     question.setUid( uid );
+                    question.setPhotoUrl(url);
                     Date date = new Date();
                     question.setDate( new SimpleDateFormat( "dd-MM-yyyy", Locale.getDefault() ).format( date ) );
                     question.setTime( new SimpleDateFormat( "HH:mm", Locale.getDefault() ).format( date ) );
@@ -109,7 +112,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                     newRef.setValue( question );
 
                     Toast.makeText( getApplicationContext(), "Question successfully added", Toast.LENGTH_SHORT ).show();
-                    Intent newQuestion = new Intent( this, ViewQuestion.class );
+                    Intent newQuestion = new Intent(this, ViewQuestion.class );
                     newQuestion.putExtra( ID, push );
                     newQuestion.putExtra( USER, uid );
                     startActivity( newQuestion );
