@@ -3,12 +3,14 @@ package com.example.pastpaperportal_group1b.ui.main;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pastpaperportal_group1b.R;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,10 +19,8 @@ import java.util.List;
 public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private static final int VIEW_TYPE_LOADING = 0;
     private static final int VIEW_TYPE_NORMAL = 1;
-    public boolean isLoaderVisible = false;
-    private int i = 0;
-
-    public List<Question> mPostItems;
+    private boolean isLoaderVisible = false;
+    private List<Question> mPostItems;
 
     public PostRecyclerAdapter(List<Question> postItems) {
         this.mPostItems = postItems;
@@ -28,7 +28,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     @NonNull @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 return new ViewHolder(
@@ -68,7 +67,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     public void addLoading(Question question) {
         isLoaderVisible = true;
         mPostItems.add(question);
-        System.out.println("#####################"+question.getTitle());
+        //System.out.println("#####################"+question.getTitle());
         notifyItemInserted(mPostItems.size() - 1);
     }
 
@@ -100,6 +99,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         TextView textViewDate;
         @BindView(R.id.card_view)
         CardView cardView;
+        @BindView((R.id.dp1))
+        ImageView imageView;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -120,6 +121,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             textViewUsername.setText(item.getUsername());
             textViewDate.setText(item.getDate());
             textViewTitle.setTag(item.getPushId());
+            System.out.println("******************************************************"+item.getPhotoUrl());
+            Picasso.get().load(item.getPhotoUrl()).into(imageView);
         }
     }
 
