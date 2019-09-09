@@ -12,8 +12,13 @@ import android.widget.Toast;
 
 import com.example.pastpaperportal_group1b.ui.main.FirebaseDatabaseHelper;
 import com.example.pastpaperportal_group1b.ui.main.Messages;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class send_message extends AppCompatActivity {
 
@@ -24,6 +29,11 @@ public class send_message extends AppCompatActivity {
     private EditText author;
 
     private ImageButton sendbtn;
+
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = mAuth.getCurrentUser();
+
+    String username = currentUser.getDisplayName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +54,9 @@ public class send_message extends AppCompatActivity {
                 messages.setBody(Body.getText().toString());
                 messages.setSent_To(sentTo.getSelectedItem().toString());
                 messages.setUserId(userId.getText().toString());
+                messages.setAuthor(username);
+                Date date = new Date();
+                messages.setDate(new SimpleDateFormat( "dd-MM-yyyy", Locale.getDefault() ).format( date ) );
                 new FirebaseDatabaseHelper().addMessage(messages, new FirebaseDatabaseHelper.DataStatus() {
                     @Override
                     public void DataIsLoaded(List<Messages> Messages, List<String> Keys) {
