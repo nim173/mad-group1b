@@ -153,7 +153,8 @@ public class ViewQuestion extends AppCompatActivity {
                         popup.setOnMenuItemClickListener(item -> {
                             switch (item.getItemId()) {
                                 case R.id.delete:
-                                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId + "/" + holder.textViewPush.getText().toString());
+                                    //dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId + "/" + holder.textViewPush.getText().toString());
+                                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId + "/" + model.getPushId());
                                     dbRef.removeValue();
                                     mAdapter.refresh();
                                     return true;

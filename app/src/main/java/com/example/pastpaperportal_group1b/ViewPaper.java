@@ -32,7 +32,6 @@ public class ViewPaper extends AppCompatActivity {
     private DatabaseReference dbRef;
     private String pushId;
 
-
     public static final String FORUM_KEY = "PASTPAPERPORTAL.FORUM";
 
     @Override

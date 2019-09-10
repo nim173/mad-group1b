@@ -63,7 +63,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
         } );
 
         editBody.setOnFocusChangeListener( (v, hasFocus) -> {
-            TextView title = findViewById(R.id.editBody);
+            TextView title = findViewById(R.id.body);
             if (hasFocus) {
                 title.setVisibility(View.VISIBLE);
             }
