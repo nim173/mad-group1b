@@ -4,6 +4,7 @@ public class Module {
     private String pushId;
     private String name;
     private String key;
+    private String abbrev;
     private String faculty;
     private String special;
     private String year;
@@ -33,6 +34,14 @@ public class Module {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getAbbrev() {
+        return abbrev;
+    }
+
+    public void setAbbrev(String abbrev) {
+        this.abbrev = abbrev;
     }
 
     public String getFaculty() {
