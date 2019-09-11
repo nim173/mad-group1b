@@ -5,7 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -22,6 +27,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,11 +38,27 @@ public class SearchCommon extends AppCompatActivity {
     private ImageView mSearchBtn;
     private DatabaseReference mUserDatabase;
     public static final String MOD_ID = "moduleId";
+    public static final String SEARCH = "search";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_common);
+
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.example.pastpaperportal_group1b",
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+
+        } catch (NoSuchAlgorithmException e) {
+
+        }
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference("Module");
 
@@ -46,7 +69,7 @@ public class SearchCommon extends AppCompatActivity {
 //        mResultList.setHasFixedSize(true);
 //        mResultList.setLayoutManager(new LinearLayoutManager(this));
 
-        Map<String,String> myMap = new HashMap<String,String>();
+        Map<String,String> myMap = new HashMap<>();
         final ArrayAdapter<String> modules = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
         mUserDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -96,71 +119,11 @@ public class SearchCommon extends AppCompatActivity {
                 String searchText = mSearchField.getText().toString();
                 Context  context = view.getContext();
                 Intent intent = new Intent(context, SearchResult.class);
+                intent.putExtra(SEARCH, searchText);
                 context.startActivity(intent);
-
-                //firebaseUserSearch(searchText);
-
             }
         });
     }
-
-   /*private void firebaseUserSearch(String searchText) {
-
-        Toast.makeText(SearchCommon.this, "Started Search", Toast.LENGTH_LONG).show();
-
-        Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
-
-        FirebaseRecyclerAdapter<Users, UsersViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Users, UsersViewHolder>(
-
-                Users.class,
-                R.layout.list_layout,
-                UsersViewHolder.class,
-                firebaseSearchQuery
-
-        ) {
-            @Override
-            protected void populateViewHolder(UsersViewHolder viewHolder, Users model, int position) {
-
-
-                viewHolder.setDetails(getApplicationContext(), model.getName(), model.getStatus(), model.getImage());
-
-            }
-        };
-
-        mResultList.setAdapter(firebaseRecyclerAdapter);
-
-    }
-
-
-    // View Holder Class
-
-    public static class UsersViewHolder extends RecyclerView.ViewHolder {
-
-        View mView;
-
-        public UsersViewHolder(View itemView) {
-            super(itemView);
-
-            mView = itemView;
-
-        }
-
-        public void setDetails(Context ctx, String userName, String userStatus, String userImage){
-
-            TextView user_name = (TextView) mView.findViewById(R.id.name_text);
-            TextView user_status = (TextView) mView.findViewById(R.id.status_text);
-            ImageView user_image = (ImageView) mView.findViewById(R.id.profile_image);
-
-
-            user_name.setText(userName);
-            user_status.setText(userStatus);
-
-            Glide.with(ctx).load(userImage).into(user_image);
-
-
-        }
-
-    }*/
 
     public void onClick(View view){
         Intent intent = new Intent(this, PapersAfterSearch.class);

@@ -144,7 +144,6 @@ public class ViewQuestion extends AppCompatActivity {
                                                 @NonNull Replies model) {
                     holder.setItem(model);
                     holder.textViewBody.setOnClickListener(view -> {
-
                         //creating a popup menu
                         PopupMenu popup = new PopupMenu(ViewQuestion.this, holder.textViewBody, Gravity.END);
                         //inflating menu from xml resource
