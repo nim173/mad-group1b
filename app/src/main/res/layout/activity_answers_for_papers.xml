@@ -4,89 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PapersAfterSearch">
-
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="241dp"
-        android:layout_height="29dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="77dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="Past paper portal"
-        android:textAllCaps="true"
-        android:textColor="#227075"
-        android:textCursorDrawable="@color/colorPrimaryDark"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.051" />
-
+    tools:context=".ViewPaper">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout1"
-        android:layout_width="396dp"
-        android:layout_height="76dp"
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="44dp"
-        tools:layout_editor_absoluteX="2dp"
-        tools:layout_editor_absoluteY="185dp">
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/moduleId"
-            android:layout_width="230sp"
+            android:layout_width="230dp"
             android:layout_height="41dp"
-            android:layout_alignStart="@+id/constraintLayout1"
-            android:layout_alignTop="@+id/constraintLayout1"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="12dp"
             android:gravity="center"
+            android:text="Answers"
             android:textSize="26dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.21"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.272" />
+            app:layout_constraintHorizontal_bias="0.206"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/AddAnswer"
-            android:layout_width="66dp"
-            android:layout_height="45dp"
+            android:layout_width="65dp"
+            android:layout_height="39dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:gravity="center|center_horizontal"
-            android:onClick="addPaper"
+            android:layout_marginBottom="12dp"
+            android:gravity="right"
             android:text="Add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.676"
-            app:layout_constraintStart_toEndOf="@+id/moduleId"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintHorizontal_bias="0.64"
+            app:layout_constraintStart_toEndOf="@+id/moduleId" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="329dp"
+        android:layout_below="@+id/constraintLayout"
         android:layout_alignParentStart="false"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="123dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -96,24 +60,24 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
             tools:context=".MainActivity">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/yearCard"
-                android:layout_width="366dp"
-                android:layout_height="290dp"
+                android:id="@+id/ansCard"
+                android:layout_width="397dp"
+                android:layout_height="365dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="48dp"
+                android:layout_marginEnd="8dp"
                 android:scrollbars="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.666"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                tools:listitem="@layout/yearitem">
+                tools:listitem="@layout/answeritem">
 
                 <!--  <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/AnsCard"
@@ -136,5 +100,4 @@
             </androidx.recyclerview.widget.RecyclerView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
 </RelativeLayout>

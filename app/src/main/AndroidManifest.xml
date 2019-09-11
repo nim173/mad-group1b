@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pastpaperportal_group1b">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -13,6 +13,7 @@
         android:roundIcon="@drawable/ic_mind_map"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AnswersForPapers"></activity>
         <activity android:name=".SearchResult"></activity>
         <activity android:name=".view_all_messages" />
 
@@ -44,9 +45,8 @@
         <activity android:name=".ViewPaper" />
         <activity android:name=".PapersAfterSearch" />
         <activity android:name=".FirebaseUIActivity" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppTheme.Launcher">
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.Launcher" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />

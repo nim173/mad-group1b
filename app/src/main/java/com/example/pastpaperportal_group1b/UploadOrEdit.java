@@ -12,8 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.pastpaperportal_group1b.ui.main.PaperUpload;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
@@ -26,14 +28,14 @@ import com.google.firebase.storage.UploadTask;
 public class UploadOrEdit extends AppCompatActivity{
 
     public static final String ID = "pushId";
-    public static final String ID2 = "pushId";
+    private static final Object MOD_ID = "moduleId";
 
     private EditText faculty;
-    private EditText Specialization;
+   /* private EditText Specialization;*/
     private EditText PaperId;
-    private EditText academicYear;
-    private EditText semester;
-    private EditText module;
+    private Spinner academicYear;
+    private Spinner semester;
+    private EditText moduleId;
     private EditText note;
     private Button uploadButton;
     private EditText pdfName;
@@ -49,18 +51,15 @@ public class UploadOrEdit extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_or_edit);
         PaperId = (EditText) findViewById(R.id.PaperId);
-        academicYear = (EditText) findViewById(R.id.academ);
-        semester = (EditText) findViewById(R.id.sem);
-        module = (EditText) findViewById(R.id.mod);
+        moduleId = (EditText) findViewById(R.id.mod);
         note = (EditText) findViewById(R.id.note);
-        faculty = (EditText) findViewById(R.id.facUp);
-        Specialization = (EditText) findViewById(R.id.specialUp);
         paperUpload = new PaperUpload();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         uploadButton = (Button) findViewById(R.id.selectFile);
 /*        show = (TextView) findViewById(R.id.show);*/
         pdfName = (EditText) findViewById(R.id.pdfName);
+
 
 
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -95,7 +94,6 @@ public class UploadOrEdit extends AppCompatActivity{
         }
     }
 
-//this has a problem arghhhhhhhhhhhhhhhhhhhh
     private void uploadFile(Uri data) {
         System.out.println("__________________________________________________ENTERED5");
          final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -128,36 +126,35 @@ public class UploadOrEdit extends AppCompatActivity{
     }
 
     public void upload(View view) {
-        dbRef = FirebaseDatabase.getInstance().getReference("UploadPaper/PastPaper");
-
-        if(TextUtils.isEmpty(faculty.getText().toString()))
-            Toast.makeText(getApplicationContext(), "Enter faculty", Toast.LENGTH_SHORT).show();
-        else if (TextUtils.isEmpty(module.getText().toString()))
-            Toast.makeText(getApplicationContext(), "enter related module", Toast.LENGTH_SHORT).show();
-        else if (TextUtils.isEmpty(Specialization.getText().toString()))
-            Toast.makeText(getApplicationContext(), "enter related specialization", Toast.LENGTH_SHORT).show();
-        else if (TextUtils.isEmpty(academicYear.getText().toString()))
-            Toast.makeText(getApplicationContext(), "enter related academic year", Toast.LENGTH_SHORT).show();
-        else if (TextUtils.isEmpty(semester.getText().toString()))
-            Toast.makeText(getApplicationContext(), "enter related semester", Toast.LENGTH_SHORT).show();
-        else if (TextUtils.isEmpty(note.getText().toString()))
+/*        dbRef = FirebaseDatabase.getInstance().getReference("Module/Years");*/
+        dbRef = FirebaseDatabase.getInstance().getReference("Module/" + moduleId.getText().toString().trim() + "/" +
+                academicYear.getSelectedItem().toString().trim() + PaperId.getText().toString().trim()).child("url");
+        /* if (TextUtils.isEmpty(moduleId.getText().toString()))
+            Toast.makeText(getApplicationContext(), "Module", Toast.LENGTH_SHORT).show();*/
+         if (TextUtils.isEmpty(note.getText().toString()))
             Toast.makeText(getApplicationContext(), "enter any note", Toast.LENGTH_SHORT).show();
         else if (TextUtils.isEmpty(PaperId.getText().toString()))
             Toast.makeText(getApplicationContext(), "enter a name to show others", Toast.LENGTH_SHORT).show();
         else {
-            paperUpload.setFaculty(faculty.getText().toString().trim());
-            paperUpload.setSpecialization(Specialization.getText().toString().trim());
-            paperUpload.setAcademicYear(academicYear.getText().toString().trim());
             paperUpload.setNote(note.getText().toString().trim());
-            paperUpload.setSemester(semester.getText().toString().trim());
-            paperUpload.setModule(module.getText().toString().trim());
+            /*paperUpload.setModuleId(moduleId.getText().toString().trim());*/
             paperUpload.setPaperId(PaperId.getText().toString().trim());
+             dbRef.setValue(paperUpload.getPdfName());
 
             DatabaseReference next = dbRef.push();
             String pushId = next.getKey();
             next.setValue(paperUpload);
 
-            Intent newPaper = new Intent(this, AfterUpload.class);
+                            //here module is a push id(as module names can be the same for different stuff,
+                            // this module id or whatever will be taken as an intent
+                            //after search
+                            //  year is 2018,2019, etc
+                            // year 1,2 will be added by mr when adding modules
+                            // you need to either check if paper id/name (ex: june) isnt duplicated , because it will overwrite when adding a new one
+                            // or set a push id, so that papers can have the same name,  but you will have to keep using the push id to reference that paper
+                            // which will be a pain in the ass
+
+            Intent newPaper = new Intent(this, ViewPaper.class);
             newPaper.putExtra(ID, pushId);
             System.out.println("**************************" +pushId);
             startActivity(newPaper);
