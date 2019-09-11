@@ -3,6 +3,8 @@ package com.example.pastpaperportal_group1b;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -35,8 +37,6 @@ import java.util.Map;
 public class SearchCommon extends AppCompatActivity {
 
     private EditText mSearchField;
-    private ImageView mSearchBtn;
-    private DatabaseReference mUserDatabase;
     public static final String MOD_ID = "moduleId";
     public static final String SEARCH = "search";
 
@@ -45,29 +45,9 @@ public class SearchCommon extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_common);
 
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.example.pastpaperportal_group1b",
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
-        }
-
-        mUserDatabase = FirebaseDatabase.getInstance().getReference("Module");
-
+        DatabaseReference mUserDatabase = FirebaseDatabase.getInstance().getReference("Module");
         mSearchField = (EditText) findViewById(R.id.search_field);
-        mSearchBtn = (ImageView) findViewById(R.id.searchBtn);
-
-//        mResultList = (RecyclerView) findViewById(R.id.result_list);
-//        mResultList.setHasFixedSize(true);
-//        mResultList.setLayoutManager(new LinearLayoutManager(this));
+        ImageView mSearchBtn = (ImageView) findViewById(R.id.searchBtn);
 
         Map<String,String> myMap = new HashMap<>();
         final ArrayAdapter<String> modules = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
@@ -81,7 +61,7 @@ public class SearchCommon extends AppCompatActivity {
                     myMap.put(snapshot.getKey(), add);
                 }
 
-                AutoCompleteTextView ACTV= (AutoCompleteTextView)findViewById(R.id.search_field);
+                AutoCompleteTextView ACTV= findViewById(R.id.search_field);
                 ACTV.setAdapter(modules);
 
                 ACTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -101,17 +81,14 @@ public class SearchCommon extends AppCompatActivity {
                         if(moduleId == null){
                             Toast.makeText(SearchCommon.this, "Module not found", Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 });
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
-
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -120,19 +97,22 @@ public class SearchCommon extends AppCompatActivity {
                 Context  context = view.getContext();
                 Intent intent = new Intent(context, SearchResult.class);
                 intent.putExtra(SEARCH, searchText);
-                context.startActivity(intent);
+                context.startActivity(intent, ActivityOptions
+                        .makeSceneTransitionAnimation((Activity) context).toBundle());
             }
         });
     }
 
     public void onClick(View view){
         Intent intent = new Intent(this, PapersAfterSearch.class);
-        startActivity(intent);
+        startActivity(intent, ActivityOptions
+                .makeSceneTransitionAnimation(this).toBundle());
     }
 
     public void toModule(String moduleId){
         Intent intent = new Intent(this, PapersAfterSearch.class);
         intent.putExtra(MOD_ID, moduleId);
-        startActivity(intent);
+        startActivity(intent, ActivityOptions
+                .makeSceneTransitionAnimation(this).toBundle());
     }
 }

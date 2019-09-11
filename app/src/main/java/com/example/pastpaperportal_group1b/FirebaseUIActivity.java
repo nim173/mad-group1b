@@ -1,5 +1,6 @@
 package com.example.pastpaperportal_group1b;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Arrays;
 import java.util.List;
 
-public class FirebaseUIActivity extends AppCompatActivity {
+public class FirebaseUIActivity extends Activity {
 
     private static final int RC_SIGN_IN = 123;
 

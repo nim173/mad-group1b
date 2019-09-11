@@ -2,6 +2,7 @@ package com.example.pastpaperportal_group1b;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -117,7 +118,8 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                     Intent newQuestion = new Intent(this, ViewQuestion.class );
                     newQuestion.putExtra( ID, push );
                     newQuestion.putExtra( USER, uid );
-                    startActivity( newQuestion );
+                    startActivity( newQuestion , ActivityOptions
+                            .makeSceneTransitionAnimation(this).toBundle());
                 }
             }
         }

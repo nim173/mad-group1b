@@ -3,6 +3,7 @@ package com.example.pastpaperportal_group1b;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -143,7 +144,8 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         String heading = header.getText().toString();
         intentQuestion.putExtra(HEADER_KEY, heading);
         intentQuestion.putExtra( EDIT, "false");
-        startActivity(intentQuestion);
+        startActivity(intentQuestion, ActivityOptions
+                .makeSceneTransitionAnimation(this).toBundle());
     }
 
     public void viewQuestion(View view){

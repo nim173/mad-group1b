@@ -70,7 +70,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/search_field"
         app:layout_constraintTop_toTopOf="@+id/search_field"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:elevation="5dp" />
 
     <Button
         android:id="@+id/button14"
@@ -82,7 +83,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView29" />
+        app:layout_constraintTop_toBottomOf="@+id/textView29"
+        android:elevation="5dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="395dp"
