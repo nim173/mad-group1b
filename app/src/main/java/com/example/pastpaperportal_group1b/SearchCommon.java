@@ -3,6 +3,7 @@ package com.example.pastpaperportal_group1b;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
@@ -92,6 +94,9 @@ public class SearchCommon extends AppCompatActivity {
             public void onClick(View view) {
 
                 String searchText = mSearchField.getText().toString();
+                Context  context = view.getContext();
+                Intent intent = new Intent(context, SearchResult.class);
+                context.startActivity(intent);
 
                 //firebaseUserSearch(searchText);
 
@@ -99,7 +104,7 @@ public class SearchCommon extends AppCompatActivity {
         });
     }
 
-   /* private void firebaseUserSearch(String searchText) {
+   /*private void firebaseUserSearch(String searchText) {
 
         Toast.makeText(SearchCommon.this, "Started Search", Toast.LENGTH_LONG).show();
 
