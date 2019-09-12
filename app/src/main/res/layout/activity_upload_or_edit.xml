@@ -48,8 +48,8 @@
 
     <Button
         android:id="@+id/uploadEdit"
-        android:layout_width="127dp"
-        android:layout_height="47dp"
+        android:layout_width="148dp"
+        android:layout_height="51dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="28dp"
         android:background="@color/colorAccent"
@@ -57,8 +57,10 @@
         android:text="@string/UploadOREdit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pdfName" />
+        app:layout_constraintTop_toBottomOf="@+id/pdfName"
+        app:layout_constraintVertical_bias="0.835" />
 
     <EditText
         android:id="@+id/mod"
@@ -73,34 +75,45 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.536"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.454" />
+        app:layout_constraintVertical_bias="0.423" />
 
     <Button
         android:id="@+id/selectFile"
         android:layout_width="128dp"
         android:layout_height="41dp"
-        android:layout_marginEnd="84dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="144dp"
+        android:layout_marginBottom="4dp"
+        android:onClick="upload"
         android:text="@string/SelectDoc"
         app:layout_constraintBottom_toTopOf="@+id/uploadEdit"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pdfName"
+        app:layout_constraintVertical_bias="0.687" />
 
     <EditText
         android:id="@+id/pdfName"
-        android:layout_width="48dp"
-        android:layout_height="51dp"
+        android:layout_width="188dp"
+        android:layout_height="50dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="136dp"
+        android:layout_marginBottom="108dp"
         android:ems="10"
+        android:hint="Add a note here "
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/selectFile"
-        app:layout_constraintHorizontal_bias="0.565"
-        app:layout_constraintStart_toStartOf="@+id/guideline5" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.452"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="@+id/guideline4"
+        app:layout_constraintVertical_bias="0.865" />
 
     <EditText
         android:id="@+id/PaperId"
@@ -109,7 +122,9 @@
         android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/mod"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toBottomOf="@+id/paperId" />
 
@@ -135,18 +150,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/PaperId"
-        app:layout_constraintVertical_bias="0.711" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_width="72dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="8dp"
         android:text="Year"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mod" />
+        app:layout_constraintTop_toBottomOf="@+id/mod"
+        app:layout_constraintVertical_bias="0.026" />
 
     <Spinner
         android:id="@+id/spinner"
@@ -156,15 +174,14 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="84dp"
+        android:entries="@array/year"
+        android:prompt="@string/year_prompt"
         app:layout_constraintBottom_toTopOf="@+id/selectFile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18"
-        app:layout_constraintVertical_bias="1.0"
-        android:entries="@array/year"
-        android:prompt="@string/year_prompt"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/mod"
+        app:layout_constraintVertical_bias="1.0" />
 
     <!-- <Button
          android:id="@+id/pdfUpload"

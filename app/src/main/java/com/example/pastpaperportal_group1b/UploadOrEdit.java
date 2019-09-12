@@ -166,9 +166,9 @@ public class UploadOrEdit extends AppCompatActivity{
                             // or set a push id, so that papers can have the same name,  but you will have to keep using the push id to reference that paper
                             // which will be a pain in the ass
 
-            Intent newPaper = new Intent(this, ViewPaper.class);
+            Intent newPaper = new Intent(this, PapersAfterSearch.class);
             newPaper.putExtra(ID, pushId);
-            System.out.println("**************************" +pushId);
+            System.out.println("************************" +pushId);
             startActivity(newPaper);
         }
     }

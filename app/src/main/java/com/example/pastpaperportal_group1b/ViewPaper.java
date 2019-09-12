@@ -1,13 +1,14 @@
 package com.example.pastpaperportal_group1b;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.pastpaperportal_group1b.ui.main.PaperUpload;
 import com.example.pastpaperportal_group1b.ui.main.PastPaperRV;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
@@ -26,12 +26,6 @@ import com.shreyaspatil.firebase.recyclerpagination.DatabasePagingOptions;
 import com.shreyaspatil.firebase.recyclerpagination.FirebaseRecyclerPagingAdapter;
 import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
 
-
-/*
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-*/
-
 public class ViewPaper extends AppCompatActivity {
 
 
@@ -39,6 +33,8 @@ public class ViewPaper extends AppCompatActivity {
     private DatabaseReference dbRef;
     private String pushId;
     private RecyclerView mRecyclerView;
+    private String name;
+    public static final String VIEW_NAME = "answer";
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -56,6 +52,9 @@ public class ViewPaper extends AppCompatActivity {
         pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
         Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
 
+        TextView name = findViewById(R.id.PaperId);
+ /*       name.setText(Paperi);*/
+
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
         //Initialize RecyclerView
@@ -66,35 +65,12 @@ public class ViewPaper extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mManager);
 
         //Initialize Database
-        dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + "/Years" + '/' + year);
+        dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + "/Years" + '/' + year + '/');
 
         /*System.out.println("$$$$$$$$$$$$$$$$$$$$" + UploadOrEdit.ID);
         System.out.println("000000000000000000000000000000000" + pushId);
         System.out.println( pushId = intent.getStringExtra(UploadOrEdit.ID));*/
-        System.out.println(dbRef);
-
-        /*dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChildren()) {
-
-                    TextView PaperId = findViewById(R.id.PaperId);
-
-                    if (dataSnapshot.child("PaperId").getValue() != null) {
-                        PaperId.setText(Objects.requireNonNull(dataSnapshot.child("PaperId").getValue()).toString());
-                    } else {
-                        Toast.makeText(ViewPaper.this, "heeeeeeeeeeey", Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-
-            }
-        });*/
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^"+dbRef);
 
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
@@ -193,6 +169,7 @@ public class ViewPaper extends AppCompatActivity {
 
     public void showAnswers(View view){
         Intent intent = new Intent(this, AnswersForPapers.class);
+        intent.putExtra(VIEW_NAME,name );
         startActivity(intent);
     }
 
@@ -202,5 +179,19 @@ public class ViewPaper extends AppCompatActivity {
         String heading = moduleId.getText().toString();
         intentForum.putExtra(FORUM_KEY, heading);
         startActivity(intentForum);
+    }
+
+    //IMPLEMENT LISTENER for download to work
+
+    public long downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
+        DownloadManager downloadmanager = (DownloadManager) context.
+                getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
+
+        return downloadmanager.enqueue(request);
     }
 }

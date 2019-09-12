@@ -38,7 +38,6 @@
         <activity android:name=".Profile" />
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
-        <activity android:name=".UploadOrEditPaperPage" />
         <activity android:name=".AddQuestionOrAnswer" />
         <activity android:name=".Forum" />
         <activity android:name=".AfterUpload" />

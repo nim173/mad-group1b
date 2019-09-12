@@ -21,7 +21,8 @@ public class YearRv extends RecyclerView.ViewHolder {
         viewButton = itemView.findViewById(R.id.viewButton);
     }
 
-        public void setValue (YearModel module){
+        public void setValue (YearModel module)
+        {
         year.setText(module.getName());
     }
 }

@@ -85,6 +85,7 @@ public class PapersAfterSearch extends AppCompatActivity {
                                             @NonNull YearModel  model) {
                 holder.year.setText(getRef(position).getKey());
                 System.out.println("########################"+model.getUrl());
+             /*   holder.setValue(model);*/
 
                 //listener
                 holder.viewButton.setOnClickListener(new View.OnClickListener() {

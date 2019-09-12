@@ -11,7 +11,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.pastpaperportal_group1b.ui.main.AnswerModel;
+import com.example.pastpaperportal_group1b.ui.main.AnswerRV;
 import com.example.pastpaperportal_group1b.ui.main.PaperUpload;
 import com.example.pastpaperportal_group1b.ui.main.PastPaperRV;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +28,7 @@ public class AnswersForPapers extends AppCompatActivity {
     private DatabaseReference dbRef;
     private String pushId;
     private RecyclerView mRecyclerView;
-    FirebaseRecyclerPagingAdapter<PaperUpload, PastPaperRV> mAdapter;
+    FirebaseRecyclerPagingAdapter<AnswerModel, AnswerRV> mAdapter;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     @Override
@@ -38,8 +41,7 @@ public class AnswersForPapers extends AppCompatActivity {
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
         //Initialize RecyclerView
-        mRecyclerView = findViewById(R.id.ansCard);
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView = findViewById(R.id.ansCard);        mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager mManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mManager);
@@ -47,15 +49,20 @@ public class AnswersForPapers extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        pushId = intent.getStringExtra(UploadOrEdit.ID);
-
+/*        pushId = intent.getStringExtra(UploadOrEdit.ID);*/
+        String year = intent.getStringExtra(PapersAfterSearch.VIEW_PAPER);
+        pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
+        Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
+        String paperName = intent.getStringExtra(ViewPaper.VIEW_NAME);
 
         //Initialize Database
-        dbRef = FirebaseDatabase.getInstance().getReference("UploadPaper/PastPaper");
-
+        dbRef = FirebaseDatabase.getInstance().getReference("Module/" + pushId + '/' + "Years" + "/" + year +  "/" + paperName );
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&" + PapersAfterSearch.PAPER_ID);
         System.out.println("$$$$$$$$$$$$$$$$$$$$" + UploadOrEdit.ID);
         System.out.println("000000000000000000000000000000000" + pushId);
         System.out.println( pushId = intent.getStringExtra(UploadOrEdit.ID));
+        System.out.println(dbRef + " @@@@@@@@@@@@@@@@@@@@@@@@@@");
+
 
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
@@ -63,24 +70,23 @@ public class AnswersForPapers extends AppCompatActivity {
                 .setPageSize(10)
                 .build();
 
-        DatabasePagingOptions<PaperUpload> options = new DatabasePagingOptions.Builder<PaperUpload>()
+        DatabasePagingOptions<AnswerModel> options = new DatabasePagingOptions.Builder<AnswerModel>()
                 .setLifecycleOwner(this)
-                .setQuery(dbRef, config, PaperUpload.class)
+                .setQuery(dbRef, config, AnswerModel.class)
                 .build();
 
-        mAdapter = new FirebaseRecyclerPagingAdapter<PaperUpload, PastPaperRV>(options) {
+        mAdapter = new FirebaseRecyclerPagingAdapter<AnswerModel, AnswerRV>(options) {
             @NonNull
             @Override
-            public PastPaperRV onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                return new PastPaperRV(LayoutInflater.from(parent.getContext()).inflate(R.layout.paperitem, parent, false));
+            public AnswerRV onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return new AnswerRV(LayoutInflater.from(parent.getContext()).inflate(R.layout.answeritem, parent, false));
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull PastPaperRV holder,
+            protected void onBindViewHolder(@NonNull AnswerRV holder,
                                             int position,
-                                            @NonNull PaperUpload model) {
-
-                holder.setParameters(model);
+                                            @NonNull AnswerModel model) {
+                    holder.answerName.setText(getRef(position).getKey());
             }
 
             @Override
