@@ -32,6 +32,7 @@ public class PapersAfterSearch extends AppCompatActivity {
     public static final String PAPER_ID = "paper_id";
     private DatabaseReference dbRef;
     private RecyclerView mRecyclerView;
+    private String pushId;
     FirebaseRecyclerPagingAdapter<YearModel, YearRv> mAdapter;
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -50,7 +51,7 @@ public class PapersAfterSearch extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String pushId = intent.getStringExtra(SearchCommon.MOD_ID);
+        pushId = intent.getStringExtra(SearchCommon.MOD_ID);
 
         TextView moduleId = findViewById(R.id.moduleId);
         moduleId.setText(pushId);
@@ -92,6 +93,7 @@ public class PapersAfterSearch extends AppCompatActivity {
                         Context context = view.getContext();
                         Intent intent = new Intent(context, ViewPaper.class);
                         intent.putExtra(VIEW_PAPER, getRef(position).getKey());
+                        System.out.println("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"+pushId);
                         intent.putExtra(PAPER_ID, pushId);
                         context.startActivity(intent);
                     }
@@ -151,6 +153,7 @@ public class PapersAfterSearch extends AppCompatActivity {
 
     public void addPaper(View view) {
         Intent intent = new Intent(this, UploadOrEdit.class);
+        intent.putExtra(PAPER_ID, pushId);
         startActivity(intent);
     }
 

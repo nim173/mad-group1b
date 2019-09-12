@@ -51,9 +51,10 @@ public class UploadOrEdit extends AppCompatActivity{
         setContentView(R.layout.activity_upload_or_edit);
         PaperId = (EditText) findViewById(R.id.PaperId);
         moduleId = (EditText) findViewById(R.id.mod);
-        /*note = (EditText) findViewById(R.id.note);*/
+        note = (EditText) findViewById(R.id.pdfName);
         paperUpload = new PaperUpload();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        academicYear = findViewById(R.id.spinner);
 
         uploadButton = (Button) findViewById(R.id.selectFile);
 /*        show = (TextView) findViewById(R.id.show);*/
@@ -62,7 +63,7 @@ public class UploadOrEdit extends AppCompatActivity{
 
         Intent intent = getIntent();
         pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
-
+        System.out.println("nimmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm"+pushId);
 
         storageRef = FirebaseStorage.getInstance().getReference();
         dbRef = FirebaseDatabase.getInstance().getReference("UploadPaper/");
@@ -137,7 +138,7 @@ public class UploadOrEdit extends AppCompatActivity{
         System.out.println("666666666666666666666666666666666666666666" + pushId);
 
         dbRef = FirebaseDatabase.getInstance().getReference("Module/" +  pushId + "/" +
-                academicYear.getSelectedItem().toString().trim() + PaperId.getText().toString().trim()).child("url");
+                academicYear.getSelectedItem().toString().trim() + "/" + PaperId.getText().toString().trim()).child("url");
 
         System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkk    "+ dbRef);
 

@@ -46,8 +46,8 @@ public class SearchCommon extends AppCompatActivity {
         setContentView(R.layout.activity_search_common);
 
         DatabaseReference mUserDatabase = FirebaseDatabase.getInstance().getReference("Module");
-        mSearchField = (EditText) findViewById(R.id.search_field);
-        ImageView mSearchBtn = (ImageView) findViewById(R.id.searchBtn);
+        mSearchField = findViewById(R.id.search_field);
+        ImageView mSearchBtn = findViewById(R.id.searchBtn);
 
         Map<String,String> myMap = new HashMap<>();
         final ArrayAdapter<String> modules = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
@@ -89,17 +89,13 @@ public class SearchCommon extends AppCompatActivity {
 
             }
         });
-        mSearchBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String searchText = mSearchField.getText().toString();
-                Context  context = view.getContext();
-                Intent intent = new Intent(context, SearchResult.class);
-                intent.putExtra(SEARCH, searchText);
-                context.startActivity(intent, ActivityOptions
-                        .makeSceneTransitionAnimation((Activity) context).toBundle());
-            }
+        mSearchBtn.setOnClickListener(view -> {
+            String searchText = mSearchField.getText().toString();
+            Context  context = view.getContext();
+            Intent intent = new Intent(context, SearchResult.class);
+            intent.putExtra(SEARCH, searchText);
+            context.startActivity(intent, ActivityOptions
+                    .makeSceneTransitionAnimation((Activity) context).toBundle());
         });
     }
 

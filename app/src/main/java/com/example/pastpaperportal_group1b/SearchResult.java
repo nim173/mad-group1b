@@ -33,12 +33,14 @@ public class SearchResult extends AppCompatActivity {
 
     private DatabaseReference dbRef;
     private RecyclerView mResultList;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
+        textView = findViewById(R.id.textView20);
         dbRef = FirebaseDatabase.getInstance().getReference("Module");
         mResultList = findViewById(R.id.result_list);
         mResultList.setHasFixedSize(true);
@@ -46,26 +48,25 @@ public class SearchResult extends AppCompatActivity {
 
         Intent intent = getIntent();
         String searchText = intent.getStringExtra(SearchCommon.SEARCH);
-        Toast.makeText(this, searchText, Toast.LENGTH_SHORT).show();
         firebaseUserSearch(searchText);
     }
 
     private void firebaseUserSearch(String searchText) {
-
-        Toast.makeText(SearchResult.this, "Started Search", Toast.LENGTH_LONG).show();
-
+        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx " );
         Query searchQuery = dbRef.orderByChild("name");
                 //.startAt(searchText).endAt(searchText + "\uf8ff");
-        //System.out.println(searchQuery);
 
-        SnapshotParser<Module> snapshotParser = new SnapshotParser<Module>() {
-
-            @Override
-            public Module parseSnapshot(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue(Module.class).getName().toLowerCase().matches(".*" + searchText.toLowerCase() + ".*"))
-                    return snapshot.getValue(Module.class);
-                else return new Module();
+        SnapshotParser<Module> snapshotParser = snapshot -> {
+            System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb " + "".equals(searchText));
+            if (snapshot.getValue(Module.class).getName().toLowerCase().matches(".*" + searchText.toLowerCase() + ".*")) {
+                textView.setVisibility(View.GONE);
+                return snapshot.getValue(Module.class);
+            } else if("".equals(searchText)) {
+                textView.setVisibility(View.GONE);
+                return snapshot.getValue(Module.class);
             }
+            else
+                return new Module();
         };
 
         FirebaseRecyclerOptions<Module> options =
@@ -79,13 +80,11 @@ public class SearchResult extends AppCompatActivity {
             @NonNull
             @Override
             public ModuleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                System.out.println("created view");
                 return new ModuleViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_layout, parent, false));
             }
 
             @Override
             protected void onBindViewHolder(@NonNull ModuleViewHolder moduleViewHolder, int i, @NonNull Module module) {
-                System.out.println("binded view");
                 if (module.getName() != null && module.getKey() != null) {      // add validation for module key and name to not be null
                     moduleViewHolder.setDetails(module.getName());
                     moduleViewHolder.mView.findViewById(R.id.relative).setOnClickListener(new View.OnClickListener() {
@@ -103,11 +102,8 @@ public class SearchResult extends AppCompatActivity {
                     moduleViewHolder.mView.setVisibility(View.GONE);
             }
         };
-        System.out.println("end");
         mResultList.setAdapter(firebaseRecyclerAdapter);
-
     }
-
 
     // View Holder Class
 
