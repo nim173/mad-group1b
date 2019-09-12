@@ -30,8 +30,6 @@ public class UploadOrEdit extends AppCompatActivity{
     public static final String ID = "pushId";
     private static final Object MOD_ID = "moduleId";
 
-    private EditText faculty;
-   /* private EditText Specialization;*/
     private EditText PaperId;
     private Spinner academicYear;
     private Spinner semester;
@@ -41,7 +39,8 @@ public class UploadOrEdit extends AppCompatActivity{
     private EditText pdfName;
     private ProgressBar progressBar;
 
-    DatabaseReference dbRef; //store uploaded files
+   private String pushId;
+            DatabaseReference dbRef; //store uploaded files
     StorageReference storageRef; //used for uploading files
     private PaperUpload paperUpload;
 
@@ -52,7 +51,7 @@ public class UploadOrEdit extends AppCompatActivity{
         setContentView(R.layout.activity_upload_or_edit);
         PaperId = (EditText) findViewById(R.id.PaperId);
         moduleId = (EditText) findViewById(R.id.mod);
-        note = (EditText) findViewById(R.id.note);
+        /*note = (EditText) findViewById(R.id.note);*/
         paperUpload = new PaperUpload();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
@@ -60,6 +59,9 @@ public class UploadOrEdit extends AppCompatActivity{
 /*        show = (TextView) findViewById(R.id.show);*/
         pdfName = (EditText) findViewById(R.id.pdfName);
 
+
+        Intent intent = getIntent();
+        pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
 
 
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -71,6 +73,9 @@ public class UploadOrEdit extends AppCompatActivity{
                 System.out.println("______________________________________________________ENTERED1");
 
                 selectFile();
+
+
+
             }
         });
     }
@@ -97,7 +102,7 @@ public class UploadOrEdit extends AppCompatActivity{
     private void uploadFile(Uri data) {
         System.out.println("__________________________________________________ENTERED5");
          final ProgressDialog progressDialog = new ProgressDialog(this);
-         progressDialog.setTitle("Loading...");
+         progressDialog.setTitle("Uploading...");
          progressDialog.show();
 
         StorageReference reference = storageRef.child("UploadPaper/PastPaper/PDF" + System.currentTimeMillis() + ".pdf");
@@ -126,23 +131,29 @@ public class UploadOrEdit extends AppCompatActivity{
     }
 
     public void upload(View view) {
-/*        dbRef = FirebaseDatabase.getInstance().getReference("Module/Years");*/
-        dbRef = FirebaseDatabase.getInstance().getReference("Module/" + moduleId.getText().toString().trim() + "/" +
+
+
+
+        System.out.println("666666666666666666666666666666666666666666" + pushId);
+
+        dbRef = FirebaseDatabase.getInstance().getReference("Module/" +  pushId + "/" +
                 academicYear.getSelectedItem().toString().trim() + PaperId.getText().toString().trim()).child("url");
-        /* if (TextUtils.isEmpty(moduleId.getText().toString()))
-            Toast.makeText(getApplicationContext(), "Module", Toast.LENGTH_SHORT).show();*/
+
+        System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkk    "+ dbRef);
+
          if (TextUtils.isEmpty(note.getText().toString()))
             Toast.makeText(getApplicationContext(), "enter any note", Toast.LENGTH_SHORT).show();
         else if (TextUtils.isEmpty(PaperId.getText().toString()))
             Toast.makeText(getApplicationContext(), "enter a name to show others", Toast.LENGTH_SHORT).show();
         else {
             paperUpload.setNote(note.getText().toString().trim());
-            /*paperUpload.setModuleId(moduleId.getText().toString().trim());*/
-            paperUpload.setPaperId(PaperId.getText().toString().trim());
+            paperUpload.setModuleId(pushId);
+             academicYear.getSelectedItem().toString().trim();
+             paperUpload.setPaperId(PaperId.getText().toString().trim());
              dbRef.setValue(paperUpload.getPdfName());
 
             DatabaseReference next = dbRef.push();
-            String pushId = next.getKey();
+            /* pushId = next.getKey();*/
             next.setValue(paperUpload);
 
                             //here module is a push id(as module names can be the same for different stuff,

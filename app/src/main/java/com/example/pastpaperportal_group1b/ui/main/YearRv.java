@@ -12,13 +12,13 @@ import com.example.pastpaperportal_group1b.R;
 public class YearRv extends RecyclerView.ViewHolder {
 
         public TextView year;
-        Button view;
+        public Button viewButton;
 
 
     public YearRv(@NonNull View itemView) {
         super(itemView);
         year = itemView.findViewById(R.id.year);
-        view = itemView.findViewById(R.id.view);
+        viewButton = itemView.findViewById(R.id.viewButton);
     }
 
         public void setValue (YearModel module){

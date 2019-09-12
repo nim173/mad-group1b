@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pastpaperportal_group1b.ui.main.PaperUpload;
 import com.example.pastpaperportal_group1b.ui.main.PastPaperRV;
@@ -50,6 +51,11 @@ public class ViewPaper extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_paper);
 
+        Intent intent = getIntent();
+        String year = intent.getStringExtra(PapersAfterSearch.VIEW_PAPER);
+        pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
+        Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
+
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
         //Initialize RecyclerView
@@ -59,18 +65,13 @@ public class ViewPaper extends AppCompatActivity {
         LinearLayoutManager mManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mManager);
 
-
-        Intent intent = getIntent();
-
-        pushId = intent.getStringExtra(UploadOrEdit.ID);
-
-
         //Initialize Database
-        dbRef = FirebaseDatabase.getInstance().getReference("UploadPaper/PastPaper");
+        dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + "/Years" + '/' + year);
 
-        System.out.println("$$$$$$$$$$$$$$$$$$$$" + UploadOrEdit.ID);
+        /*System.out.println("$$$$$$$$$$$$$$$$$$$$" + UploadOrEdit.ID);
         System.out.println("000000000000000000000000000000000" + pushId);
-        System.out.println( pushId = intent.getStringExtra(UploadOrEdit.ID));
+        System.out.println( pushId = intent.getStringExtra(UploadOrEdit.ID));*/
+        System.out.println(dbRef);
 
         /*dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

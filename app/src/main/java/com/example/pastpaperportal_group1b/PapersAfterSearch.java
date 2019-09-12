@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,6 +28,8 @@ import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
 
 public class PapersAfterSearch extends AppCompatActivity {
 
+    public static final String VIEW_PAPER = "view";
+    public static final String PAPER_ID = "paper_id";
     private DatabaseReference dbRef;
     private RecyclerView mRecyclerView;
     FirebaseRecyclerPagingAdapter<YearModel, YearRv> mAdapter;
@@ -81,6 +84,21 @@ public class PapersAfterSearch extends AppCompatActivity {
                                             @NonNull YearModel  model) {
                 holder.year.setText(getRef(position).getKey());
                 System.out.println("########################"+model.getUrl());
+
+                //listener
+                holder.viewButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Context context = view.getContext();
+                        Intent intent = new Intent(context, ViewPaper.class);
+                        intent.putExtra(VIEW_PAPER, getRef(position).getKey());
+                        intent.putExtra(PAPER_ID, pushId);
+                        context.startActivity(intent);
+                    }
+                }
+
+                );
+
             }
 
             @Override
@@ -135,12 +153,5 @@ public class PapersAfterSearch extends AppCompatActivity {
         Intent intent = new Intent(this, UploadOrEdit.class);
         startActivity(intent);
     }
-
-    public void ViewDetails(View view) {
-
-        Intent intent = new Intent(this, ViewPaper.class);
-        startActivity(intent);
-    }
-
 
 }
