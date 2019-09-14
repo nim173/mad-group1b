@@ -52,16 +52,13 @@
             android:paddingRight="@dimen/activity_horizontal_margin">
 
             <TextView
-                android:id="@+id/option_menu"
-                android:layout_width="71dp"
-                android:layout_height="39dp"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="2dp"
-                android:layout_marginLeft="2dp"
+                android:id="@+id/option_menu1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_toEndOf="@+id/subject_textView"
-                android:layout_toRightOf="@id/subject_textView"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"/>
+                android:text="&#8942;"
+                android:textAppearance="?android:textAppearanceLarge"
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/subject_textView"

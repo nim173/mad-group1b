@@ -1,3 +1,4 @@
+//noinspection GradleCompatible
 apply plugin: 'com.android.application'
 
 android {
@@ -61,6 +62,9 @@ dependencies {
     implementation 'com.firebase:firebase-client-android:2.5.2'
     implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    //shhowing all users 
+    implementation 'com.github.mohammadatif:CircularImageView:1.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

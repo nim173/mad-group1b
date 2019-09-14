@@ -35,7 +35,7 @@
         app:layout_constraintGuide_begin="715dp" />
 
     <ImageButton
-        android:id="@+id/sendbtn"
+        android:id="@+id/sendbtn1"
         android:layout_width="85dp"
         android:layout_height="79dp"
         android:layout_marginStart="16dp"
