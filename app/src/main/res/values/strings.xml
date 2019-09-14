@@ -124,4 +124,10 @@
         <item>Semester 1</item>
         <item>Semester 2</item>
     </string-array>
+    <string name="zero">0\u00A0</string>
+    <string name="search">SEARCH</string>
+    <string name="object_oriented">Object Oriented</string>
+    <string name="no_matches_found">No Matches Found</string>
+    <string name="make_sure_your_keywords_are_spelt_correctly">Make sure your keywords are spelt correctly</string>
+    <string name="close">close</string>
 </resources>

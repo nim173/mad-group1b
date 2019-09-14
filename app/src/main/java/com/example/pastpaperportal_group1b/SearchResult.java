@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.pastpaperportal_group1b.ui.main.Module;
@@ -21,12 +22,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.Locale;
+
 import static com.example.pastpaperportal_group1b.SearchCommon.MOD_ID;
 
 public class SearchResult extends AppCompatActivity {
 
-    private TextView textView;
+    private TableRow tableRow;
     private FirebaseRecyclerAdapter<Module, ModuleViewHolder> firebaseRecyclerAdapter;
+    private int itemCount = 0;
+    private TextView resultsNos;
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -34,26 +39,28 @@ public class SearchResult extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
 
-        textView = findViewById(R.id.textView20);
+        resultsNos = findViewById(R.id.textView29);
+        tableRow = findViewById(R.id.row1NoQ);
         DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Module");
         RecyclerView mResultList = findViewById(R.id.result_list);
-        mResultList.setHasFixedSize(true);
+        //mResultList.setHasFixedSize(true);
         mResultList.setLayoutManager(new LinearLayoutManager(this));
 
         Intent intent = getIntent();
         String searchText = intent.getStringExtra(SearchCommon.SEARCH);
+        TextView searchTView = findViewById(R.id.textView33);
+        searchTView.setText(searchText.trim());
 
-        System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx " );
         Query searchQuery = dbRef.orderByChild("name");
         //.startAt(searchText).endAt(searchText + "\uf8ff");
-
         SnapshotParser<Module> snapshotParser = snapshot -> {
-            if (snapshot.getValue(Module.class).getName().toLowerCase().matches(".*" + searchText.toLowerCase() + ".*")) {
-                System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb " + "".equals(searchText) + snapshot.getValue(Module.class).getName());
-                textView.setVisibility(View.GONE);
+            if (snapshot.getValue(Module.class).getName().toLowerCase().matches(".*" + searchText.trim().toLowerCase() + ".*")) {
+                tableRow.setVisibility(View.GONE);
+                itemCount++;
+                resultsNos.setText(String.format(Locale.getDefault(),"%d ", itemCount));
                 return snapshot.getValue(Module.class);
             } else if("".equals(searchText)) {
-                textView.setVisibility(View.GONE);
+                tableRow.setVisibility(View.GONE);
                 return snapshot.getValue(Module.class);
             }
             else
@@ -77,7 +84,7 @@ public class SearchResult extends AppCompatActivity {
             @Override
             protected void onBindViewHolder(@NonNull ModuleViewHolder moduleViewHolder, int i, @NonNull Module module) {
                 if (module.getName() != null && module.getKey() != null) {      // add validation for module key and name to not be null
-                    moduleViewHolder.setDetails(module.getName());
+                    moduleViewHolder.setDetails(module.getName(), module.getAbbrev(), module.getKey());
                     moduleViewHolder.mView.findViewById(R.id.relative).setOnClickListener(view -> {
                         Context context = view.getContext();
                         Intent intent = new Intent(context, PapersAfterSearch.class);
@@ -104,23 +111,14 @@ public class SearchResult extends AppCompatActivity {
             mView = itemView;
         }
 
-        void setDetails(String name){
+        void setDetails(String name, String abbrev, String key){
             TextView nameView = mView.findViewById(R.id.name_text);
-            //TextView user_status = (TextView) mView.findViewById(R.id.status_text);
-            //ImageView user_image = (ImageView) mView.findViewById(R.id.profile_image);
-
-
+            TextView abbrevKey = mView.findViewById(R.id.abbrevKey);
             nameView.setText(name);
-            //user_status.setText(userStatus);
-            // Glide.with(ctx).load(userImage).into(user_image);
+            abbrevKey.setText(String.format("%s - %s", key, abbrev));
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        firebaseRecyclerAdapter.startListening();
-    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -139,6 +137,10 @@ public class SearchResult extends AppCompatActivity {
         Intent i=new Intent(this,SearchCommon.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        finish();
+    }
+
+    public void goBack(View view) {
         finish();
     }
 }

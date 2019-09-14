@@ -15,7 +15,8 @@
             android:id="@+id/forum_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
+            android:animateLayoutChanges="true"
             android:freezesText="false"
             android:textSize="36sp"
             android:textStyle="bold"
@@ -23,18 +24,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:animateLayoutChanges="true" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TableLayout
             android:id="@+id/tableLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             app:layout_constraintBottom_toTopOf="@+id/addQuestion"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -44,7 +41,7 @@
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:id="@+id/swipeRefresh"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="450dp"
                 android:layout_marginTop="29dp"
                 android:layout_marginBottom="35dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -66,10 +63,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:text="@string/discussion_board"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -83,14 +78,11 @@
             android:id="@+id/addQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="32dp"
             android:background="@drawable/button_background"
             android:onClick="addQuestion"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:text="@string/add_question"
-            android:textColor="#424242 "
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -124,7 +116,7 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:visibility="visible"
-                    app:layout_constraintBottom_toTopOf="@+id/textView15"
+                    app:layout_constraintBottom_toTopOf="@+id/textView20"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -132,7 +124,7 @@
                     android:contentDescription="@string/pencil" />
 
                 <TextView
-                    android:id="@+id/textView15"
+                    android:id="@+id/textView20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -153,7 +145,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView20" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </TableRow>

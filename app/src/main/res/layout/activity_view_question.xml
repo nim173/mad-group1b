@@ -59,17 +59,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <ImageButton
-        android:id="@+id/sendbtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/edit"
-        android:onClick="onEdit"
-        app:layout_constraintEnd_toStartOf="@+id/deleteButton"
-        app:layout_constraintTop_toBottomOf="@+id/body"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
+        <ImageButton
+            android:id="@+id/sendbtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/edit"
+            android:onClick="onEdit"
+            app:layout_constraintEnd_toStartOf="@+id/deleteButton"
+            app:layout_constraintTop_toBottomOf="@+id/body"
+            app:srcCompat="@android:drawable/ic_menu_edit" />
 
     <ImageButton
         android:id="@+id/deleteButton"
@@ -83,19 +83,19 @@
         app:layout_constraintTop_toBottomOf="@+id/body"
         app:srcCompat="@android:drawable/ic_menu_delete" />
 
-    <Button
-        android:id="@+id/button23"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/button_background"
-        android:onClick="submit"
-        android:text="@string/submit_answer"
-        android:textColor="#424242 "
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/body" />
+        <Button
+            android:id="@+id/button23"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/button_background"
+            android:onClick="submit"
+            android:text="@string/submit_answer"
+            android:textColor="#424242 "
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/body" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -157,7 +157,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/textView15"
+                app:layout_constraintBottom_toTopOf="@+id/textView20"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -165,7 +165,7 @@
                 android:contentDescription="@string/pencil" />
 
             <TextView
-                android:id="@+id/textView15"
+                android:id="@+id/textView20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -186,7 +186,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView15" />
+                app:layout_constraintTop_toBottomOf="@+id/textView20" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </TableRow>

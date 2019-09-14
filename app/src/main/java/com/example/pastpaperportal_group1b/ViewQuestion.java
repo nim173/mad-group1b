@@ -63,6 +63,7 @@ public class ViewQuestion extends AppCompatActivity {
     private static String pushId;
     private AddPostDialog addPostDialog;
     private TableRow noA;
+    private int itemCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class ViewQuestion extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         addPostDialog = new AddPostDialog();
         noA = findViewById(R.id.row1NoQ);
+        TextView noView = findViewById(R.id.textView16);
 
         Intent intent = getIntent();
         if ("true".equals(intent.getStringExtra(FROM_ADD)))
@@ -221,6 +223,18 @@ public class ViewQuestion extends AppCompatActivity {
 
             //Show Dialog to add Items in Database
             findViewById(R.id.fab_add).setOnClickListener(v -> addPostDialog.show(ViewQuestion.this));
+
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    noView.setText(String.format(Locale.getDefault(),"%d", dataSnapshot.getChildrenCount()));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
