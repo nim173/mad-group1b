@@ -3,8 +3,8 @@ package com.example.pastpaperportal_group1b;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -18,12 +18,13 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.pastpaperportal_group1b.ui.main.PaginationListener;
 import com.example.pastpaperportal_group1b.ui.main.PostRecyclerAdapter;
 import com.example.pastpaperportal_group1b.ui.main.Question;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static com.example.pastpaperportal_group1b.ViewQuestion.EDIT;
+import static com.example.pastpaperportal_group1b.ViewQuestion.FROM_DELETE;
 import static com.example.pastpaperportal_group1b.ui.main.PaginationListener.PAGE_SIZE;
 import static com.example.pastpaperportal_group1b.ui.main.PaginationListener.PAGE_START;
 
@@ -46,9 +48,9 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     private PostRecyclerAdapter adapter;
     private int currentPage = 1;
     private boolean isLastPage = false;
-    private int totalPage = 4;
+    private final int totalPage = 4;
     private boolean isLoading = false;
-    int itemCount = 0;
+    private int itemCount = 0;
     private Question question;
 
     //good practice to use the key as capital letters since the data received
@@ -62,6 +64,8 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
         Intent intent = getIntent();
         String heading = intent.getStringExtra(ViewPaper.FORUM_KEY);
+        if ("true".equals(intent.getStringExtra(FROM_DELETE)))
+            Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
         TextView textView = findViewById(R.id.forum_header);
         textView.setText(heading);
 
@@ -79,7 +83,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         FirebaseDatabase.getInstance().getReference("Forum/Question").orderByKey().limitToFirst(1)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onDataChange(@Nullable DataSnapshot dataSnapshot) {
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.getChildrenCount() == 0){
                             adapter.removeLoading();
                             findViewById(R.id.row1NoQ).setVisibility(View.VISIBLE);
@@ -144,14 +148,12 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         String heading = header.getText().toString();
         intentQuestion.putExtra(HEADER_KEY, heading);
         intentQuestion.putExtra( EDIT, "false");
-        startActivity(intentQuestion, ActivityOptions
-                .makeSceneTransitionAnimation(this).toBundle());
+        startActivity(intentQuestion);
     }
 
     public void viewQuestion(View view){
         Intent intentViewQ =  new Intent(this, ViewQuestion.class);
         intentViewQ.putExtra(AddQuestionOrAnswer.ID, view.getTag().toString());
-        intentViewQ.putExtra(AddQuestionOrAnswer.USER, "GLjlxJJ9QwbcKsk4iZzYpbFNOaP2");
         startActivity(intentViewQ);
     }
 
@@ -163,7 +165,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
             dbRef.limitToFirst(PAGE_SIZE+1).orderByKey()
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onDataChange(@Nullable DataSnapshot snapshot) {
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.getChildrenCount() == 0){
                                 swipeRefresh.setRefreshing(false);
                                 findViewById(R.id.row1NoQ).setVisibility(View.VISIBLE);

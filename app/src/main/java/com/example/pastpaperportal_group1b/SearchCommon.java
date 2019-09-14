@@ -3,36 +3,27 @@ package com.example.pastpaperportal_group1b;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.app.ActivityOptions;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Base64;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class SearchCommon extends AppCompatActivity {
 
@@ -47,7 +38,6 @@ public class SearchCommon extends AppCompatActivity {
 
         DatabaseReference mUserDatabase = FirebaseDatabase.getInstance().getReference("Module");
         mSearchField = findViewById(R.id.search_field);
-        ImageView mSearchBtn = findViewById(R.id.searchBtn);
 
         Map<String,String> myMap = new HashMap<>();
         final ArrayAdapter<String> modules = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
@@ -64,23 +54,20 @@ public class SearchCommon extends AppCompatActivity {
                 AutoCompleteTextView ACTV= findViewById(R.id.search_field);
                 ACTV.setAdapter(modules);
 
-                ACTV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick (AdapterView<?> parent, View view, int position, long id) {
-                        TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                        String value = textView.getText().toString();
-                        String moduleId = null;
-                        for (String s : myMap.keySet()) {       // assuming different modules cant have same name and key
-                            if (myMap.get(s).equals(value)) {
-                                moduleId = s;
-                                Toast.makeText(SearchCommon.this, s, Toast.LENGTH_SHORT).show();
-                                toModule(moduleId);
-                                break;
-                            }
+                ACTV.setOnItemClickListener((parent, view, position, id) -> {
+                    TextView textView = view.findViewById(android.R.id.text1);
+                    String value = textView.getText().toString();
+                    String moduleId = null;
+                    for (String s : myMap.keySet()) {       // assuming different modules cant have same name and key
+                        if (Objects.requireNonNull(myMap.get(s)).equals(value)) {
+                            moduleId = s;
+                            Toast.makeText(SearchCommon.this, s, Toast.LENGTH_SHORT).show();
+                            toModule(moduleId);
+                            break;
                         }
-                        if(moduleId == null){
-                            Toast.makeText(SearchCommon.this, "Module not found", Toast.LENGTH_SHORT).show();
-                        }
+                    }
+                    if(moduleId == null){
+                        Toast.makeText(SearchCommon.this, "Module not found", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -89,26 +76,47 @@ public class SearchCommon extends AppCompatActivity {
 
             }
         });
-        mSearchBtn.setOnClickListener(view -> {
-            String searchText = mSearchField.getText().toString();
-            Context  context = view.getContext();
-            Intent intent = new Intent(context, SearchResult.class);
-            intent.putExtra(SEARCH, searchText);
-            context.startActivity(intent, ActivityOptions
-                    .makeSceneTransitionAnimation((Activity) context).toBundle());
-        });
+    }
+
+    public void search(View view){
+        mSearchField = findViewById(R.id.search_field);
+        String searchText = mSearchField.getText().toString();
+        Intent intent = new Intent(this, SearchResult.class);
+        intent.putExtra(SEARCH, searchText);
+        startActivity(intent);
     }
 
     public void onClick(View view){
         Intent intent = new Intent(this, PapersAfterSearch.class);
-        startActivity(intent, ActivityOptions
-                .makeSceneTransitionAnimation(this).toBundle());
+        startActivity(intent);
     }
 
-    public void toModule(String moduleId){
+    private void toModule(String moduleId){
         Intent intent = new Intent(this, PapersAfterSearch.class);
         intent.putExtra(MOD_ID, moduleId);
-        startActivity(intent, ActivityOptions
-                .makeSceneTransitionAnimation(this).toBundle());
+        startActivity(intent);
+    }
+
+    public void toLogin(View view){
+        if(checkUser()){
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+        }
+    }
+
+    public void toSignUp(View view){
+        if(checkUser()){
+            Intent intent = new Intent(this, SignUp.class);
+            startActivity(intent);
+        }
+    }
+
+    private boolean checkUser() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            Snackbar.make(findViewById(android.R.id.content), "Already logged in!!", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
+            return false;
+        } else {
+            return true;
+        }
     }
 }

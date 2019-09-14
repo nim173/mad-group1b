@@ -40,7 +40,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 return new ProgressHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false));
             default:
-                return null;
+                throw new IllegalArgumentException("Invalid View type: " + viewType);
         }
     }
 
@@ -127,12 +127,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
                 textViewDate.setText(item.getDate());
             }
             textViewTitle.setTag(item.getPushId());
-            System.out.println("******************************************************"+item.getPhotoUrl());
             Picasso.get().load(item.getPhotoUrl()).into(imageView);
         }
     }
 
-    public class ProgressHolder extends BaseViewHolder {
+    protected class ProgressHolder extends BaseViewHolder {
         ProgressHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);

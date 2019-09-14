@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.animation.LayoutTransition;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.pastpaperportal_group1b.ui.main.PostViewHolder;
 import com.example.pastpaperportal_group1b.ui.main.Replies;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,10 +45,14 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.example.pastpaperportal_group1b.AddQuestionOrAnswer.FROM_ADD;
+import static com.example.pastpaperportal_group1b.AddQuestionOrAnswer.FROM_EDIT;
+
 public class ViewQuestion extends AppCompatActivity {
 
+    public static final String FROM_DELETE = "from_delete";
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    FirebaseRecyclerPagingAdapter<Replies, PostViewHolder> mAdapter;
+    private FirebaseRecyclerPagingAdapter<Replies, PostViewHolder> mAdapter;
 
     public static final String EDIT = "edit";
     public static final String TITLE = "title";
@@ -57,7 +62,7 @@ public class ViewQuestion extends AppCompatActivity {
     private DatabaseReference dbRef;
     private static String pushId;
     private AddPostDialog addPostDialog;
-    TableRow noA;
+    private TableRow noA;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +74,12 @@ public class ViewQuestion extends AppCompatActivity {
         noA = findViewById(R.id.row1NoQ);
 
         Intent intent = getIntent();
+        if ("true".equals(intent.getStringExtra(FROM_ADD)))
+            Snackbar.make(findViewById(android.R.id.content), "Question successfully added!!", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
+        if ("true".equals(intent.getStringExtra(FROM_EDIT)))
+            Snackbar.make(findViewById(android.R.id.content), "Question edited successfully", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
         pushId = intent.getStringExtra(AddQuestionOrAnswer.ID);
         if (pushId != null) {
-            //String uid = intent.getStringExtra(AddQuestionOrAnswer.USER);     //for profile picture
-
             dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question/" + '/' + pushId);
             dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
@@ -151,16 +158,15 @@ public class ViewQuestion extends AppCompatActivity {
                         popup.inflate(R.menu.menu_example);
                         //adding click listener
                         popup.setOnMenuItemClickListener(item -> {
-                            switch (item.getItemId()) {
-                                case R.id.delete:
-                                    //dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId + "/" + holder.textViewPush.getText().toString());
+                                if (item.getItemId() == (R.id.delete)) {
                                     dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId + "/" + model.getPushId());
                                     dbRef.removeValue();
                                     mAdapter.refresh();
+                                    Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
                                     return true;
-                                default:
+                                }
+                                else
                                     return false;
-                            }
                         });
                         //displaying the popup
                         popup.show();
@@ -219,37 +225,60 @@ public class ViewQuestion extends AppCompatActivity {
     }
 
     public void submit(View view){
-        addPostDialog.show(ViewQuestion.this);
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            signInSnackBar();
+        } else {
+            addPostDialog.show(ViewQuestion.this);
+        }
+    }
+
+    private void signInSnackBar(){
+        Snackbar.make(findViewById(android.R.id.content), "Please sign in", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(255, 174, 66))
+                .setAction("Sign In", v1 -> {
+                    Context context = v1.getContext();
+                    Intent intent = new Intent(context, Login.class);
+                    context.startActivity(intent);
+                }).setActionTextColor(Color.rgb(0,0,0)).show();
     }
 
     public void onDelete(View view) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("Are you sure?")
-                .setView(null)
-                .setPositiveButton("Delete", (dialog1, which) -> {
-                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question").child( pushId );
-                    dbRef.removeValue();
-                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
-                    dbRef.removeValue();
-                    Toast.makeText( getApplicationContext(), "Item deleted successfully", Toast.LENGTH_SHORT).show();
-                    //finish();
-                    Intent intent = new Intent(this, Forum.class);
-                    startActivity(intent);
-                } )
-                .setNegativeButton("Cancel", null)
-                .create();
-        dialog.show();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            signInSnackBar();
+        } else {
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle("Are you sure?")
+                    .setView(null)
+                    .setPositiveButton("Delete", (dialog1, which) -> {
+                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question").child(pushId);
+                        dbRef.removeValue();
+                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
+                        dbRef.removeValue();
+                        Intent intent = new Intent(this, Forum.class);
+                        intent.putExtra(FROM_DELETE, "true");
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .create();
+            dialog.show();
+        }
     }
 
     public void onEdit(View view) {
-        Intent intent = new Intent(this, AddQuestionOrAnswer.class );
-        TextView title = findViewById( R.id.title);
-        TextView body = findViewById( R.id.body);
-        intent.putExtra( EDIT, "true");
-        intent.putExtra( TITLE, title.getText() );
-        intent.putExtra( BODY,  body.getText());
-        intent.putExtra( PUSH_ID, pushId );
-        startActivity( intent );
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            signInSnackBar();
+        } else {
+            Intent intent = new Intent(this, AddQuestionOrAnswer.class);
+            TextView title = findViewById(R.id.title);
+            TextView body = findViewById(R.id.body);
+            intent.putExtra(EDIT, "true");
+            intent.putExtra(TITLE, title.getText());
+            intent.putExtra(BODY, body.getText());
+            intent.putExtra(PUSH_ID, pushId);
+            startActivity(intent);
+        }
     }
 
     //Start Listening Adapter
@@ -269,10 +298,9 @@ public class ViewQuestion extends AppCompatActivity {
     //Dialog to add new posts
     class AddPostDialog{
 
-        public void show(Context mContext){
+            void show(Context mContext){
             final Dialog mDialog = new Dialog(mContext);
             mDialog.setContentView(R.layout.dialog_add_layout);
-            //final EditText mTitleEditText = mDialog.findViewById(R.id.editTextTitle);
             final EditText mBodyEditText = mDialog.findViewById(R.id.editTextBody);
             Button mAddPostButton = mDialog.findViewById(R.id.buttonAddPost);
             Button mExitButton = mDialog.findViewById(R.id.buttonExit);
@@ -280,11 +308,11 @@ public class ViewQuestion extends AppCompatActivity {
             final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + '/' + pushId);
 
             mAddPostButton.setOnClickListener(v -> {
-                FirebaseUser currentUser = mAuth.getCurrentUser();        // These will be added after login integration
+                FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser == null) {
-                    Toast.makeText(getApplicationContext(), "Please sign in", Toast.LENGTH_SHORT).show();
+                    signInSnackBar();
                 } else if (TextUtils.isEmpty(mBodyEditText.getText().toString().trim())){
-                    Toast.makeText(mContext, "Reply cannot be empty", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content), "Reply cannot be empty!!", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(179,58,58)).show();
                 } else {
                     Replies post = new Replies();
                     post.setBody(mBodyEditText.getText().toString());
@@ -305,7 +333,7 @@ public class ViewQuestion extends AppCompatActivity {
                     newRef.setValue( post );
 
                     newRef.setValue(post).addOnSuccessListener(aVoid -> {
-                        Toast.makeText(mContext, "Reply added", Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content), "Reply successfully added!!", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
                         mAdapter.refresh();
                         mDialog.dismiss();
                     });

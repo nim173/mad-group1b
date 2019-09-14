@@ -2,17 +2,18 @@ package com.example.pastpaperportal_group1b;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.pastpaperportal_group1b.ui.main.Question;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +28,8 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
 
     public static final String ID = "pushId";
     public static final String USER = "userId";
+    public static final String FROM_ADD = "from add";
+    public static final String FROM_EDIT = "from edit";
 
     private EditText editTitle;
     private EditText editBody;
@@ -80,22 +83,27 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
-            Toast.makeText(getApplicationContext(), "Please sign in", Toast.LENGTH_SHORT).show();
+            Snackbar.make(findViewById(android.R.id.content), "Please sign in", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(255, 174, 66))
+                    .setAction("Sign In", v1 -> {
+                        Context context = v1.getContext();
+                        Intent intent = new Intent(context, Login.class);
+                        context.startActivity(intent);
+                    }).setActionTextColor(Color.rgb(0,0,0)).show();
         } else {
             String username = currentUser.getDisplayName();
             String uid = currentUser.getUid();
             dbRef = FirebaseDatabase.getInstance().getReference( "Forum/Question" );
 
             if(TextUtils.isEmpty(editTitle.getText().toString().trim())) {
-                Toast.makeText(getApplicationContext(), "Please fill in a suitable title", Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), "Title cannot be empty!!", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(179,58,58)).show();
             } else {
                 if("true".equals( edit )){
                     dbRef.child( pushId ).child( "title" ).setValue( editTitle.getText().toString().trim() );
                     dbRef.child( pushId ).child( "body" ).setValue( editBody.getText().toString().trim() );
-                    Toast.makeText( getApplicationContext(), "Question edited successfully", Toast.LENGTH_SHORT ).show();
                     Intent newQuestion = new Intent( this, ViewQuestion.class );
                     newQuestion.putExtra( ID, pushId );
                     newQuestion.putExtra( USER, uid );
+                    newQuestion.putExtra( FROM_EDIT, "true");
                     startActivity( newQuestion );
                 } else {
                     question.setTitle( editTitle.getText().toString().trim() );
@@ -113,13 +121,11 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                     DatabaseReference newRef = dbRef.push();
                     String push = newRef.getKey();
                     newRef.setValue( question );
-
-                    Toast.makeText( getApplicationContext(), "Question successfully added", Toast.LENGTH_SHORT ).show();
                     Intent newQuestion = new Intent(this, ViewQuestion.class );
                     newQuestion.putExtra( ID, push );
                     newQuestion.putExtra( USER, uid );
-                    startActivity( newQuestion , ActivityOptions
-                            .makeSceneTransitionAnimation(this).toBundle());
+                    newQuestion.putExtra( FROM_ADD, "true");
+                    startActivity( newQuestion );
                 }
             }
         }
