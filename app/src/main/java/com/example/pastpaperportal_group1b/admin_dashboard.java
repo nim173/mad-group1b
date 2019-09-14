@@ -33,4 +33,8 @@ public class admin_dashboard extends AppCompatActivity {
         Intent intent = new Intent(this, send_message.class);
         startActivity(intent);
     }
+    public void view_allmodules(View view) {
+        Intent intent = new Intent(this,add_new_module.class);
+        startActivity(intent);
+    }
 }
