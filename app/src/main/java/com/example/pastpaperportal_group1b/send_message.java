@@ -33,7 +33,7 @@ public class send_message extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
     String username = currentUser.getDisplayName();
-    String url = currentUser.getPhotoUrl().toString();
+    //String url = currentUser.getPhotoUrl().toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,7 @@ public class send_message extends AppCompatActivity {
                 messages.setSent_To(sentTo.getSelectedItem().toString());
                 messages.setUserId(userId.getText().toString());
                 messages.setAuthor(username);
-                messages.setPhotoUrl(url);
+                //messages.setPhotoUrl(url);
                 Date date = new Date();
                 messages.setDate(new SimpleDateFormat( "dd-MM-yyyy", Locale.getDefault() ).format( date ) );
                 new FirebaseDatabaseHelper().addMessage(messages, new FirebaseDatabaseHelper.DataStatus() {

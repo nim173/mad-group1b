@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pastpaperportal_group1b.R;
 import com.example.pastpaperportal_group1b.User;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -74,6 +75,7 @@ public class AdapterUser extends RecyclerView.Adapter<AdapterUser.MyHolder> {
                                 break;
                             case R.id.menu_item_remove:
                                 userList.remove(position);
+                                FirebaseDatabase.getInstance().getReference().child("Users").child(user_id).setValue(null);
                                 notifyDataSetChanged();
                                 Toast.makeText(context,"Removed",Toast.LENGTH_SHORT).show();
                                 break;

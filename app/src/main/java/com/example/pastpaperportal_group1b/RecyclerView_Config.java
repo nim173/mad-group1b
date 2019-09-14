@@ -20,8 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pastpaperportal_group1b.ui.main.FirebaseDatabaseHelper;
 import com.example.pastpaperportal_group1b.ui.main.Messages;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class RecyclerView_Config {
@@ -150,9 +152,6 @@ public class RecyclerView_Config {
 
         EditText ssubject = (EditText) xx.findViewById(R.id.ssubject);
         EditText bbody = (EditText) xx.findViewById(R.id.bbody);
-        String mauthor = holder.mauthor.getText().toString();
-        String mdate = holder.mdate.getText().toString();
-        String mImage = holder.imageView.toString();
 
         ssubject.setText(holder.mSubject.getText());
         bbody.setText("");
@@ -160,33 +159,10 @@ public class RecyclerView_Config {
         builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Messages messages = new Messages();
-                messages.setSubject(ssubject.getText().toString());
-                messages.setBody(bbody.getText().toString());
-                messages.setAuthor(mauthor);
-                messages.setDate(mdate);
-                new FirebaseDatabaseHelper().updateMessage(holder.key, messages, new FirebaseDatabaseHelper.DataStatus() {
-                    @Override
-                    public void DataIsLoaded(List<Messages> Messages, List<String> Keys) {
-
-                    }
-
-                    @Override
-                    public void DataIsInserted() {
-
-                    }
-
-                    @Override
-                    public void DataIsUpdated() {
-                        Toast.makeText(mContext,"Message Updated Successfully",Toast.LENGTH_LONG).show();
-                        dialogInterface.dismiss();
-                    }
-
-                    @Override
-                    public void DataIsDeleted() {
-
-                    }
-                });
+                HashMap<String,Object> result = new HashMap<>();
+                result.put("body",bbody.getText().toString());
+                result.put("subject",ssubject.getText().toString());
+                FirebaseDatabase.getInstance().getReference().child("Messages").child(holder.key).updateChildren(result);
 
             }
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
