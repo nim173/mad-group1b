@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="4dp"
+    android:background="#fff"
+    android:padding="8dp"
+    card_view:cardCornerRadius="4dp"
+    >
+
+    <TableRow
+        android:id="@+id/row1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="5dp"
+        android:paddingTop="10dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="10dp">
+
+
+        <LinearLayout
+            android:id="@+id/ll1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/answerName"
+                android:layout_width="match_parent"
+                android:layout_height="27dp"
+                android:layout_weight="1"
+                android:focusable="true"
+                android:minHeight="50dp"
+                android:paddingStart="5dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="answerName"
+                android:textSize="18sp" />
+
+                <RelativeLayout
+                    android:id="@+id/rl1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/viewAnswer"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="11dp"
+                        android:layout_marginLeft="11dp"
+                        android:layout_marginTop="-8dp"
+                        android:layout_marginEnd="278dp"
+                        android:text="@string/username123"
+                        android:textColor="#BDBDBD"
+                        android:textStyle="italic" />
+
+                    <Button
+                        android:id="@+id/downloadAnswer"
+                        android:layout_width="33dp"
+                        android:layout_height="38dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="338dp"
+                        android:layout_marginTop="0dp"
+                        android:text="D" />
+
+                    <Button
+                        android:id="@+id/viewAnswer"
+                        android:layout_width="34dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="80dp"
+                        android:text="V" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </TableRow>
+</androidx.cardview.widget.CardView>

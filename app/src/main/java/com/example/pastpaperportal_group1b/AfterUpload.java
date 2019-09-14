@@ -38,20 +38,20 @@ public class AfterUpload extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.hasChildren()) {
-                        TextView faculty = findViewById(R.id.Faculty);
-                        TextView Specialization = findViewById(R.id.specialization);
-
-                        if (dataSnapshot.child("faculty").getValue() != null) {
-                            faculty.setText(dataSnapshot.child("faculty").getValue().toString());
+                        TextView faculty = findViewById(R.id.paperId);
+                       /* TextView Specialization = findViewById(R.id.);
+*/
+                        if (dataSnapshot.child("paperId").getValue() != null) {
+                            faculty.setText(dataSnapshot.child("paperId").getValue().toString());
                         } else {
                             faculty.setText("fail");
                         }
-
+/*
                         if (dataSnapshot.child("Specialization").getValue() != null) {
                             Specialization.setText(dataSnapshot.child("Specialization").getValue().toString());
                         } else {
                             Specialization.setText("fail");
-                        }
+                        }*/
 
                     }
                 }

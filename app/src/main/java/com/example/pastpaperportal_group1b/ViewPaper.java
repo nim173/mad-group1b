@@ -1,37 +1,44 @@
 package com.example.pastpaperportal_group1b;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.paging.PagedList;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import com.example.pastpaperportal_group1b.ui.main.PaperUpload;
+import com.example.pastpaperportal_group1b.ui.main.PastPaperRV;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-/*
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-*/
+import com.shreyaspatil.firebase.recyclerpagination.DatabasePagingOptions;
+import com.shreyaspatil.firebase.recyclerpagination.FirebaseRecyclerPagingAdapter;
+import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
 
 public class ViewPaper extends AppCompatActivity {
 
-    RecyclerView recyclerView;
-    LinearLayout linearLayout;
-    ExpandableRelativeLayout answers;
 
+    ExpandableRelativeLayout answers; //commented for now
     private DatabaseReference dbRef;
     private String pushId;
+    private RecyclerView mRecyclerView;
+    private String name;
+    public static final String VIEW_NAME = "answer";
 
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    FirebaseRecyclerPagingAdapter<PaperUpload, PastPaperRV> mAdapter;
 
     public static final String FORUM_KEY = "PASTPAPERPORTAL.FORUM";
 
@@ -41,56 +48,150 @@ public class ViewPaper extends AppCompatActivity {
         setContentView(R.layout.activity_view_paper);
 
         Intent intent = getIntent();
+        String year = intent.getStringExtra(PapersAfterSearch.VIEW_PAPER);
+        pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
+        Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
 
-        pushId = intent.getStringExtra(UploadOrEdit.ID);
-        System.out.println("22222$$$$$$$$$$$$$$$$$$$$" + UploadOrEdit.ID);
-        System.out.println("222222222##########################################" +pushId);
+        TextView name = findViewById(R.id.PaperId);
+ /*       name.setText(Paperi);*/
 
+        mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
-        dbRef = FirebaseDatabase.getInstance().getReference("UploadPaper/PastPaper" + '/' + pushId);
+        //Initialize RecyclerView
+        mRecyclerView = findViewById(R.id.yearCard);
+        mRecyclerView.setHasFixedSize(true);
 
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        LinearLayoutManager mManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mManager);
+
+        //Initialize Database
+        dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + "/Years" + '/' + year + '/');
+
+        /*System.out.println("$$$$$$$$$$$$$$$$$$$$" + UploadOrEdit.ID);
+        System.out.println("000000000000000000000000000000000" + pushId);
+        System.out.println( pushId = intent.getStringExtra(UploadOrEdit.ID));*/
+        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^"+dbRef);
+
+        PagedList.Config config = new PagedList.Config.Builder()
+                .setEnablePlaceholders(false)
+                .setPrefetchDistance(5)
+                .setPageSize(10)
+                .build();
+
+        DatabasePagingOptions<PaperUpload> options = new DatabasePagingOptions.Builder<PaperUpload>()
+                .setLifecycleOwner(this)
+                .setQuery(dbRef, config, PaperUpload.class)
+                .build();
+
+        mAdapter = new FirebaseRecyclerPagingAdapter<PaperUpload, PastPaperRV>(options) {
+            @NonNull
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.hasChildren()) {
+            public PastPaperRV onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                return new PastPaperRV(LayoutInflater.from(parent.getContext()).inflate(R.layout.paperitem, parent, false));
+            }
 
-                    TextView PaperId = findViewById(R.id.paperId);
+            @Override
+            protected void onBindViewHolder(@NonNull PastPaperRV holder,
+                                            int position,
+                                            @NonNull PaperUpload model) {
 
-                    if (dataSnapshot.child("PaperId").getValue() != null) {
-                        PaperId.setText(dataSnapshot.child("PaperId").getValue().toString());
-                    } else {
-                        PaperId.setText("fail");
-                    }
+                holder.setParameters(model);
+            }
 
+            @Override
+            protected void onLoadingStateChanged(@NonNull LoadingState state) {
+                switch (state) {
+                    case LOADING_INITIAL:
+                    case LOADING_MORE:
+                        // Do your loading animation
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        break;
+
+                    case LOADED:
+                        // Stop Animation
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        break;
+
+                    case FINISHED:
+                        //Reached end of Data set
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        break;
+
+                    case ERROR:
+                        retry();
+                        break;
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+            protected void onError(@NonNull DatabaseError databaseError) {
+                mSwipeRefreshLayout.setRefreshing(false);
+                databaseError.toException().printStackTrace();
+                // Handle Error
 
             }
+        };
+
+        //Set Adapter to RecyclerView
+        mRecyclerView.setAdapter(mAdapter);
+
+        //Set listener to SwipeRefreshLayout for refresh action
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.refresh();
+            }
         });
+
+       /* //Show Dialog to add Items in Database
+        findViewById(R.id.fab_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                *//*   addPostDialog.show(ViewQuestion.this);*//*
+            }
+        });*/
+
+
     }
 
-
-    public void showAnswers(View view) {
+   /* public void showAnswers(View view) {
 
         answers = (ExpandableRelativeLayout) findViewById(R.id.answers);
         answers.toggle();
 
-    }
+    }*/
     public void uploadAnswer(View view){
         Intent intentUpload =  new Intent(this, UploadOrEdit.class);
         Button uploadButton = findViewById(R.id.uploadButton);
         startActivity(intentUpload);
     }
 
+
+    public void showAnswers(View view){
+        Intent intent = new Intent(this, AnswersForPapers.class);
+        intent.putExtra(VIEW_NAME,name );
+        startActivity(intent);
+    }
+
     public void goToForum(View view){
         Intent intentForum = new Intent(this, Forum.class);
-        TextView textView5 = findViewById(R.id.textView5);                  //@Dinuli change textView5 to have the module name as well maybe?
-        String heading = textView5.getText().toString();
+        TextView moduleId = findViewById(R.id.moduleId);                  //@Dinuli change textView5 to have the module name as well maybe?
+        String heading = moduleId.getText().toString();
         intentForum.putExtra(FORUM_KEY, heading);
         startActivity(intentForum);
+    }
+
+    //IMPLEMENT LISTENER for download to work
+
+    public long downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
+        DownloadManager downloadmanager = (DownloadManager) context.
+                getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
+
+        return downloadmanager.enqueue(request);
     }
 }

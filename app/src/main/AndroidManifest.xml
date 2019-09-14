@@ -13,11 +13,16 @@
         android:roundIcon="@drawable/ic_mind_map"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".AnswersForPapers"/>
+        <activity android:name=".SearchResult"/>
         <activity android:name=".view_all_messages" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_application_id" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".ChangedPassword" />
         <activity android:name=".send_message" />
@@ -33,7 +38,6 @@
         <activity android:name=".Profile" />
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
-        <activity android:name=".UploadOrEditPaperPage" />
         <activity android:name=".AddQuestionOrAnswer" />
         <activity android:name=".Forum" />
         <activity android:name=".AfterUpload" />

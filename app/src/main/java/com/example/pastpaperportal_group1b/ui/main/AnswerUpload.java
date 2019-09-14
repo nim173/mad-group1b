@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b;
+package com.example.pastpaperportal_group1b.ui.main;
 
 public class AnswerUpload {
 
