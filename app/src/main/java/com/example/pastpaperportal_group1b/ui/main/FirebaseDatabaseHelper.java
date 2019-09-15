@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,12 +63,13 @@ public class FirebaseDatabaseHelper {
     }
 
     public void updateMessage(String key,Messages messages,final DataStatus dataStatus) {
-        mReferenceMessages.child(key).setValue(messages).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                dataStatus.DataIsUpdated();
-            }
-        });
+        mReferenceMessages.child(key).setValue(messages)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        dataStatus.DataIsUpdated();
+                    }
+                });
     }
 
     public void deleteMessage(String key,final DataStatus dataStatus) {

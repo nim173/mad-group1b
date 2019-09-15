@@ -24,6 +24,6 @@ public class YearRv extends RecyclerView.ViewHolder {
         public void setValue (YearModel module)
         {
         year.setText(module.getName());
-    }
+        }
 }
 

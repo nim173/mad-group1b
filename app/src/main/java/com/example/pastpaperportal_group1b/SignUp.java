@@ -50,7 +50,7 @@ public class SignUp extends AppCompatActivity {
         mAuth= FirebaseAuth.getInstance();
         signup=findViewById(R.id.btnSignUp);
         progressDialog=new ProgressDialog(this);
-        progressDialog.setMessage("Registering User..");
+        progressDialog.setMessage("Registering com.example.pastpaperportal_group1b.User..");
 
         //handle register button click
 

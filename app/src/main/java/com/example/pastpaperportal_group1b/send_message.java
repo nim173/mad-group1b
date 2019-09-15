@@ -5,8 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -26,14 +27,13 @@ public class send_message extends AppCompatActivity {
     private EditText Body;
     private Spinner sentTo;
     private EditText userId;
-    private EditText author;
 
-    private ImageButton sendbtn;
+    private Button sendbtn;
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
-
     String username = currentUser.getDisplayName();
+    //String url = currentUser.getPhotoUrl().toString();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class send_message extends AppCompatActivity {
         sentTo = (Spinner) findViewById(R.id.sent_to);
         userId = (EditText) findViewById(R.id.userId);
 
-        sendbtn = (ImageButton) findViewById(R.id.sendbtn);
+        sendbtn = (Button) findViewById(R.id.sendbtn1);
 
         sendbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,6 +55,7 @@ public class send_message extends AppCompatActivity {
                 messages.setSent_To(sentTo.getSelectedItem().toString());
                 messages.setUserId(userId.getText().toString());
                 messages.setAuthor(username);
+                //messages.setPhotoUrl(url);
                 Date date = new Date();
                 messages.setDate(new SimpleDateFormat( "dd-MM-yyyy", Locale.getDefault() ).format( date ) );
                 new FirebaseDatabaseHelper().addMessage(messages, new FirebaseDatabaseHelper.DataStatus() {
@@ -78,6 +79,7 @@ public class send_message extends AppCompatActivity {
 
                     }
                 });
+                gotoAll(view);
             }
         });
 

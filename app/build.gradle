@@ -61,6 +61,8 @@ dependencies {
     implementation 'com.firebase:firebase-client-android:2.5.2'
     implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //showing all users
+    implementation 'com.github.mohammadatif:CircularImageView:1.0.0'
     implementation "com.google.android.material:material:1.1.0-alpha10"
 }
 

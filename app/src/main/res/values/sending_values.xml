@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="sending_values">
-        <item>All</item>
-        <item>Individual</item>
+        <item name="All">All</item>
+        <item name="Individual">Individual</item>
     </string-array>
 </resources>

@@ -3,16 +3,12 @@ package com.example.pastpaperportal_group1b.ui.main;
 public class Messages {
 
     private String Body;
-
     private String Sent_To;
-
     private String Subject;
-
     private String author;
-
     private String userId;
-
     private String date;
+    private String photoUrl;
 
     public Messages() {
     }
@@ -25,6 +21,10 @@ public class Messages {
         this.userId = userId;
         this.date = date;
     }
+
+    public String getPhotoUrl() { return photoUrl; }
+
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
 
     public String getDate() { return date; }
 

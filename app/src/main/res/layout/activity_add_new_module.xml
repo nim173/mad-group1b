@@ -4,16 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".manage_users">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/users_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-
-
-    </androidx.recyclerview.widget.RecyclerView>
-
+    tools:context=".add_new_module">
 
 </androidx.constraintlayout.widget.ConstraintLayout>
