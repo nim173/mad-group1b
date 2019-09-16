@@ -61,7 +61,7 @@
         tools:srcCompat="@drawable/admin_icon" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/frEmail"
         android:layout_width="81dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"

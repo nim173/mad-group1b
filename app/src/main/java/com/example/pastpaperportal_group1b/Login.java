@@ -8,7 +8,10 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -16,10 +19,19 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -31,23 +43,31 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Login extends AppCompatActivity {
 
+    private static final String TAG = "FacebookLogin";
     private static final  int RC_SIGN_IN=100;
     GoogleSignInClient mGoogleSignInClient;
 
     EditText Email;
     EditText Password;
-    Button login;
+    Button login,signUp;
     SignInButton mgoogleButton;
     FirebaseAuth.AuthStateListener mAuthListener;
     FirebaseAuth mAuth;
+
+    private CallbackManager mCallbackManager;
 
 
     //progerss dialog
@@ -61,11 +81,14 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        TextView toSignUp= findViewById(R.id.txtSignUp);
+
+
+       // TextView toSignUp= findViewById(R.id.txtSignUp);
         TextView tochangepsw= findViewById(R.id.txtforgetpws);
         Email=findViewById(R.id.loginEmail);
         Password=findViewById(R.id.loginPassword);
         login=findViewById(R.id.btnLogin);
+        signUp=findViewById(R.id.toSign);
 
         mgoogleButton=findViewById(R.id.googleSign);
 
@@ -103,6 +126,7 @@ public class Login extends AppCompatActivity {
 
                 //validation
 
+
                 if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
 
                     Email.setError("Invalid Email");
@@ -115,11 +139,17 @@ public class Login extends AppCompatActivity {
                     Password.setFocusable(true);
 
                 }
-                else {
+                else if(email.equals("admin@gmail.com")&& (pass.equals("admin1"))){
+
+                    startActivity(new Intent(Login.this,admin_dashboard.class));
+                    Toast.makeText(Login.this, "", Toast.LENGTH_SHORT).show();
+                }
+
+                else{
                     // valid email
 
+                   // adminLogin(email,pass);
                     loginUser(email,pass);
-
                 }
 
             }
@@ -144,8 +174,13 @@ public class Login extends AppCompatActivity {
 
 
 
+
+
+
+
+
 //click SignUP Text
-        toSignUp.setOnClickListener(new View.OnClickListener() {
+        signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent signup=new Intent(Login.this,SignUp.class);
@@ -161,8 +196,12 @@ public class Login extends AppCompatActivity {
             }
         });
 
+
+
     }
 
+
+    //forget password
     private void showRecoverPassWordDialog() {
 
         //Alter Dialog
@@ -210,7 +249,7 @@ public class Login extends AppCompatActivity {
 
 
     }
-
+//recover email
     private void beginRecover(String email) {
 
         progressDialog.setMessage("Sending...");
@@ -249,7 +288,7 @@ public class Login extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
                             progressDialog.dismiss();
-                            startActivity(new Intent(Login.this,Profile.class));
+                            startActivity(new Intent(Login.this,ProfileDefault.class));
                             finish();
 
 
@@ -295,6 +334,10 @@ public class Login extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
+        // Pass the activity result back to the Facebook SDK
+
+
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -320,11 +363,42 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
+
                             // Sign in success, update UI with the signed-in user's information
-                          //  Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            //get User email and uid from auth
+                           String  personname=user.getDisplayName();
+                            String email=user.getEmail();
+                            String uid=user.getUid();
+                            String url=user.getPhotoUrl().toString();
+
+                            //using Hashmap
+                            HashMap<Object,String> hashMap= new HashMap<>();
+
+                            //put info in hashmap
+
+                            hashMap.put("email",email);
+                            hashMap.put("uid",uid);
+                            hashMap.put("name","");
+                            hashMap.put("url",url);
+                            hashMap.put("Cover_Photo","");
+
+                            //firbase database instence
+
+                            FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+
+                            //path to store
+                            DatabaseReference reference=firebaseDatabase.getReference("Users");
+
+                            reference.child(uid).setValue(hashMap);
+
+
+
                             Toast.makeText(Login.this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(Login.this, Profile.class));
+
+                            startActivity(new Intent(Login.this, ProfileDefault.class));
                            // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -341,6 +415,7 @@ public class Login extends AppCompatActivity {
             }
         });
     }
+
 
 
 

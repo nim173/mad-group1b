@@ -12,12 +12,11 @@
         android:theme="@style/AppBaseTheme.AppBarOverlay">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/frEmail"
             android:layout_width="186dp"
             android:layout_height="43dp"
             android:layout_marginLeft="130sp"
             android:hint="User Name"
-            android:text="User Name"
             android:textSize="30sp" />
 
         <Button

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pastpaperportal_group1b">
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
@@ -10,12 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view_all_messages"></activity>
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_application_id" />
-
+        <activity android:name=".ProfileDefault"></activity>
+        <activity android:name=".view_all_messages" />
         <activity android:name=".ChangedPassword" />
         <activity android:name=".send_message" />
         <activity android:name=".requests" />
@@ -46,5 +45,7 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
