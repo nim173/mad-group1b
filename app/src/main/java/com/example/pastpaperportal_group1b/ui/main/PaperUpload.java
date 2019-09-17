@@ -1,18 +1,20 @@
 package com.example.pastpaperportal_group1b.ui.main;
 
+import java.util.Map;
+
 public class PaperUpload {
 
     private String PaperId;
     private String moduleId;
     private String note;
-    private String url; // check this issue
+    //private String url; // check this issue
     private String pdfName;
 
     public PaperUpload() {
     }
 
     public PaperUpload(String url, String pdfName) {
-        this.url = url;
+       // this.url = url;
         this.pdfName = pdfName;
     }
 
@@ -28,9 +30,9 @@ public class PaperUpload {
         this.note = note;
     }
 
-    public String getUrl() {
+    /*public String getUrl() {
         return url;
-    }
+    }*/
 
     public String getPdfName() {
         return pdfName;

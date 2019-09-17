@@ -35,7 +35,9 @@ public class ViewPaper extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private String name;
     public static final String VIEW_NAME = "answer";
-
+    public static final String MODULE_ID = "module_id";
+    public static final String YEAR = "year";
+    private String year;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
     FirebaseRecyclerPagingAdapter<PaperUpload, PastPaperRV> mAdapter;
@@ -48,10 +50,10 @@ public class ViewPaper extends AppCompatActivity {
         setContentView(R.layout.activity_view_paper);
 
         Intent intent = getIntent();
-        String year = intent.getStringExtra(PapersAfterSearch.VIEW_PAPER);
+        year = intent.getStringExtra(PapersAfterSearch.VIEW_PAPER);
         pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + year +" " +pushId);
         Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
-
         TextView name = findViewById(R.id.PaperId);
  /*       name.setText(Paperi);*/
 
@@ -65,12 +67,12 @@ public class ViewPaper extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mManager);
 
         //Initialize Database
-        dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + "/Years" + '/' + year + '/');
+        dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + "/Years" + '/' + year);
 
         /*System.out.println("$$$$$$$$$$$$$$$$$$$$" + UploadOrEdit.ID);
-        System.out.println("000000000000000000000000000000000" + pushId);
+        System.out.println("00000000000000000000" + pushId);
         System.out.println( pushId = intent.getStringExtra(UploadOrEdit.ID));*/
-        System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^^^^^"+dbRef);
+        System.out.println(" ^^^^ ^^^^ ^^^^ ^^^^ ^^^^ ^^^^ ^^^^ "+dbRef);
 
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
@@ -94,7 +96,8 @@ public class ViewPaper extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull PastPaperRV holder,
                                             int position,
                                             @NonNull PaperUpload model) {
-
+                System.out.println("modellllllllllllllllllllllllllllllll " + getRef(position).getKey());
+                model.setPaperId(getRef(position).getKey());
                 holder.setParameters(model);
             }
 
@@ -142,23 +145,11 @@ public class ViewPaper extends AppCompatActivity {
                 mAdapter.refresh();
             }
         });
-
-       /* //Show Dialog to add Items in Database
-        findViewById(R.id.fab_add).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                *//*   addPostDialog.show(ViewQuestion.this);*//*
-            }
-        });*/
-
-
     }
 
    /* public void showAnswers(View view) {
-
         answers = (ExpandableRelativeLayout) findViewById(R.id.answers);
         answers.toggle();
-
     }*/
     public void uploadAnswer(View view){
         Intent intentUpload =  new Intent(this, UploadOrEdit.class);
@@ -169,7 +160,10 @@ public class ViewPaper extends AppCompatActivity {
 
     public void showAnswers(View view){
         Intent intent = new Intent(this, AnswersForPapers.class);
-        intent.putExtra(VIEW_NAME,name );
+        intent.putExtra(VIEW_NAME,view.getTag().toString() );
+        intent.putExtra(MODULE_ID, pushId);
+        System.out.println("showanswerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr "+name+ " " +pushId);
+        intent.putExtra(YEAR, year);
         startActivity(intent);
     }
 

@@ -13,10 +13,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.pastpaperportal_group1b.ui.main.Module;
 import com.example.pastpaperportal_group1b.ui.main.YearModel;
 import com.example.pastpaperportal_group1b.ui.main.YearRv;
 import com.google.firebase.database.DatabaseError;
@@ -83,9 +81,9 @@ public class PapersAfterSearch extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull YearRv holder,
                                             int position,
                                             @NonNull YearModel  model) {
-                holder.year.setText(getRef(position).getKey());
-                System.out.println("########################"+model.getUrl());
-             /*   holder.setValue(model);*/
+                System.out.println("binddddddddddddddddd " + model.getName() + " " + getRef(position).getKey());
+                model.setName(getRef(position).getKey());
+                holder.setValue(model);
 
                 //listener
                 holder.viewButton.setOnClickListener(new View.OnClickListener() {
@@ -94,14 +92,13 @@ public class PapersAfterSearch extends AppCompatActivity {
                         Context context = view.getContext();
                         Intent intent = new Intent(context, ViewPaper.class);
                         intent.putExtra(VIEW_PAPER, getRef(position).getKey());
-                        System.out.println("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii"+pushId);
+                        System.out.println("hiiiiiiiiiiii"+pushId + " " + getRef(position).getKey());
                         intent.putExtra(PAPER_ID, pushId);
                         context.startActivity(intent);
                     }
                 }
 
                 );
-
             }
 
             @Override
@@ -155,7 +152,23 @@ public class PapersAfterSearch extends AppCompatActivity {
     public void addPaper(View view) {
         Intent intent = new Intent(this, UploadOrEdit.class);
         intent.putExtra(PAPER_ID, pushId);
+    /*    intent.putExtra();
+*/
         startActivity(intent);
+    }
+
+    //Start Listening Adapter
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
+
+    //Stop Listening Adapter
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
     }
 
 }
