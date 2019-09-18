@@ -3,25 +3,32 @@ package com.example.pastpaperportal_group1b.ui.main;
 public class Messages {
 
     private String Body;
-
     private String Sent_To;
-
     private String Subject;
-
     private String author;
-
     private String userId;
+    private String date;
+    private String photoUrl;
 
     public Messages() {
     }
 
-    public Messages(String body, String sent_To, String subject, String author, String userId) {
+    public Messages(String body, String sent_To, String subject, String author, String userId,String date) {
         Body = body;
         Sent_To = sent_To;
         Subject = subject;
         this.author = author;
         this.userId = userId;
+        this.date = date;
     }
+
+    public String getPhotoUrl() { return photoUrl; }
+
+    public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
+
+    public String getDate() { return date; }
+
+    public void setDate(String date) { this.date = date; }
 
     public String getBody() {
         return Body;

@@ -9,8 +9,17 @@ public class Question {
     private String date;
     private String time;
     private String pushId;
+    private String photoUrl;
 
     public Question() {
+    }
+
+    public String getPhotoUrl() {
+        return photoUrl;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
     public Question(String date) {

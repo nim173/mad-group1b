@@ -1,12 +1,23 @@
-package com.example.pastpaperportal_group1b;
+package com.example.pastpaperportal_group1b.ui.main;
 
 public class AnswerUpload {
 
     private String key;
     private String uid;
     private String note;
+    private String url;
+    private String pdf;
 
-    public AnswerUpload() {
+    public String getPdf() {
+        return pdf;
+    }
+
+    public void setPdf(String pdf) {
+        this.pdf = pdf;
+    }
+
+    public AnswerUpload(String url) {
+        this.url = url;
     }
 
     public String getKey() {

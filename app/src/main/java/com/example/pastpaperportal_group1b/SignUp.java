@@ -55,7 +55,7 @@ public class SignUp extends AppCompatActivity {
         signup=findViewById(R.id.btnSignUp);
         signIN=findViewById(R.id.stoLogin);
         progressDialog=new ProgressDialog(this);
-        progressDialog.setMessage("Registering User..");
+        progressDialog.setMessage("Registering com.example.pastpaperportal_group1b.User..");
 
         //handle register button click
 

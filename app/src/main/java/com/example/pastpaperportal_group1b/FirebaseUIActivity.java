@@ -1,37 +1,24 @@
 package com.example.pastpaperportal_group1b;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class FirebaseUIActivity extends AppCompatActivity {
+public class FirebaseUIActivity extends Activity {
 
     private static final int RC_SIGN_IN = 123;
 
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseAuth mAuth;
-    private Button btnSignOut;
-    private Button btnSignIn;
-    private TextView txtEmail;
-    private TextView txtUser;
-    private ImageView imgProfile;
-
+    protected Button btnSignIn;
 
     @Override
     protected void onStart() {
@@ -44,33 +31,11 @@ public class FirebaseUIActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase_ui);
 
-        /*try {
-            PackageInfo info =     getPackageManager().getPackageInfo("com.example.pastpaperportal_group1b",     PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                String sign= Base64.encodeToString(md.digest(), Base64.DEFAULT);
-                System.out.println("_____________________________"+sign);
-                Toast.makeText(getApplicationContext(),sign,     Toast.LENGTH_LONG).show();
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-        } catch (NoSuchAlgorithmException e) {
-        }*/
-
         mAuth = FirebaseAuth.getInstance();
-        imgProfile = findViewById(R.id.dp);
         btnSignIn = findViewById(R.id.btnSignIn);
-        btnSignOut = findViewById(R.id.btnSignIn);
 
-        txtEmail = findViewById(R.id.txtEmail);
-        txtUser = findViewById(R.id.txtUser);
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                //updateUi();
-            }
+        mAuthListener = firebaseAuth -> {
+            //updateUi();
         };
 
     }
@@ -99,12 +64,12 @@ public class FirebaseUIActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
+        /*if (requestCode == RC_SIGN_IN) {
+            //IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                //FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
@@ -112,7 +77,7 @@ public class FirebaseUIActivity extends AppCompatActivity {
                 // response.getError().getErrorCode() and handle the error.
                 // ...
             }
-        }
+        }*/
     }
     // [END auth_fui_result]
 
@@ -120,10 +85,8 @@ public class FirebaseUIActivity extends AppCompatActivity {
         // [START auth_fui_signout]
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // ...
-                    }
+                .addOnCompleteListener(task -> {
+                    // ...
                 });
         // [END auth_fui_signout]
     }
@@ -132,11 +95,8 @@ public class FirebaseUIActivity extends AppCompatActivity {
         // [START auth_fui_delete]
         AuthUI.getInstance()
                 .delete(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        // ...
-                    }
+                .addOnCompleteListener(task -> {
+                    // ...
                 });
         // [END auth_fui_delete]
     }

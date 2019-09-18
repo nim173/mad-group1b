@@ -1,6 +1,8 @@
 package com.example.pastpaperportal_group1b;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +18,8 @@ public class admin_dashboard extends AppCompatActivity {
 
     public void onclick(View view){
 
-        Intent intent = new Intent(this, manage_users.class);
+        Intent intent = new Intent(this,manage_users.class);
         startActivity(intent);
-
     }
 
     public void onrequests(View view) {
@@ -30,6 +31,10 @@ public class admin_dashboard extends AppCompatActivity {
     public void sendMsg(View view) {
 
         Intent intent = new Intent(this, send_message.class);
+        startActivity(intent);
+    }
+    public void view_allmodules(View view) {
+        Intent intent = new Intent(this,add_new_module.class);
         startActivity(intent);
     }
 }
