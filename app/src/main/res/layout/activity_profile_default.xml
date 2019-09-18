@@ -20,8 +20,7 @@
             android:id="@+id/coverIv"
             android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:scaleType="fitXY"
-            android:background="@color/colorPurple">
+            android:scaleType="fitXY">
 
         </ImageView>
 
