@@ -54,6 +54,7 @@ public class AnswersForPapers extends AppCompatActivity {
     StorageReference storageRef;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     public Dialog dialog;
+    public Uri url;
 
 
 
@@ -85,7 +86,6 @@ public class AnswersForPapers extends AppCompatActivity {
         //Initialize Database
         dbRef = FirebaseDatabase.getInstance().getReference("Module/" + pushId + '/' + "Years" + "/" + year +  "/" + paperName + "/Answers" );
         System.out.println("000000000000000000000000000000000" + pushId);
-        System.out.println( pushId = intent.getStringExtra(UploadOrEdit.ID));
         System.out.println(dbRef + " @@@@@@@@@@@@@@@@@@@@@@@@@@");
 
 
@@ -169,7 +169,7 @@ public class AnswersForPapers extends AppCompatActivity {
             dialog.setContentView(R.layout.add_answer_dialog);
             final EditText name = dialog.findViewById(R.id.nameText);
          /*   final EditText note = dialog.findViewById(R.id.noteText);*/
-            final EditText pdfName = dialog.findViewById(R.id.noteText);
+            final EditText desc = dialog.findViewById(R.id.noteText);
             Button uploadButton = dialog.findViewById(R.id.selectButton);
             Button submit = dialog.findViewById(R.id.submitButton);
             Button cancel = dialog.findViewById(R.id.exitButton);
@@ -189,7 +189,13 @@ public class AnswersForPapers extends AppCompatActivity {
 
                 answerModel.setName(name.getText().toString().trim());
                /* answerModel.setUsername(currentUser.getDisplayName());*/
-                answerModel.getDescript(pdfName.getText().toString().trim());
+                answerModel.getDescript(desc.getText().toString().trim());
+                answerModel.setUrl(url.toString());
+                //dbRef.child(dbRef.push().getKey()).setValue(pdfName.getText().toString(), url.toString());
+                DatabaseReference newRef = dbRef.push();
+                // dbRef.push().setValue(answerModel);
+                newRef.setValue( answerModel );
+                Toast.makeText(AnswersForPapers.this, "Uploaded", Toast.LENGTH_SHORT).show();
             });
 
             uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -243,14 +249,13 @@ public class AnswersForPapers extends AppCompatActivity {
 
                             Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
                             while(!uri.isComplete());
-                            Uri url = uri.getResult();
+                            url = uri.getResult();
 
 
                             // AnswerModel answerModel;
                            // answerModel = new AnswerModel(pdfName.getText().toString(), url.toString());
-                            EditText pdfName = dialog.findViewById(R.id.noteText);
-                            dbRef.child(dbRef.push().getKey()).setValue(pdfName.getText().toString(), url.toString());
-                            Toast.makeText(AnswersForPapers.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            // EditText pdfName = dialog.findViewById(R.id.noteText);
+
                             progressDialog.dismiss();
                         }
                     }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {

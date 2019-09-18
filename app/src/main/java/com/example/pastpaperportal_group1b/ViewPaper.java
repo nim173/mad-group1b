@@ -96,8 +96,8 @@ public class ViewPaper extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull PastPaperRV holder,
                                             int position,
                                             @NonNull PaperUpload model) {
-                System.out.println("modellllllllllllllllllllllllllllllll " + getRef(position).getKey());
-                model.setPaperId(getRef(position).getKey());
+                System.out.println("modellllllllllllllllllllllllllllllll " + model.getPaperId() + model.getModuleId() );
+                //model.setPaperId(getRef(position).getKey());
                 holder.setParameters(model);
             }
 

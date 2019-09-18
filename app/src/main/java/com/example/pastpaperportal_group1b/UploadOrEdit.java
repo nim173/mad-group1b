@@ -38,6 +38,7 @@ public class UploadOrEdit extends AppCompatActivity{
     private Button uploadButton;
     private EditText pdfName;
     private ProgressBar progressBar;
+    public Uri url;
 
    private String pushId;
             DatabaseReference dbRef; //store uploaded files
@@ -114,10 +115,10 @@ public class UploadOrEdit extends AppCompatActivity{
 
                         Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
                         while(!uri.isComplete());
-                        Uri url = uri.getResult();
+                        url = uri.getResult();
 
-                        paperUpload = new PaperUpload(pdfName.getText().toString(), url.toString());
-                        dbRef.child(dbRef.push().getKey()).setValue(paperUpload);
+                        //paperUpload = new PaperUpload(pdfName.getText().toString(), url.toString());
+                        //dbRef.child(dbRef.push().getKey()).setValue(paperUpload);
                         Toast.makeText(UploadOrEdit.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         progressDialog.dismiss();
                     }
@@ -136,7 +137,7 @@ public class UploadOrEdit extends AppCompatActivity{
         System.out.println("666666666666666666666666666666666666666666" + pushId);
 
         dbRef = FirebaseDatabase.getInstance().getReference("Module/" +  pushId + "/Years/" +
-                academicYear.getSelectedItem().toString().trim() + "/" + PaperId.getText().toString().trim()).child("url");
+                academicYear.getSelectedItem().toString().trim());
 
         System.out.println("kkkkkkkkkkkkkkkkkkkkkkkkkkkkk    "+ dbRef);
 
@@ -145,15 +146,16 @@ public class UploadOrEdit extends AppCompatActivity{
         else if (TextUtils.isEmpty(PaperId.getText().toString()))
             Toast.makeText(getApplicationContext(), "enter a name to show others", Toast.LENGTH_SHORT).show();
         else {
-            paperUpload.setNote(note.getText().toString().trim());
+            //paperUpload.setNote(note.getText().toString().trim());
             paperUpload.setModuleId(pushId);
-             academicYear.getSelectedItem().toString().trim();
+             //academicYear.getSelectedItem().toString().trim();
              paperUpload.setPaperId(PaperId.getText().toString().trim());
-             dbRef.setValue(paperUpload.getPdfName());
+             paperUpload.setUrl(url.toString());
+             dbRef.child(PaperId.getText().toString().trim()).setValue(paperUpload);
 
-            DatabaseReference next = dbRef.push();
+            //DatabaseReference next = dbRef.push();
             /* pushId = next.getKey();*/
-            next.setValue(paperUpload);
+            //next.setValue(paperUpload);
 
                             //here module is a push id(as module names can be the same for different stuff,
                             // this module id or whatever will be taken as an intent

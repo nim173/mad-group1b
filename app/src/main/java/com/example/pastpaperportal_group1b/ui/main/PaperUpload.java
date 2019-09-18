@@ -4,43 +4,34 @@ import java.util.Map;
 
 public class PaperUpload {
 
-    private String PaperId;
+    private String paperId;
     private String moduleId;
-    private String note;
-    //private String url; // check this issue
-    private String pdfName;
+    //private String note;
+    private String url; // check this issue
+    //private String pdfName;
 
     public PaperUpload() {
     }
 
-    public PaperUpload(String url, String pdfName) {
-       // this.url = url;
-        this.pdfName = pdfName;
-    }
-
-    public String getPaperId() {
-        return PaperId;
-    }
-
-    public void setPaperId(String paperId) {
-        PaperId = paperId;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    /*public String getUrl() {
-        return url;
-    }*/
-
-    public String getPdfName() {
-        return pdfName;
-    }
 
     public String getModuleId() { return moduleId; }
 
     public void setModuleId(String moduleId) { this.moduleId = moduleId; }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(String paperId) {
+        this.paperId = paperId;
+    }
 }
 
