@@ -32,6 +32,7 @@ public class SearchResult extends AppCompatActivity {
     private FirebaseRecyclerAdapter<Module, ModuleViewHolder> firebaseRecyclerAdapter;
     private int itemCount = 0;
     private TextView resultsNos;
+    public static final String MOD_NAME = "module name";
 
     @SuppressWarnings("ConstantConditions")
     @Override
@@ -89,6 +90,8 @@ public class SearchResult extends AppCompatActivity {
                         Context context = view.getContext();
                         Intent intent = new Intent(context, PapersAfterSearch.class);
                         intent.putExtra(MOD_ID, getRef(i).getKey());
+                        TextView name = moduleViewHolder.mView.findViewById(R.id.name_text);
+                        intent.putExtra(MOD_NAME, name.getText().toString());
                         context.startActivity(intent);
                     });
                 }
