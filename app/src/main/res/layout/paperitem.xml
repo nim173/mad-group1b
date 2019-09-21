@@ -13,46 +13,50 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <TableRow
-            android:layout_width="466dp"
-            android:layout_height="68dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/PaperId"
-                android:layout_width="185dp"
-                android:layout_height="54dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Paper name" />
-
-            <Button
+            <!--   <Button
                 android:id="@+id/viewButton"
                 android:layout_width="60dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
                 android:baselineAligned="false"
-                android:text="v" />
+                android:text="v" />-->
 
-            <Button
+            <TextView
+                android:id="@+id/PaperId"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Paper name" />
+
+            <ImageButton
                 android:id="@+id/downloadButton"
-                android:layout_width="65dp"
-                android:layout_height="wrap_content"
+                android:layout_width="44dp"
+                android:layout_height="38dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="15dp"
-                android:text="d" />
+                android:background="@drawable/com_facebook_auth_dialog_header_background"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_down" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/AddAnswers"
-                android:layout_width="62dp"
-                android:layout_height="wrap_content"
+                android:layout_width="41dp"
+                android:layout_height="38dp"
                 android:layout_marginTop="10dp"
+                android:background="@drawable/com_facebook_auth_dialog_background"
                 android:onClick="showAnswers"
-                android:text="ans" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_answer" />
 
         </TableRow>
 

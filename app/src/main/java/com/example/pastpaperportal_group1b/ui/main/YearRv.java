@@ -2,6 +2,7 @@ package com.example.pastpaperportal_group1b.ui.main;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,7 @@ import com.example.pastpaperportal_group1b.R;
 public class YearRv extends RecyclerView.ViewHolder {
 
         public TextView year;
-        public Button viewButton;
+        public ImageButton viewButton;
 
 
     public YearRv(@NonNull View itemView) {
