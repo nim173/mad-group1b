@@ -33,6 +33,7 @@ import com.example.pastpaperportal_group1b.ui.main.PastPaperRV;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,8 +55,12 @@ public class AnswersForPapers extends AppCompatActivity {
     StorageReference storageRef;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     public Dialog dialog;
+    private FirebaseAuth mAuth;
     public Uri url;
+    private String year;
+    private String paperName;
 
+    public static final String ANS_DELETE = "ans_delete";
 
 
     @Override
@@ -63,6 +68,7 @@ public class AnswersForPapers extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers_for_papers);
 
+        mAuth = FirebaseAuth.getInstance();
         addAnswer = new addAnswer();
         //view, add, edit and delete in a dialog
         storageRef = FirebaseStorage.getInstance().getReference();
@@ -77,10 +83,10 @@ public class AnswersForPapers extends AppCompatActivity {
         Intent intent = getIntent();
 
 /*        pushId = intent.getStringExtra(UploadOrEdit.ID);*/
-        String year = intent.getStringExtra(ViewPaper.YEAR);
+        year = intent.getStringExtra(ViewPaper.YEAR);
         pushId = intent.getStringExtra(ViewPaper.MODULE_ID);
         Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
-        String paperName = intent.getStringExtra(ViewPaper.VIEW_NAME);
+        paperName = intent.getStringExtra(ViewPaper.VIEW_NAME);
 
 
         //Initialize Database
@@ -112,6 +118,7 @@ public class AnswersForPapers extends AppCompatActivity {
                                             int position,
                                             @NonNull AnswerModel model) {
                     holder.answerName.setText(getRef(position).getKey());
+
             }
 
             @Override
@@ -235,7 +242,21 @@ public class AnswersForPapers extends AppCompatActivity {
             }
         }
 
-        private void uploadFile(Uri data) {
+    private void signInSnackBar(){
+        Snackbar.make(findViewById(android.R.id.content), "Please sign in", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(255, 174, 66))
+                .setAction("Sign In", v1 -> {
+                    Context context = v1.getContext();
+                    Intent intent = new Intent(context, Login.class);
+                    context.startActivity(intent);
+                }).setActionTextColor(Color.rgb(0,0,0)).show();
+    }
+
+
+    private void uploadFile(Uri data) {
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            if (currentUser == null) {
+                signInSnackBar();
+            } else {
             System.out.println("__________________________________________________ENTERED5");
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
@@ -266,10 +287,10 @@ public class AnswersForPapers extends AppCompatActivity {
                     progressDialog.setMessage("Uploaded: " +(int) progress + "%");
                 }
             });
-        }
+        }}
 
-/*
-    public void onDelete(View view) {
+
+    public void Delete(View view) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             signInSnackBar();
@@ -278,12 +299,11 @@ public class AnswersForPapers extends AppCompatActivity {
                     .setTitle("Are you sure?")
                     .setView(null)
                     .setPositiveButton("Delete", (dialog1, which) -> {
-                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question").child(pushId);
+                        dbRef = FirebaseDatabase.getInstance().getReference("Module/" + pushId + '/' + "Years" + "/" + year +  "/" + paperName + "/Answers");
                         dbRef.removeValue();
-                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
-                        dbRef.removeValue();
-                        Intent intent = new Intent(this, Forum.class);
-                        intent.putExtra(FROM_DELETE, "true");
+
+                        Intent intent = new Intent(this, AnswersForPapers.class);
+                        intent.putExtra(ANS_DELETE, "true");
                         startActivity(intent);
                     })
                     .setNegativeButton("Cancel", null)
@@ -292,7 +312,7 @@ public class AnswersForPapers extends AppCompatActivity {
         }
     }
 
-    public void onEdit(View view) {
+  /*  public void Edit(View view) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             signInSnackBar();
@@ -305,8 +325,8 @@ public class AnswersForPapers extends AppCompatActivity {
             intent.putExtra(BODY, body.getText());
             intent.putExtra(PUSH_ID, pushId);
             startActivity(intent);
-        }}*/
-
+        }}
+*/
     public void add(View view){
 
         addAnswer.display(AnswersForPapers.this);

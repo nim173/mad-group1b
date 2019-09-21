@@ -14,7 +14,7 @@
     <TableRow
         android:id="@+id/row1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="115dp"
         android:paddingLeft="5dp"
         android:paddingTop="10dp"
         android:paddingRight="5dp"
@@ -32,60 +32,84 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/answerName"
-                android:layout_width="match_parent"
-                android:layout_height="27dp"
-                android:layout_weight="1"
-                android:focusable="true"
-                android:minHeight="50dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="answerName"
-                android:textSize="18sp" />
-
                 <RelativeLayout
                     android:id="@+id/rl1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="384dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
+                    android:layout_marginStart="-3dp"
+                    android:layout_marginTop="0dp"
                     android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/downloadAnswer"
+                        android:layout_width="43dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginLeft="338dp"
+                        android:layout_marginTop="-1dp"
+                        android:text="D" />
+
+                    <Button
+                        android:id="@+id/deleteAnswer"
+                        android:layout_width="41dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="59dp"
+                        android:onClick="Delete"
+                        android:text="D" />
+
+                    <Button
+                        android:id="@+id/edit"
+                        android:layout_width="52dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="7dp"
+                        android:layout_toStartOf="@+id/deleteAnswer"
+                        android:text="E" />
 
                     <TextView
                         android:id="@+id/username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/viewAnswer"
+                        android:layout_below="@+id/deleteAnswer"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginStart="11dp"
-                        android:layout_marginLeft="11dp"
-                        android:layout_marginTop="-8dp"
-                        android:layout_marginEnd="278dp"
+                        android:layout_marginStart="269dp"
+                        android:layout_marginLeft="269dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginEnd="20dp"
                         android:text="@string/username123"
                         android:textColor="#BDBDBD"
                         android:textStyle="italic" />
 
-                    <Button
-                        android:id="@+id/downloadAnswer"
-                        android:layout_width="33dp"
-                        android:layout_height="38dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="338dp"
-                        android:layout_marginTop="0dp"
-                        android:text="D" />
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="208dp"
+                        android:layout_height="54dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="4dp"
+                        android:paddingStart="5dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="description" />
 
-                    <Button
-                        android:id="@+id/viewAnswer"
-                        android:layout_width="34dp"
-                        android:layout_height="35dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="80dp"
-                        android:text="V" />
                 </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/answerName"
+                    android:layout_width="211dp"
+                    android:layout_height="38dp"
+                    android:layout_weight="1"
+                    android:focusable="true"
+                    android:minHeight="50dp"
+                    android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="answerName"
+                    android:textSize="18sp" />
+
             </RelativeLayout>
 
         </LinearLayout>

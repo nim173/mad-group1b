@@ -41,6 +41,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_question_or_answer);
 
+
         Intent intent = getIntent();
         TextView textView = findViewById(R.id.forum_header2);
         editTitle = findViewById(R.id.editTitle);

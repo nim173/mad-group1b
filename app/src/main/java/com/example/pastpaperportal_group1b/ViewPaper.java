@@ -39,6 +39,7 @@ public class ViewPaper extends AppCompatActivity {
     public static final String YEAR = "year";
     private String year;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private String modName;
 
     FirebaseRecyclerPagingAdapter<PaperUpload, PastPaperRV> mAdapter;
 
@@ -52,6 +53,7 @@ public class ViewPaper extends AppCompatActivity {
         Intent intent = getIntent();
         year = intent.getStringExtra(PapersAfterSearch.VIEW_PAPER);
         pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
+        modName = intent.getStringExtra(SearchResult.MOD_NAME);
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + year +" " +pushId);
         Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
         TextView name = findViewById(R.id.PaperId);
@@ -171,7 +173,10 @@ public class ViewPaper extends AppCompatActivity {
         Intent intentForum = new Intent(this, Forum.class);
         TextView moduleId = findViewById(R.id.moduleId);                  //@Dinuli change textView5 to have the module name as well maybe?
         String heading = moduleId.getText().toString();
-        intentForum.putExtra(FORUM_KEY, heading);
+        intentForum.putExtra(FORUM_KEY, modName + " - " + year);
+        intentForum.putExtra(YEAR, year);
+        intentForum.putExtra(MODULE_ID, pushId);
+
         startActivity(intentForum);
     }
 

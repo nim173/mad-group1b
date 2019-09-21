@@ -19,7 +19,7 @@ public class AnswerRV extends RecyclerView.ViewHolder  {
     {
         super(itemView);
         answerName = itemView.findViewById(R.id.answerName);
-        viewPaper = itemView.findViewById(R.id.viewAnswer);
+        viewPaper = itemView.findViewById(R.id.edit);
         downloadPaper = itemView.findViewById(R.id.downloadAnswer);
     }
 
