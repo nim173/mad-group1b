@@ -21,14 +21,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 
 public class SignUp extends AppCompatActivity {
 
-    EditText  pass,Email;
-    Button   signup;
+    EditText  pass,Email,name;
+    Button   signup,signIN;
 //     FirebaseAuth.AuthStateListener mAuthListener;
      FirebaseAuth mAuth;
      ProgressDialog progressDialog;
@@ -47,8 +50,10 @@ public class SignUp extends AppCompatActivity {
         pass=findViewById(R.id.regiPassword);
 
 
+        //name=findViewById(R.id.regiUserName);
         mAuth= FirebaseAuth.getInstance();
         signup=findViewById(R.id.btnSignUp);
+        signIN=findViewById(R.id.stoLogin);
         progressDialog=new ProgressDialog(this);
         progressDialog.setMessage("Registering com.example.pastpaperportal_group1b.User..");
 
@@ -58,29 +63,30 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                String email=Email.getText().toString().trim();
-                String password=pass.getText().toString().trim();
+                String email = Email.getText().toString().trim();
+                String password = pass.getText().toString().trim();
+                //  String uName=name.getText().toString().trim();
 
                 //validation
 
-                if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
 
                     Email.setError("Invalid Email");
                     Email.setFocusable(true);
 
-                }
-                else if(password.length()<6){
+                } else if (password.length() < 6) {
 
                     pass.setError("Password length at least 6 characters");
                     pass.setFocusable(true);
 
+                } else {
+                    registorUser(email, password);
                 }
-                else{
-                    registorUser(email,password);
-                }
-
 
             }
+
+
+
         });
 
 
@@ -102,8 +108,8 @@ public class SignUp extends AppCompatActivity {
 
 
         //click Sign Text
-        TextView mtxtSignIn =  findViewById(R.id.txtSignIn);
-        mtxtSignIn.setOnClickListener(new View.OnClickListener() {
+       // TextView mtxtSignIn =  findViewById(R.id.txtSignIn);
+        signIN.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
               Intent login=new Intent(SignUp.this, Login.class);
@@ -127,8 +133,39 @@ public class SignUp extends AppCompatActivity {
 
                             progressDialog.dismiss();
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            //get User email and uid from auth
+                            String email=user.getEmail();
+                            String uid=user.getUid();
+
+
+                            user.getPhotoUrl().toString();
+
+
+                            //using Hashmap
+                            HashMap<Object,String> hashMap= new HashMap<>();
+
+                            //put info in hashmap
+                            hashMap.put("email",email);
+                            hashMap.put("uid",uid);
+                            hashMap.put("name","");
+                            hashMap.put("url","");
+                            hashMap.put("cover","");
+
+
+
+                            //firbase database instence
+
+                            FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+
+                            //path to store
+                            DatabaseReference reference=firebaseDatabase.getReference("Users");
+
+                            reference.child(uid).setValue(hashMap);
+
+
                             Toast.makeText(SignUp.this, "Registed..\n"+user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SignUp.this,Profile.class));
+                            startActivity(new Intent(SignUp.this,ProfileDefault.class));
                             finish();
 
 

@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
@@ -13,7 +16,6 @@
         android:roundIcon="@drawable/ic_mind_map"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".add_new_module"></activity>
         <activity android:name=".view_all_modules" />
         <activity android:name=".AnswersForPapers" />
         <activity android:name=".SearchResult" />
@@ -26,6 +28,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <activity android:name=".ProfileDefault" />
+        <activity android:name=".add_new_module" />
         <activity android:name=".ChangedPassword" />
         <activity android:name=".send_message" />
         <activity android:name=".requests" />
@@ -56,6 +60,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_application_id" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

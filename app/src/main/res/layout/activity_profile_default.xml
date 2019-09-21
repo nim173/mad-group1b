@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ProfileDefault">
+
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/coverIv"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="fitXY">
+
+        </ImageView>
+
+        <LinearLayout
+            android:layout_width="151dp"
+            android:layout_height="124dp"
+            android:layout_marginTop="100dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/avataIv"
+                android:layout_width="129dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:background="@color/colorWhite"
+                android:padding="5dp"
+                app:srcCompat="@drawable/ic_addpic"/>
+
+
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+</ScrollView>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/ic_edit" />
+
+    <TextView
+        android:id="@+id/txtname"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="312dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="88dp"
+        android:text="User Name"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="375dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="3px"
+        android:text="email"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txtpassword"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="70dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="430dp"
+        android:layout_marginEnd="90dp"
+        android:text="*********"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btnchangepass"
+        android:layout_width="300dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="128dp"
+        android:text="Change Password"
+        android:layout_marginTop="475dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginEnd="3px"/>
+
+
+</RelativeLayout>
+
+
+
+
+
