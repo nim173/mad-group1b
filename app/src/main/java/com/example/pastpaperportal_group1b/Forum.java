@@ -38,6 +38,7 @@ import static com.example.pastpaperportal_group1b.ui.main.PaginationListener.PAG
 
 public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
+    public static final String PATH = "path for storing";
     private DatabaseReference dbRef;
     private String lastID;
 
@@ -52,7 +53,8 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     private boolean isLoading = false;
     private int itemCount = 0;
     private Question question;
-
+    private String moduleId;
+    private String year;
     //good practice to use the key as capital letters since the data received
     // at the next activity will be eventually treated as immutable
     public static final String HEADER_KEY = "PASTPAPERPORTAL.FORUM.QUESTION";
@@ -64,6 +66,8 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
         Intent intent = getIntent();
         String heading = intent.getStringExtra(ViewPaper.FORUM_KEY);
+        moduleId = intent.getStringExtra(ViewPaper.MODULE_ID);
+        year = intent.getStringExtra(ViewPaper.YEAR);
         if ("true".equals(intent.getStringExtra(FROM_DELETE)))
             Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
         TextView textView = findViewById(R.id.forum_header);
@@ -80,7 +84,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         adapter = new PostRecyclerAdapter(new ArrayList<>());
         mRecyclerView.setAdapter(adapter);
         adapter.addLoading(question);
-        FirebaseDatabase.getInstance().getReference("Forum/Question").orderByKey().limitToFirst(1)
+        FirebaseDatabase.getInstance().getReference("Forum/Question/" + moduleId + "/" + year).orderByChild("revDate").limitToFirst(1)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -88,20 +92,19 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                             adapter.removeLoading();
                             findViewById(R.id.row1NoQ).setVisibility(View.VISIBLE);
                         }else{
-                        for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                            findViewById(R.id.row1NoQ).setVisibility(View.GONE);
-                            lastID = postSnapshot.getKey();
-                            question.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
-                            question.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
-                            question.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
-                            question.setUid(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getUid());
-                            question.setPhotoUrl(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getPhotoUrl());
-                            question.setTime(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getTime());
-                            question.setPushId(postSnapshot.getKey());
-                        }
-
-                        doApiCall();
-                    }}
+                            for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                                findViewById(R.id.row1NoQ).setVisibility(View.GONE);
+                                lastID = postSnapshot.getKey();
+                                question.setTitle( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getTitle());
+                                question.setUsername( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getUsername());
+                                question.setDate( Objects.requireNonNull( postSnapshot.getValue( Question.class ) ).getDate());
+                                question.setUid(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getUid());
+                                question.setPhotoUrl(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getPhotoUrl());
+                                question.setTime(Objects.requireNonNull(postSnapshot.getValue(Question.class)).getTime());
+                                question.setPushId(postSnapshot.getKey());
+                            }
+                            doFirstApiCall();
+                        }}
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -148,12 +151,14 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         String heading = header.getText().toString();
         intentQuestion.putExtra(HEADER_KEY, heading);
         intentQuestion.putExtra( EDIT, "false");
+        intentQuestion.putExtra(PATH, moduleId + "/" + year);
         startActivity(intentQuestion);
     }
 
     public void viewQuestion(View view){
         Intent intentViewQ =  new Intent(this, ViewQuestion.class);
         intentViewQ.putExtra(AddQuestionOrAnswer.ID, view.getTag().toString());
+        intentViewQ.putExtra(PATH, moduleId + "/" + year);
         startActivity(intentViewQ);
     }
 
@@ -161,8 +166,8 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         findViewById(R.id.row1NoQ).setVisibility(View.GONE);
         final ArrayList<Question> items = new ArrayList<>();
         new Handler().postDelayed( () -> {
-            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question");
-            dbRef.limitToFirst(PAGE_SIZE+1).orderByKey()
+            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question/" + moduleId + "/" + year);
+            dbRef.limitToFirst(PAGE_SIZE+1).orderByChild("revDate")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -184,6 +189,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                                 }
                                 //adapter.removeLoading();
                                 if (currentPage != PAGE_START) adapter.removeLoading();
+                                items.remove(0);
                                 adapter.addItems(items);
                                 swipeRefresh.setRefreshing(false);
                                 // check whether is last page or not
@@ -207,10 +213,9 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         findViewById(R.id.row1NoQ).setVisibility(View.GONE);
         final ArrayList<Question> items = new ArrayList<>();
         new Handler().postDelayed( () -> {
-            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question");
-            dbRef
-                    .limitToFirst(PAGE_SIZE+1)
-                    .orderByKey()
+            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question/" + moduleId + "/" + year);
+            dbRef.limitToFirst(PAGE_SIZE+1)
+                    .orderByChild("revDate")
                     .startAt(lastID)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -229,7 +234,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
                                 items.add(postItem);
                             }
                             if (currentPage != PAGE_START) adapter.removeLoading();
-                            items.remove(0);
+//                            items.remove(0);
                             adapter.addItems(items);
                             swipeRefresh.setRefreshing(false);
                             // check whether is last page or not
@@ -275,7 +280,6 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
 
         }, 0);
     }
-
     @Override
     public void onRefresh() {
         itemCount = 0;
@@ -293,11 +297,9 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         adapter.clear();
         doFirstApiCall();
     }
-
     @Override
     public void onBackPressed() {
         finish();
         super.onBackPressed();
-
     }
 }

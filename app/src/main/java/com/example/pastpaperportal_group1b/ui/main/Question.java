@@ -10,6 +10,7 @@ public class Question {
     private String time;
     private String pushId;
     private String photoUrl;
+    private long revDate;
 
     public Question() {
     }
@@ -80,5 +81,13 @@ public class Question {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public long getRevDate() {
+        return revDate;
+    }
+
+    public void setRevDate(long revDate) {
+        this.revDate = revDate;
     }
 }

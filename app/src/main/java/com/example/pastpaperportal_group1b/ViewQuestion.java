@@ -64,6 +64,7 @@ public class ViewQuestion extends AppCompatActivity {
     private AddPostDialog addPostDialog;
     private TableRow noA;
     private int itemCount = 0;
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +82,9 @@ public class ViewQuestion extends AppCompatActivity {
         if ("true".equals(intent.getStringExtra(FROM_EDIT)))
             Snackbar.make(findViewById(android.R.id.content), "Question edited successfully", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
         pushId = intent.getStringExtra(AddQuestionOrAnswer.ID);
+        path = intent.getStringExtra(Forum.PATH);
         if (pushId != null) {
-            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question/" + '/' + pushId);
+            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question/"+ path + '/' + pushId);
             dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -125,7 +127,7 @@ public class ViewQuestion extends AppCompatActivity {
             mRecyclerView.setLayoutManager(mManager);
 
             //Initialize Database
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + path + '/' + pushId);
 
             //Initialize PagedList Configuration
             PagedList.Config config = new PagedList.Config.Builder()
@@ -161,7 +163,7 @@ public class ViewQuestion extends AppCompatActivity {
                         //adding click listener
                         popup.setOnMenuItemClickListener(item -> {
                                 if (item.getItemId() == (R.id.delete)) {
-                                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId + "/" + model.getPushId());
+                                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + path + '/' + pushId + "/" + model.getPushId());
                                     dbRef.removeValue();
                                     mAdapter.refresh();
                                     Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
@@ -265,9 +267,9 @@ public class ViewQuestion extends AppCompatActivity {
                     .setTitle("Are you sure?")
                     .setView(null)
                     .setPositiveButton("Delete", (dialog1, which) -> {
-                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question").child(pushId);
-                        dbRef.removeValue();
-                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
+                        DatabaseReference dbRefd = FirebaseDatabase.getInstance().getReference("Forum/Question/" + path + "/" + pushId);
+                        dbRefd.removeValue();
+                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + path + '/' + pushId);
                         dbRef.removeValue();
                         Intent intent = new Intent(this, Forum.class);
                         intent.putExtra(FROM_DELETE, "true");
@@ -291,6 +293,7 @@ public class ViewQuestion extends AppCompatActivity {
             intent.putExtra(TITLE, title.getText());
             intent.putExtra(BODY, body.getText());
             intent.putExtra(PUSH_ID, pushId);
+            intent.putExtra(Forum.PATH, path);
             startActivity(intent);
         }
     }
@@ -319,7 +322,7 @@ public class ViewQuestion extends AppCompatActivity {
             Button mAddPostButton = mDialog.findViewById(R.id.buttonAddPost);
             Button mExitButton = mDialog.findViewById(R.id.buttonExit);
 
-            final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + '/' + pushId);
+            final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + path + '/' + pushId);
 
             mAddPostButton.setOnClickListener(v -> {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
