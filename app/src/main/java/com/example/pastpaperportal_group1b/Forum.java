@@ -49,7 +49,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     private PostRecyclerAdapter adapter;
     private int currentPage = 1;
     private boolean isLastPage = false;
-    private final int totalPage = 4;
+    private final int totalPage = 10;
     private boolean isLoading = false;
     private int itemCount = 0;
     private Question question;
@@ -153,6 +153,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         intentQuestion.putExtra( EDIT, "false");
         intentQuestion.putExtra(PATH, moduleId + "/" + year);
         startActivity(intentQuestion);
+        finish();
     }
 
     public void viewQuestion(View view){
@@ -167,7 +168,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         final ArrayList<Question> items = new ArrayList<>();
         new Handler().postDelayed( () -> {
             dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question/" + moduleId + "/" + year);
-            dbRef.limitToFirst(PAGE_SIZE+1).orderByChild("revDate")
+            dbRef.orderByChild("revDate")
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {

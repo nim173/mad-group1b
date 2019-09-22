@@ -351,14 +351,10 @@ public class ViewQuestion extends AppCompatActivity {
                     });
                 }
             });
-
             mExitButton.setOnClickListener(v -> mDialog.dismiss());
-
             //Finally, Show the dialog
             mDialog.show();
         }
-
-
     }
 
     /*public void showMenu(View v) {
@@ -367,7 +363,6 @@ public class ViewQuestion extends AppCompatActivity {
         popup.inflate(R.menu.menu_example);
         popup.show();
     }
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
@@ -376,5 +371,11 @@ public class ViewQuestion extends AppCompatActivity {
             default:
                 return false;
         }
+    }*/
+    /*@Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, Forum.class);
+        intent.putExtra()
     }*/
 }

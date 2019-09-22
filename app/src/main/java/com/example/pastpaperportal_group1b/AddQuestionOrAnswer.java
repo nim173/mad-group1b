@@ -102,12 +102,14 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                 if("true".equals( edit )){
                     dbRef.child( pushId ).child( "title" ).setValue( editTitle.getText().toString().trim() );
                     dbRef.child( pushId ).child( "body" ).setValue( editBody.getText().toString().trim() );
+                    findViewById(R.id.forum_header2).setVisibility(View.GONE);
                     Intent newQuestion = new Intent( this, ViewQuestion.class );
                     newQuestion.putExtra( ID, pushId );
                     newQuestion.putExtra( USER, uid );
                     newQuestion.putExtra( FROM_EDIT, "true");
                     newQuestion.putExtra(Forum.PATH, path);
                     startActivity( newQuestion );
+                    finish();
                 } else {
                     question.setTitle( editTitle.getText().toString().trim() );
                     question.setBody( editBody.getText().toString().trim() );
@@ -130,6 +132,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                     newQuestion.putExtra( FROM_ADD, "true");
                     newQuestion.putExtra(Forum.PATH, path);
                     startActivity( newQuestion );
+                    finish();
                 }
             }
         }
