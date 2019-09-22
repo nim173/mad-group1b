@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,6 +46,7 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_sign_up);
 
         Email=findViewById(R.id.regiEmail);
@@ -79,7 +82,10 @@ public class SignUp extends AppCompatActivity {
                     pass.setError("Password length at least 6 characters");
                     pass.setFocusable(true);
 
-                } else {
+                }
+
+
+                else {
                     registorUser(email, password);
                 }
 
@@ -131,16 +137,19 @@ public class SignUp extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
 
+
+
                             progressDialog.dismiss();
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            sendEmailVerfication();
+
+
 
                             //get User email and uid from auth
                             String email=user.getEmail();
                             String uid=user.getUid();
-
-
-                            user.getPhotoUrl().toString();
-
+                          //  user.getPhotoUrl().toString();
 
                             //using Hashmap
                             HashMap<Object,String> hashMap= new HashMap<>();
@@ -165,7 +174,7 @@ public class SignUp extends AppCompatActivity {
 
 
                             Toast.makeText(SignUp.this, "Registed..\n"+user.getEmail(), Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SignUp.this,ProfileDefault.class));
+                            startActivity(new Intent(SignUp.this,Login.class));
                             finish();
 
 
@@ -187,6 +196,32 @@ public class SignUp extends AppCompatActivity {
         });
 
     }
+
+
+    public void sendEmailVerfication(){
+        FirebaseUser user=FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user !=null){
+            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+
+                        mAuth.signOut();
+
+                        Toast.makeText(SignUp.this, "Please Check Your Email And Verify", Toast.LENGTH_LONG).show();
+
+                    }
+                    else{
+                        Toast.makeText(SignUp.this, "Not Verify", Toast.LENGTH_SHORT).show();
+
+                    }
+                }
+            });
+        }
+
+    }
+
 
     public void toComments_Images(View view){
         Intent intent = new Intent(this, Comments_Image.class);

@@ -8,6 +8,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -47,8 +48,12 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.InputStream;
 import java.util.HashMap;
@@ -79,7 +84,9 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_login);
+
 
 
 
@@ -142,7 +149,7 @@ public class Login extends AppCompatActivity {
                 else if(email.equals("admin@gmail.com")&& (pass.equals("admin1"))){
 
                     startActivity(new Intent(Login.this,admin_dashboard.class));
-                    Toast.makeText(Login.this, "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Welcome to Admin DashBoard", Toast.LENGTH_SHORT).show();
                 }
 
                 else{
@@ -167,14 +174,6 @@ public class Login extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
-
-
 
 
 
@@ -284,12 +283,32 @@ public class Login extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
+                       FirebaseUser user=mAuth.getCurrentUser();
+
+
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            //FirebaseUser user = mAuth.getCurrentUser();
                             progressDialog.dismiss();
-                            startActivity(new Intent(Login.this,ProfileDefault.class));
-                            finish();
+                          //  startActivity(new Intent(Login.this,ProfileDefault.class));
+                            try {
+
+                                if(user.isEmailVerified()){
+                                    Toast.makeText(Login.this, "Email Verifyed", Toast.LENGTH_SHORT).show();
+                                    startActivity(new Intent(Login.this,SearchCommon.class));
+                                }
+                                else{
+                                    Toast.makeText(Login.this, "Verfy Email", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            catch (NullPointerException e){
+
+                                Toast.makeText(Login.this, ""+e.getMessage(), Toast.LENGTH_SHORT).show();
+
+                            }
+
+                            //finish();
 
 
                         } else {
@@ -374,31 +393,57 @@ public class Login extends AppCompatActivity {
                             String uid=user.getUid();
                             String url=user.getPhotoUrl().toString();
 
+                            //emali exsict
+
+
+                            DatabaseReference db=FirebaseDatabase.getInstance().getReference("Users");
+                            Query getdata=db.orderByChild("email").equalTo(email);
+                            getdata.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists()){
+                                        Toast.makeText(Login.this, "Exists Email", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        HashMap<Object,String> hashMap= new HashMap<>();
+
+                                        //put info in hashmap
+
+                                        hashMap.put("email",email);
+                                        hashMap.put("uid",uid);
+                                        hashMap.put("name","");
+                                        hashMap.put("url",url);
+                                        hashMap.put("Cover_Photo","");
+
+                                        db.child(uid).setValue(hashMap);
+
+                                        Toast.makeText(Login.this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
+
+                                        startActivity(new Intent(Login.this, ProfileDefault.class));
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
                             //using Hashmap
-                            HashMap<Object,String> hashMap= new HashMap<>();
-
-                            //put info in hashmap
-
-                            hashMap.put("email",email);
-                            hashMap.put("uid",uid);
-                            hashMap.put("name","");
-                            hashMap.put("url",url);
-                            hashMap.put("Cover_Photo","");
 
                             //firbase database instence
 
-                            FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+                           // FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
 
                             //path to store
-                            DatabaseReference reference=firebaseDatabase.getReference("Users");
+                           // DatabaseReference reference=firebaseDatabase.getReference("Users");
 
-                            reference.child(uid).setValue(hashMap);
+                            //reference.child(uid).setValue(hashMap);
 
 
 
-                            Toast.makeText(Login.this, ""+user.getEmail(), Toast.LENGTH_SHORT).show();
 
-                            startActivity(new Intent(Login.this, ProfileDefault.class));
                            // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.

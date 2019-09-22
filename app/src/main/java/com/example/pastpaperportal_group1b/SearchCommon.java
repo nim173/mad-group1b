@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -30,14 +33,17 @@ public class SearchCommon extends AppCompatActivity {
     private EditText mSearchField;
     public static final String MOD_ID = "moduleId";
     public static final String SEARCH = "search";
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_search_common);
 
         DatabaseReference mUserDatabase = FirebaseDatabase.getInstance().getReference("Module");
         mSearchField = findViewById(R.id.search_field);
+        FirebaseAuth firebaseAuth;
 
         Map<String,String> myMap = new HashMap<>();
         final ArrayAdapter<String> modules = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
@@ -119,4 +125,28 @@ public class SearchCommon extends AppCompatActivity {
             return true;
         }
     }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_profile,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id=item.getItemId();
+        if(id ==R.id.action_profile){
+            startActivity(new Intent(SearchCommon.this,ProfileDefault.class));
+
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
 }

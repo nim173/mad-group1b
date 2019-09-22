@@ -14,6 +14,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -100,6 +101,7 @@ public class ProfileDefault extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_profile_default);
 
 
@@ -175,7 +177,7 @@ public class ProfileDefault extends AppCompatActivity {
 
                         System.out.println("Cover Image");
                       //  Picasso.get().load(cover).into(coverIv);
-                        Picasso.get().load(url).fit().centerCrop().into(coverIv);
+                        Picasso.get().load(cover).fit().centerCrop().into(coverIv);
                     }
                     catch (Exception e){
 
@@ -599,6 +601,7 @@ public class ProfileDefault extends AppCompatActivity {
             firebaseAuth.signOut();
             checkUserStatus();
         }
+
 
         return super.onOptionsItemSelected(item);
     }
