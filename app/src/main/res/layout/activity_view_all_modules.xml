@@ -7,19 +7,33 @@
     tools:context=".view_all_modules">
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/pbmodule"
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerView2"
-        app:layout_constraintEnd_toStartOf="@+id/recyclerView2"
+        app:layout_constraintBottom_toTopOf="@+id/modulerecycler1"
+        app:layout_constraintEnd_toStartOf="@+id/modulerecycler1"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/recyclerView2"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView2" />
+        app:layout_constraintStart_toEndOf="@+id/modulerecycler1"
+        app:layout_constraintTop_toBottomOf="@+id/modulerecycler1" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView2"
+        android:id="@+id/modulerecycler1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/new_module"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:focusable="true"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/modulerecycler1"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.908"
+        app:srcCompat="@color/colorPrimary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

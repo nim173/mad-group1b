@@ -3,6 +3,7 @@ package com.example.pastpaperportal_group1b;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,11 +39,15 @@ public class send_message extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_send_message);
         Subject = (EditText) findViewById(R.id.subject);
         Body = (EditText) findViewById(R.id.body);
         sentTo = (Spinner) findViewById(R.id.sent_to);
         userId = (EditText) findViewById(R.id.userId);
+
+        //clear all text fields
+        Subject.setText(""); Body.setText(""); sentTo.setTag(""); userId.setText("");
 
         sendbtn = (Button) findViewById(R.id.sendbtn1);
 
@@ -79,7 +84,7 @@ public class send_message extends AppCompatActivity {
                     public void DataIsDeleted() {
 
                     }
-                });
+                });gotoAll(view);
             }
         });
 
