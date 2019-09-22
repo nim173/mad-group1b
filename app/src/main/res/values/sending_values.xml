@@ -4,4 +4,17 @@
         <item name="All">All</item>
         <item name="Individual">Individual</item>
     </string-array>
+
+    <string-array name="faculty_values">
+        <item name="faculty of computing">FOC</item>
+        <item name="faculty of business">FOB</item>
+        <item name="faculty of enginering">FOE</item>
+    </string-array>
+
+    <string-array name="year_values">
+        <item name="Year 1">1</item>
+        <item name="Year 2">2</item>
+        <item name="Year 3">3</item>
+        <item name="Year 4">4</item>
+    </string-array>
 </resources>

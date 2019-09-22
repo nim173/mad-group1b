@@ -65,7 +65,7 @@ public class RecyclerView_Config {
             mSubject.setText(message.getSubject());
             mauthor.setText(message.getAuthor());
             mdate.setText(message.getDate());
-            Picasso.get().load(message.getPhotoUrl()).into(imageView);
+            //Picasso.get().load(message.getPhotoUrl()).into(imageView);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -6,7 +6,6 @@ public class Module {
     private String key;
     private String abbrev;
     private String faculty;
-    private String special;
     private int year;
 
     public Module() {
@@ -50,14 +49,6 @@ public class Module {
 
     public void setFaculty(String faculty) {
         this.faculty = faculty;
-    }
-
-    public String getSpecial() {
-        return special;
-    }
-
-    public void setSpecial(String special) {
-        this.special = special;
     }
 
     public int getYear() {

@@ -30,9 +30,9 @@ public class send_message extends AppCompatActivity {
 
     private Button sendbtn;
 
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    FirebaseUser currentUser = mAuth.getCurrentUser();
-    String username = currentUser.getDisplayName();
+    //FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    //currentUser = mAuth.getCurrentUser();
+    //String username = currentUser.getDisplayName();
     //String url = currentUser.getPhotoUrl().toString();
 
     @Override
@@ -54,7 +54,7 @@ public class send_message extends AppCompatActivity {
                 messages.setBody(Body.getText().toString());
                 messages.setSent_To(sentTo.getSelectedItem().toString());
                 messages.setUserId(userId.getText().toString());
-                messages.setAuthor(username);
+                messages.setAuthor("Admin");
                 //messages.setPhotoUrl(url);
                 Date date = new Date();
                 messages.setDate(new SimpleDateFormat( "dd-MM-yyyy", Locale.getDefault() ).format( date ) );
@@ -67,6 +67,7 @@ public class send_message extends AppCompatActivity {
                     @Override
                     public void DataIsInserted() {
                         Toast.makeText(send_message.this,"Message Sent Successfully",Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(send_message.this,view_all_messages.class));
                     }
 
                     @Override
@@ -79,17 +80,12 @@ public class send_message extends AppCompatActivity {
 
                     }
                 });
-                gotoAll(view);
             }
         });
 
     }
-
     public void gotoAll(View view){
-
-        Intent intent = new Intent(this, view_all_messages.class);
-        startActivity(intent);
-
+        startActivity(new Intent(send_message.this,view_all_messages.class));
     }
 
 }
