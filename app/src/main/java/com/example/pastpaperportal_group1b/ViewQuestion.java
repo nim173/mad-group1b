@@ -1,12 +1,10 @@
 package com.example.pastpaperportal_group1b;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -25,7 +23,6 @@ import android.widget.PopupMenu;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.pastpaperportal_group1b.ui.main.PostViewHolder;
 import com.example.pastpaperportal_group1b.ui.main.Replies;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,12 +36,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.shreyaspatil.firebase.recyclerpagination.DatabasePagingOptions;
 import com.shreyaspatil.firebase.recyclerpagination.FirebaseRecyclerPagingAdapter;
 import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-
 import static com.example.pastpaperportal_group1b.AddQuestionOrAnswer.FROM_ADD;
 import static com.example.pastpaperportal_group1b.AddQuestionOrAnswer.FROM_EDIT;
 

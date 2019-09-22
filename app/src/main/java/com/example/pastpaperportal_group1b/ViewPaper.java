@@ -14,14 +14,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.pastpaperportal_group1b.ui.main.PaperUpload;
 import com.example.pastpaperportal_group1b.ui.main.PastPaperRV;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
 import com.shreyaspatil.firebase.recyclerpagination.DatabasePagingOptions;
 import com.shreyaspatil.firebase.recyclerpagination.FirebaseRecyclerPagingAdapter;
 import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
@@ -30,7 +35,7 @@ public class ViewPaper extends AppCompatActivity {
 
 
     ExpandableRelativeLayout answers; //commented for now
-    private DatabaseReference dbRef;
+
     private String pushId;
     private RecyclerView mRecyclerView;
     private String name;
@@ -41,25 +46,32 @@ public class ViewPaper extends AppCompatActivity {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private String modName;
 
+    private DatabaseReference dbRef;
+    private StorageReference storageRef;
+    private StorageReference Ref;//used for downloading here
+
     FirebaseRecyclerPagingAdapter<PaperUpload, PastPaperRV> mAdapter;
 
     public static final String FORUM_KEY = "PASTPAPERPORTAL.FORUM";
+    private ImageButton downloadButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_paper);
-
         Intent intent = getIntent();
         year = intent.getStringExtra(PapersAfterSearch.VIEW_PAPER);
         pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
         modName = intent.getStringExtra(SearchResult.MOD_NAME);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + year +" " +pushId);
+        System.out.println("!!!!!!!!!!!!!!!!!" + year +" " +pushId);
         Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
-        TextView name = findViewById(R.id.PaperId);
- /*       name.setText(Paperi);*/
+        TextView name = findViewById(R.id.moduleId);
+       name.setText(modName);
 
+        downloadButton = findViewById(R.id.downloadButton);
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+
+/*        downloadButton.setOnClickListener(view -> downloadFile( ));*/
 
         //Initialize RecyclerView
         mRecyclerView = findViewById(R.id.yearCard);
@@ -98,7 +110,7 @@ public class ViewPaper extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull PastPaperRV holder,
                                             int position,
                                             @NonNull PaperUpload model) {
-                System.out.println("modellllllllllllllllllllllllllllllll " + model.getPaperId() + model.getModuleId() );
+                System.out.println("modelllllllllllllllll " + model.getPaperId() + model.getModuleId() );
                 //model.setPaperId(getRef(position).getKey());
                 holder.setParameters(model);
             }
@@ -133,7 +145,6 @@ public class ViewPaper extends AppCompatActivity {
                 mSwipeRefreshLayout.setRefreshing(false);
                 databaseError.toException().printStackTrace();
                 // Handle Error
-
             }
         };
 
@@ -187,10 +198,25 @@ public class ViewPaper extends AppCompatActivity {
                 getSystemService(Context.DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(uri);
-
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
 
         return downloadmanager.enqueue(request);
+
+
     }
+
+/*
+    public void downloadFile(Uri data){
+        StorageReference reference =
+                storageRef.child("UploadPaper/PastPaper/PDF" + System.currentTimeMillis() + ".pdf");
+        reference.getFile(data)
+                .addOnSuccessListener(taskSnapshot -> {
+
+                }).addOnProgressListener(taskSnapshot -> {
+
+                });
+    }
+*/
+
 }

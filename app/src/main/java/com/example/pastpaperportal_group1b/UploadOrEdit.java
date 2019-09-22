@@ -154,7 +154,6 @@ public class UploadOrEdit extends AppCompatActivity{
         if (currentUser == null) {
             signInSnackBar();
         } else {
-
             System.out.println("666666666666666666666666666666666666666666" + pushId);
 
             dbRef = FirebaseDatabase.getInstance().getReference("Module/" + pushId + "/Years/" +

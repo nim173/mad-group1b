@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/yearItem"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,35 +12,38 @@
     card_view:cardCornerRadius="4dp"
     >
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
+
+
+        <ImageButton
+            android:id="@+id/viewButton"
+            android:layout_width="61dp"
+            android:layout_height="57dp"
+            android:background="@drawable/com_facebook_auth_dialog_background"
+            android:onClick="ViewDetails"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_next"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintHorizontal_bias="0.5"
+            card_view:layout_constraintStart_toEndOf="@+id/year"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/year"
-            android:layout_width="399dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_width="147dp"
+            android:layout_height="55dp"
             android:gravity="center"
-            android:text="Year" />
+            android:text="Year"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toStartOf="@+id/viewButton"
+            card_view:layout_constraintHorizontal_bias="0.5"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
-        <TableRow
-            android:layout_width="215dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <Button
-                android:id="@+id/viewButton"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="15dp"
-                android:baselineAligned="false"
-                android:onClick="ViewDetails"
-                android:text="v" />
-        </TableRow>
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

@@ -18,11 +18,13 @@ import android.icu.util.ValueIterator;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,7 +78,8 @@ public class AnswersForPapers extends AppCompatActivity {
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
         //Initialize RecyclerView
-        mRecyclerView = findViewById(R.id.ansCard);        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView = findViewById(R.id.ansCard);
+        mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager mManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mManager);
@@ -117,7 +120,32 @@ public class AnswersForPapers extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull AnswerRV holder,
                                             int position,
                                             @NonNull AnswerModel model) {
-                    holder.answerName.setText(getRef(position).getKey());
+                    holder.answerName.setText(model.getName());
+                    holder.desc.setText(model.getDesc());
+
+                holder.options.setOnClickListener(view -> {
+                    //creating a popup menu
+                    PopupMenu popup = new PopupMenu(AnswersForPapers.this, holder.options, Gravity.END);
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.options);
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(item -> {
+                        if (item.getItemId() == (R.id.delete)) {
+                            dbRef = FirebaseDatabase.getInstance().getReference("Module/" + pushId + '/' + "Years" + "/" + year +  "/" + paperName + "/Answers");
+                            dbRef.removeValue();
+                            mAdapter.refresh();
+                            Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully",
+                                    Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                                    .setBackgroundTint(Color.rgb(0, 184, 212)).show();
+                            return true;
+                        }
+                        else
+                            return false;
+                    });
+                    //displaying the popup
+                    popup.show();
+
+                });
 
             }
 
@@ -175,7 +203,6 @@ public class AnswersForPapers extends AppCompatActivity {
             dialog = new Dialog(context);
             dialog.setContentView(R.layout.add_answer_dialog);
             final EditText name = dialog.findViewById(R.id.nameText);
-         /*   final EditText note = dialog.findViewById(R.id.noteText);*/
             final EditText desc = dialog.findViewById(R.id.noteText);
             Button uploadButton = dialog.findViewById(R.id.selectButton);
             Button submit = dialog.findViewById(R.id.submitButton);
@@ -196,7 +223,7 @@ public class AnswersForPapers extends AppCompatActivity {
 
                 answerModel.setName(name.getText().toString().trim());
                /* answerModel.setUsername(currentUser.getDisplayName());*/
-                answerModel.getDescript(desc.getText().toString().trim());
+                answerModel.setDesc(desc.getText().toString().trim());
                 answerModel.setUrl(url.toString());
                 //dbRef.child(dbRef.push().getKey()).setValue(pdfName.getText().toString(), url.toString());
                 DatabaseReference newRef = dbRef.push();
@@ -253,10 +280,10 @@ public class AnswersForPapers extends AppCompatActivity {
 
 
     private void uploadFile(Uri data) {
-            FirebaseUser currentUser = mAuth.getCurrentUser();
+        /*    FirebaseUser currentUser = mAuth.getCurrentUser();
             if (currentUser == null) {
                 signInSnackBar();
-            } else {
+            } else {*/
             System.out.println("__________________________________________________ENTERED5");
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
@@ -287,14 +314,14 @@ public class AnswersForPapers extends AppCompatActivity {
                     progressDialog.setMessage("Uploaded: " +(int) progress + "%");
                 }
             });
-        }}
+        }
 
 
-    public void Delete(View view) {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+    public void Delete() {
+    /*    FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             signInSnackBar();
-        } else {
+        } else {*/
             AlertDialog dialog = new AlertDialog.Builder(this)
                     .setTitle("Are you sure?")
                     .setView(null)
@@ -310,9 +337,10 @@ public class AnswersForPapers extends AppCompatActivity {
                     .create();
             dialog.show();
         }
-    }
+  /*  }*/
 
-  /*  public void Edit(View view) {
+/*
+ public void Edit(View view) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser == null) {
             signInSnackBar();
@@ -327,6 +355,7 @@ public class AnswersForPapers extends AppCompatActivity {
             startActivity(intent);
         }}
 */
+
     public void add(View view){
 
         addAnswer.display(AnswersForPapers.this);
