@@ -5,16 +5,8 @@ public class AnswerModel {
     private String name;
     private String url;
     private String username;
-    private String desc;
-    private String pdfname;
 
-    public AnswerModel(String pdfname, String url) {
-        this.url = url;
-        this.pdfname=pdfname;
-    }
-
-
-    public String getDescript(String trim) {
+    public String getDesc() {
         return desc;
     }
 
@@ -22,15 +14,25 @@ public class AnswerModel {
         this.desc = desc;
     }
 
+    private String desc;
+    private String pdfname;
+
+
+    public AnswerModel() {
+    }
+
+    public AnswerModel(String pdfname, String url) {
+        this.url = url;
+        this.pdfname=pdfname;
+    }
+
+
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public AnswerModel() {
     }
 
     public String getName() {

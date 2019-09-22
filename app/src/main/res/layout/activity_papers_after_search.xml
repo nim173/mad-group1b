@@ -34,8 +34,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout1"
-        android:layout_width="396dp"
-        android:layout_height="76dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="4dp"
@@ -43,40 +43,39 @@
         tools:layout_editor_absoluteX="2dp"
         tools:layout_editor_absoluteY="185dp">
 
-        <TextView
-            android:id="@+id/moduleId"
-            android:layout_width="230sp"
-            android:layout_height="41dp"
-            android:layout_alignStart="@+id/constraintLayout1"
-            android:layout_alignTop="@+id/constraintLayout1"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center"
-            android:textSize="26dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.21"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.272" />
-
         <Button
             android:id="@+id/AddAnswer"
-            android:layout_width="66dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:gravity="center|center_horizontal"
             android:onClick="addPaper"
             android:text="Add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.676"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/moduleId"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/moduleId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/constraintLayout1"
+            android:layout_alignTop="@+id/constraintLayout1"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="@string/moduleName"
+            android:textSize="26dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/AddAnswer"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.272" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

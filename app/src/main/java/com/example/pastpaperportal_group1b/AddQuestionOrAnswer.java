@@ -35,6 +35,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
     private EditText editBody;
     private String edit;
     private String pushId;
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
         editTitle = findViewById(R.id.editTitle);
         editBody = findViewById(R.id.editBody);
         edit = intent.getStringExtra( ViewQuestion.EDIT );
+        path = intent.getStringExtra(Forum.PATH);
 
         if("true".equals( edit )){
             editTitle.setText( intent.getStringExtra( ViewQuestion.TITLE ) );
@@ -74,7 +76,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
             else {
                 title.setVisibility(View.INVISIBLE);
             }
-        } );
+        });
     }
 
     public void submit(View view) {
@@ -92,7 +94,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
         } else {
             String username = currentUser.getDisplayName();
             String uid = currentUser.getUid();
-            dbRef = FirebaseDatabase.getInstance().getReference( "Forum/Question" );
+            dbRef = FirebaseDatabase.getInstance().getReference( "Forum/Question/" + path);
 
             if(TextUtils.isEmpty(editTitle.getText().toString().trim())) {
                 Snackbar.make(findViewById(android.R.id.content), "Title cannot be empty!!", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(179,58,58)).show();
@@ -100,11 +102,14 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                 if("true".equals( edit )){
                     dbRef.child( pushId ).child( "title" ).setValue( editTitle.getText().toString().trim() );
                     dbRef.child( pushId ).child( "body" ).setValue( editBody.getText().toString().trim() );
+                    findViewById(R.id.forum_header2).setVisibility(View.GONE);
                     Intent newQuestion = new Intent( this, ViewQuestion.class );
                     newQuestion.putExtra( ID, pushId );
                     newQuestion.putExtra( USER, uid );
                     newQuestion.putExtra( FROM_EDIT, "true");
+                    newQuestion.putExtra(Forum.PATH, path);
                     startActivity( newQuestion );
+                    finish();
                 } else {
                     question.setTitle( editTitle.getText().toString().trim() );
                     question.setBody( editBody.getText().toString().trim() );
@@ -117,7 +122,7 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                     Date date = new Date();
                     question.setDate( new SimpleDateFormat( "dd-MM-yyyy", Locale.getDefault() ).format( date ) );
                     question.setTime( new SimpleDateFormat( "HH:mm", Locale.getDefault() ).format( date ) );
-
+                    question.setRevDate((-1*date.getTime()));
                     DatabaseReference newRef = dbRef.push();
                     String push = newRef.getKey();
                     newRef.setValue( question );
@@ -125,7 +130,9 @@ public class AddQuestionOrAnswer extends AppCompatActivity {
                     newQuestion.putExtra( ID, push );
                     newQuestion.putExtra( USER, uid );
                     newQuestion.putExtra( FROM_ADD, "true");
+                    newQuestion.putExtra(Forum.PATH, path);
                     startActivity( newQuestion );
+                    finish();
                 }
             }
         }

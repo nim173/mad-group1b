@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -14,81 +15,120 @@
     <TableRow
         android:id="@+id/row1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="115dp"
         android:paddingLeft="5dp"
         android:paddingTop="10dp"
         android:paddingRight="5dp"
         android:paddingBottom="10dp">
 
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/ll1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/relativeLayout2"
+                android:layout_width="397dp"
+                android:layout_height="106dp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/answerName"
-                android:layout_width="match_parent"
-                android:layout_height="27dp"
-                android:layout_weight="1"
-                android:focusable="true"
-                android:minHeight="50dp"
-                android:paddingStart="5dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="answerName"
-                android:textSize="18sp" />
-
-                <RelativeLayout
+                <!-- <RelativeLayout
                     android:id="@+id/rl1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_width="384dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_weight="1">
+                    android:layout_marginStart="-3dp"
+                    android:layout_marginTop="0dp"
+                    android:layout_weight="1">-->
 
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/viewAnswer"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginStart="11dp"
-                        android:layout_marginLeft="11dp"
-                        android:layout_marginTop="-8dp"
-                        android:layout_marginEnd="278dp"
-                        android:text="@string/username123"
-                        android:textColor="#BDBDBD"
-                        android:textStyle="italic" />
+                <!--</RelativeLayout>-->
 
-                    <Button
-                        android:id="@+id/downloadAnswer"
-                        android:layout_width="33dp"
-                        android:layout_height="38dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_marginLeft="338dp"
-                        android:layout_marginTop="0dp"
-                        android:text="D" />
+                <ImageButton
+                    android:id="@+id/downloadAnswer"
+                    android:layout_width="43dp"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="264dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/com_facebook_auth_dialog_header_background"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_down"
+                    card_view:layout_constraintBottom_toBottomOf="@+id/options"
+                    card_view:layout_constraintEnd_toStartOf="@+id/options"
+                    card_view:layout_constraintHorizontal_bias="0.5"
+                    card_view:layout_constraintStart_toEndOf="@+id/answerName"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="@+id/options"
+                    card_view:layout_constraintVertical_bias="1.0" />
 
-                    <Button
-                        android:id="@+id/viewAnswer"
-                        android:layout_width="34dp"
-                        android:layout_height="35dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="80dp"
-                        android:text="V" />
-                </RelativeLayout>
-            </RelativeLayout>
+                <ImageButton
+                    android:id="@+id/options"
+                    android:layout_width="26dp"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/com_facebook_auth_dialog_background"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_dota"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintHorizontal_bias="0.5"
+                    card_view:layout_constraintStart_toEndOf="@+id/downloadAnswer"
+                    card_view:layout_constraintTop_toTopOf="parent" />
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="36dp"
+                    android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="description"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toStartOf="@+id/username"
+                    card_view:layout_constraintHorizontal_bias="0.5"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@+id/answerName" />
+
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/username123"
+                    android:textColor="#BDBDBD"
+                    android:textStyle="italic"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintHorizontal_bias="0.5"
+                    card_view:layout_constraintStart_toEndOf="@+id/description"
+                    card_view:layout_constraintTop_toBottomOf="@+id/downloadAnswer"
+                    card_view:layout_constraintVertical_bias="0.586" />
+
+                <TextView
+                    android:id="@+id/answerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:minHeight="50dp"
+                    android:paddingStart="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:text="answerName"
+                    android:textSize="18sp"
+                    card_view:layout_constraintBottom_toTopOf="@+id/description"
+                    card_view:layout_constraintEnd_toStartOf="@+id/downloadAnswer"
+                    card_view:layout_constraintHorizontal_bias="0.5"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </TableRow>
 </androidx.cardview.widget.CardView>

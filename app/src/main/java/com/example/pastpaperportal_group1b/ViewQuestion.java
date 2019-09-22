@@ -1,12 +1,10 @@
 package com.example.pastpaperportal_group1b;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -25,7 +23,6 @@ import android.widget.PopupMenu;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.pastpaperportal_group1b.ui.main.PostViewHolder;
 import com.example.pastpaperportal_group1b.ui.main.Replies;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,12 +36,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.shreyaspatil.firebase.recyclerpagination.DatabasePagingOptions;
 import com.shreyaspatil.firebase.recyclerpagination.FirebaseRecyclerPagingAdapter;
 import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-
 import static com.example.pastpaperportal_group1b.AddQuestionOrAnswer.FROM_ADD;
 import static com.example.pastpaperportal_group1b.AddQuestionOrAnswer.FROM_EDIT;
 
@@ -64,6 +59,7 @@ public class ViewQuestion extends AppCompatActivity {
     private AddPostDialog addPostDialog;
     private TableRow noA;
     private int itemCount = 0;
+    private String path;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +77,9 @@ public class ViewQuestion extends AppCompatActivity {
         if ("true".equals(intent.getStringExtra(FROM_EDIT)))
             Snackbar.make(findViewById(android.R.id.content), "Question edited successfully", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
         pushId = intent.getStringExtra(AddQuestionOrAnswer.ID);
+        path = intent.getStringExtra(Forum.PATH);
         if (pushId != null) {
-            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question/" + '/' + pushId);
+            dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question/"+ path + '/' + pushId);
             dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -125,7 +122,7 @@ public class ViewQuestion extends AppCompatActivity {
             mRecyclerView.setLayoutManager(mManager);
 
             //Initialize Database
-            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + path + '/' + pushId);
 
             //Initialize PagedList Configuration
             PagedList.Config config = new PagedList.Config.Builder()
@@ -161,7 +158,7 @@ public class ViewQuestion extends AppCompatActivity {
                         //adding click listener
                         popup.setOnMenuItemClickListener(item -> {
                                 if (item.getItemId() == (R.id.delete)) {
-                                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId + "/" + model.getPushId());
+                                    dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + path + '/' + pushId + "/" + model.getPushId());
                                     dbRef.removeValue();
                                     mAdapter.refresh();
                                     Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
@@ -265,9 +262,9 @@ public class ViewQuestion extends AppCompatActivity {
                     .setTitle("Are you sure?")
                     .setView(null)
                     .setPositiveButton("Delete", (dialog1, which) -> {
-                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Question").child(pushId);
-                        dbRef.removeValue();
-                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + pushId);
+                        DatabaseReference dbRefd = FirebaseDatabase.getInstance().getReference("Forum/Question/" + path + "/" + pushId);
+                        dbRefd.removeValue();
+                        dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + path + '/' + pushId);
                         dbRef.removeValue();
                         Intent intent = new Intent(this, Forum.class);
                         intent.putExtra(FROM_DELETE, "true");
@@ -291,6 +288,7 @@ public class ViewQuestion extends AppCompatActivity {
             intent.putExtra(TITLE, title.getText());
             intent.putExtra(BODY, body.getText());
             intent.putExtra(PUSH_ID, pushId);
+            intent.putExtra(Forum.PATH, path);
             startActivity(intent);
         }
     }
@@ -319,7 +317,7 @@ public class ViewQuestion extends AppCompatActivity {
             Button mAddPostButton = mDialog.findViewById(R.id.buttonAddPost);
             Button mExitButton = mDialog.findViewById(R.id.buttonExit);
 
-            final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + '/' + pushId);
+            final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + path + '/' + pushId);
 
             mAddPostButton.setOnClickListener(v -> {
                 FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -353,14 +351,10 @@ public class ViewQuestion extends AppCompatActivity {
                     });
                 }
             });
-
             mExitButton.setOnClickListener(v -> mDialog.dismiss());
-
             //Finally, Show the dialog
             mDialog.show();
         }
-
-
     }
 
     /*public void showMenu(View v) {
@@ -369,7 +363,6 @@ public class ViewQuestion extends AppCompatActivity {
         popup.inflate(R.menu.menu_example);
         popup.show();
     }
-
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
@@ -378,5 +371,11 @@ public class ViewQuestion extends AppCompatActivity {
             default:
                 return false;
         }
+    }*/
+    /*@Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, Forum.class);
+        intent.putExtra()
     }*/
 }

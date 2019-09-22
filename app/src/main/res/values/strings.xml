@@ -1,7 +1,6 @@
 <resources>
-    <string name="facebook_app_id">907156592995785</string>
-    <string name="fb_login_protocol_scheme">fb907156592995785</string>
-
+    <string name="facebook_application_id" translatable="false">411432499488039</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb411432499488039</string>
     <string name="app_name">Past Paper Portal - Group 1b</string>
     <string name="viewPaper">View</string>
     <string name="upload_document">Upload</string>
