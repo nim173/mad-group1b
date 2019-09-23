@@ -126,7 +126,7 @@
             app:layout_constraintHorizontal_bias="0.462"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/download_button" />
+            app:srcCompat="@drawable/ic_menu_send" />
 
         <TextView
             android:id="@+id/textView2"

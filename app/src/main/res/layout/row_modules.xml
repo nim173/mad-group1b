@@ -30,7 +30,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
                 android:text="Database Management Systems"
-                android:textSize="23sp"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -38,9 +38,9 @@
                 android:id="@+id/module__abbrev"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="28dp"
+                android:layout_marginEnd="40dp"
                 android:text="P AND S"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toStartOf="@+id/module__key"
                 app:layout_constraintTop_toBottomOf="@+id/module__name" />
 
@@ -49,9 +49,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="IT-2110"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.353"
+                app:layout_constraintHorizontal_bias="0.329"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/module__name" />
 
@@ -59,10 +59,9 @@
                 android:id="@+id/module__faculty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="58dp"
-                android:layout_marginTop="1dp"
+                android:layout_marginStart="36dp"
                 android:text="FOC"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/module__key"
                 app:layout_constraintTop_toBottomOf="@+id/module__name" />
 
@@ -73,7 +72,7 @@
                 android:layout_marginStart="23dp"
                 android:layout_marginTop="1dp"
                 android:text="Year 4"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/module__faculty"
                 app:layout_constraintTop_toBottomOf="@+id/module__name" />
 
@@ -81,8 +80,8 @@
                 android:id="@+id/module__menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="16dp"
                 android:text="&#8942;"
                 android:textAlignment="center"
                 android:textAllCaps="false"
