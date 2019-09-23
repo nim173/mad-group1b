@@ -410,7 +410,6 @@ public class Login extends AppCompatActivity {
 
                                         //put info in hashmap
 
-                                     //   hashMap.put("email",email);
                                        // hashMap.put("email",email);
                                         hashMap.put("uid",uid);
                                         hashMap.put("name",personname);
