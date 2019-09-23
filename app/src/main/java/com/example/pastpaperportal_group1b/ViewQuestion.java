@@ -266,9 +266,10 @@ public class ViewQuestion extends AppCompatActivity {
                         dbRefd.removeValue();
                         dbRef = FirebaseDatabase.getInstance().getReference("Forum/Replies/" + path + '/' + pushId);
                         dbRef.removeValue();
-                        Intent intent = new Intent(this, Forum.class);
-                        intent.putExtra(FROM_DELETE, "true");
-                        startActivity(intent);
+                        //Intent intent = new Intent(this, Forum.class);
+                        //intent.putExtra(FROM_DELETE, "true");
+                        //startActivity(intent);
+                        Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(0, 184, 212)).show();
                     })
                     .setNegativeButton("Cancel", null)
                     .create();
