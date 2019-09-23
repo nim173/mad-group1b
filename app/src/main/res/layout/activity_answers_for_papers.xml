@@ -44,10 +44,11 @@
             app:layout_constraintStart_toEndOf="@+id/moduleId" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="329dp"
+        android:layout_height="700dp"
         android:layout_below="@+id/constraintLayout"
         android:layout_alignParentStart="false"
         android:layout_marginStart="0dp"
@@ -67,8 +68,8 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ansCard"
-                android:layout_width="397dp"
-                android:layout_height="365dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"

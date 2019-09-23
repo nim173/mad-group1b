@@ -53,6 +53,7 @@ import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 public class AnswersForPapers extends AppCompatActivity {
     private DatabaseReference dbRef;
@@ -125,6 +126,9 @@ public class AnswersForPapers extends AppCompatActivity {
                                             @NonNull AnswerModel model) {
                     holder.answerName.setText(model.getName());
                     holder.desc.setText(model.getDesc());
+                holder.username.setText(model.getUsername());
+
+                System.out.println("))))))))))))))))))))))))))))))))))))))"+ model.getUsername());
 
                 holder.options.setOnClickListener(view -> {
                     //creating a popup menu
@@ -162,7 +166,6 @@ public class AnswersForPapers extends AppCompatActivity {
                                 startActivity(intent);
                             }
                 });
-
             }
 
             @Override
@@ -241,28 +244,31 @@ public class AnswersForPapers extends AppCompatActivity {
             Button submit = dialog.findViewById(R.id.submitButton);
             Button cancel = dialog.findViewById(R.id.exitButton);
 
-            final  DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            final  DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("Module/" + pushId + '/' + "Years" + "/" + year +  "/" + paperName + "/Answers");
 
             submit.setOnClickListener(view -> {
 
-            /*    FirebaseUser currentUser = mAuth.getCurrentUser();
+            FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser == null) {
                     signInSnackBar();
-                } else if (TextUtils.isEmpty(mBodyEditText.getText().toString().trim())){
-                    Snackbar.make(findViewById(android.R.id.content), "Reply cannot be empty!!", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(179,58,58)).show();
-                } else {*/
+                } else {
 
-                AnswerModel answerModel = new AnswerModel();
+                    AnswerModel answerModel = new AnswerModel();
 
-                answerModel.setName(name.getText().toString().trim());
-               /* answerModel.setUsername(currentUser.getDisplayName());*/
-                answerModel.setDesc(desc.getText().toString().trim());
-                answerModel.setUrl(url.toString());
-                //dbRef.child(dbRef.push().getKey()).setValue(pdfName.getText().toString(), url.toString());
-                DatabaseReference newRef = dbRef.push();
-                // dbRef.push().setValue(answerModel);
-                newRef.setValue( answerModel );
-                Toast.makeText(AnswersForPapers.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                    answerModel.setName(name.getText().toString().trim());
+                    /* answerModel.setUsername(currentUser.getDisplayName());*/
+                    answerModel.setDesc(desc.getText().toString().trim());
+                    answerModel.setUrl(url.toString());
+                    answerModel.setUsername(currentUser.getDisplayName());
+                    //dbRef.child(dbRef.push().getKey()).setValue(pdfName.getText().toString(), url.toString());
+                    DatabaseReference newRef = mDatabase.push();
+                    // dbRef.push().setValue(answerModel);
+                    newRef.setValue(answerModel);
+                    Toast.makeText(AnswersForPapers.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                    System.out.println("__________________________"+currentUser.getDisplayName());
+                    dialog.dismiss();
+                }
+
             });
 
             uploadButton.setOnClickListener(new View.OnClickListener() {
@@ -282,7 +288,6 @@ public class AnswersForPapers extends AppCompatActivity {
         }
 
     }
-
 
        public void edit(String answerName, String des) {
 
