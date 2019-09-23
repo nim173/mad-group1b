@@ -1,6 +1,7 @@
 package com.example.pastpaperportal_group1b;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -73,5 +74,20 @@ public class view_all_modules extends AppCompatActivity {
 
             }
         });
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.setTitle("View All Modules");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();//go privious activity
+        return super.onSupportNavigateUp();
     }
 }
