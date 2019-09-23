@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "197819312699-5r00do76onnas9nov71hn9j6n7b7n9fj.apps.googleusercontent.com",
+          "client_id": "197819312699-ajvk5gq22fo3m2ou79q84bodum2uvg0a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pastpaperportal_group1b",
+            "certificate_hash": "27647f30d9a2eea19543afb7c7babd9486eff60e"
+          }
+        },
+        {
+          "client_id": "197819312699-qpish2l6rjclt4r4o8g7f86im6th86lg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.pastpaperportal_group1b",

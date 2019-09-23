@@ -166,7 +166,7 @@ public class ViewPaper extends AppCompatActivity {
     }*/
     public void uploadAnswer(View view){
         Intent intentUpload =  new Intent(this, UploadOrEdit.class);
-        Button uploadButton = findViewById(R.id.uploadButton);
+/*        Button uploadButton = findViewById(R.id.uploadButton);*/
         startActivity(intentUpload);
     }
 
@@ -202,8 +202,6 @@ public class ViewPaper extends AppCompatActivity {
         request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
 
         return downloadmanager.enqueue(request);
-
-
     }
 
 /*
