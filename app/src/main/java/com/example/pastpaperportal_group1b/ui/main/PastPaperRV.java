@@ -14,17 +14,13 @@ public class PastPaperRV extends RecyclerView.ViewHolder  {
 
     TextView viewName;
     ImageButton ans;
-    /*Button downloadButton;
-    Button addAnswer;
-    Button viewDetails;*/
+    ImageButton downloadPaper;
 
     public PastPaperRV(@NonNull View itemView) {
         super(itemView);
         viewName = itemView.findViewById(R.id.PaperId);
         ans = itemView.findViewById(R.id.AddAnswers);
-        /*downloadButton = itemView.findViewById(R.id.downloadButton);
-        viewDetails = itemView.findViewById(R.id. view);
-        addAnswer = itemView.findViewById(R.id.AddAnswers);*/
+        downloadPaper = itemView.findViewById(R.id.downloadButton);
     }
 
     public void setParameters(PaperUpload paperUpload){

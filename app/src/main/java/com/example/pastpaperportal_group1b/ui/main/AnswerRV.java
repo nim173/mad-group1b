@@ -14,13 +14,14 @@ public class AnswerRV extends RecyclerView.ViewHolder  {
 
     public TextView answerName;
     public TextView desc;
-    public Button viewPaper;
+    public TextView username;
     public ImageButton downloadPaper;
     public ImageButton options;
 
     public AnswerRV(@NonNull View itemView)
     {
         super(itemView);
+        username=itemView.findViewById(R.id.username);
         answerName = itemView.findViewById(R.id.answerName);
         desc = itemView.findViewById(R.id.description);
         downloadPaper = itemView.findViewById(R.id.downloadAnswer);

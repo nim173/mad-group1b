@@ -1,5 +1,6 @@
 package com.example.pastpaperportal_group1b;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -88,7 +89,23 @@ public class send_message extends AppCompatActivity {
             }
         });
 
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();//go privious activity
+        return super.onSupportNavigateUp();
+    }
+
     public void gotoAll(View view){
         startActivity(new Intent(send_message.this,view_all_messages.class));
     }

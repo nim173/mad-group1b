@@ -120,51 +120,55 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
         builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                try{ dialog.wait(); }catch (Exception e) {}
+                try { dialog.wait(100); } catch (Exception e) {}
                 DatabaseReference databaseModules = FirebaseDatabase.getInstance().getReference("Module");
+                System.out.println(mkey.getText());
+                if (!mkey.getText().equals(mkey.getText())) {
+                    System.out.println(mkey.getText().toString()); System.out.println(mkey.getText().toString().trim());
+                    Query getdata = databaseModules.orderByChild("key").equalTo(mkey.getText().toString());
+                    getdata.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                Toast.makeText(context, "Enrollment Key Exists", Toast.LENGTH_LONG).show();
+                            } else {
+                                HashMap<String, Object> result = new HashMap<>();
+                                result.put("name", mname.getText().toString());
+                                result.put("abbrev", mabbrev.getText().toString());
+                                result.put("key", mkey.getText().toString());
+                                result.put("year", Integer.parseInt(myear.getSelectedItem().toString()));
+                                result.put("faculty", mfaculty.getSelectedItem().toString());
+                                System.out.println(moduleList.get(position).getPushId());
+                                FirebaseDatabase.getInstance().getReference().child("Module")
+                                        .child(moduleList.get(position).getPushId())
+                                        .updateChildren(result);
+                            }
+                        }
 
-                if(!mkey.getText().toString().equals(mkey.getText().toString())){
-                Query getdata = databaseModules.orderByChild("key").equalTo(mkey.getText().toString().trim());
-                getdata.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()){
-                            Toast.makeText(context,"Enrollment Key Exists",Toast.LENGTH_LONG).show();
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
                         }
-                        else {
-                            HashMap<String,Object> result = new HashMap<>();
-                            result.put("name", mname.getText().toString().trim());
-                            result.put("abbrev", mabbrev.getText().toString().trim());
-                            result.put("key", mkey.getText().toString().trim());
-                            result.put("year", Integer.parseInt(myear.getSelectedItem().toString().trim()));
-                            result.put("faculty", mfaculty.getSelectedItem().toString().trim());
-                            System.out.println(moduleList.get(position).getPushId());
-                            FirebaseDatabase.getInstance().getReference().child("Messages")
-                                    .child(moduleList.get(position).getPushId())
-                                    .updateChildren(result);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {}
-                });
-                }else {
-                    HashMap<String,Object> result = new HashMap<>();
-                    result.put("name", mname.getText().toString().trim());
-                    result.put("abbrev", mabbrev.getText().toString().trim());
-                    result.put("key", mkey.getText().toString().trim());
-                    result.put("year", Integer.parseInt(myear.getSelectedItem().toString().trim()));
-                    result.put("faculty", mfaculty.getSelectedItem().toString().trim());
+                    });
+                } else {
+                    HashMap<String, Object> result = new HashMap<>();
+                    result.put("name", mname.getText().toString());
+                    result.put("abbrev", mabbrev.getText().toString());
+                    result.put("key", mkey.getText().toString());
+                    result.put("year", Integer.parseInt(myear.getSelectedItem().toString()));
+                    result.put("faculty", mfaculty.getSelectedItem().toString());
                     DatabaseReference db = FirebaseDatabase.getInstance().getReference("Module");
                     db.child(moduleList.get(position).getPushId()).updateChildren(result);
                 }
             }
 
-        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });builder.create().show();
+        });
+        builder.create().show();
     }
 
     @Override

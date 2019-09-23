@@ -13,6 +13,8 @@ public class MainActivity extends AppCompatActivity {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = new Intent(this, SearchCommon.class);
+        startActivity(intent);
     }
 
     public void onClick(View view){
