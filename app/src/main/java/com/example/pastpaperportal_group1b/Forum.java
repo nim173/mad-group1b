@@ -19,7 +19,6 @@ import com.example.pastpaperportal_group1b.ui.main.PaginationListener;
 import com.example.pastpaperportal_group1b.ui.main.PostRecyclerAdapter;
 import com.example.pastpaperportal_group1b.ui.main.Question;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -161,6 +160,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
         intentViewQ.putExtra(AddQuestionOrAnswer.ID, view.getTag().toString());
         intentViewQ.putExtra(PATH, moduleId + "/" + year);
         startActivity(intentViewQ);
+        finish();
     }
 
     private void doFirstApiCall() {
@@ -273,8 +273,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
             items.add(postItem);
             items.add(postItem);
             items.add(postItem);
-            items.add(postItem);
-*/
+            items.add(postItem);*/
             /*
              * manage progress view
              */
