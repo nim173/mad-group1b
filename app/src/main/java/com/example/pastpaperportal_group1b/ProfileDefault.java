@@ -154,7 +154,7 @@ public class ProfileDefault extends AppCompatActivity {
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
 
-                    String name=""+ds.child("name").getValue();
+                    String name=""+ds.child("username").getValue();
                     String email=""+ds.child("email").getValue();
                     String url=""+ds.child("url").getValue();
                     String cover=""+ds.child("cover").getValue();
@@ -271,7 +271,7 @@ public class ProfileDefault extends AppCompatActivity {
                 }
                 else if(i==2){
                     progressDialog.setMessage("Updating  Name");
-                    shaowNameandemailUpdate("name");
+                    shaowNameandemailUpdate("username");
 
                 }
 
@@ -573,7 +573,7 @@ public class ProfileDefault extends AppCompatActivity {
         else{
             //user  not signed in goto Main Activity
 
-            startActivity(new Intent(ProfileDefault.this,MainActivity.class));
+            startActivity(new Intent(ProfileDefault.this,SearchCommon  .class));
         }
 
     }
@@ -601,9 +601,48 @@ public class ProfileDefault extends AppCompatActivity {
             firebaseAuth.signOut();
             checkUserStatus();
         }
+        else if(id==R.id.action_delete){
+
+            deleteAccount();
+
+        }
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteAccount() {
+        AlertDialog.Builder dialog=new AlertDialog.Builder(ProfileDefault.this);
+        dialog.setTitle("Are You sure");
+        dialog.setMessage("Delete this  account will ");
+        dialog.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(ProfileDefault.this, "Account Delete", Toast.LENGTH_SHORT).show();
+
+                            startActivity(new Intent(ProfileDefault.this,SearchCommon.class));
+                        }
+                        else {
+                            Toast.makeText(ProfileDefault.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+        }).setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                dialogInterface.dismiss();
+
+            }
+        });
+
+
+
     }
 
     //change passeword

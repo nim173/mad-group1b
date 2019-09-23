@@ -53,7 +53,7 @@ public class SignUp extends AppCompatActivity {
         pass=findViewById(R.id.regiPassword);
 
 
-        //name=findViewById(R.id.regiUserName);
+        name=findViewById(R.id.username);
         mAuth= FirebaseAuth.getInstance();
         signup=findViewById(R.id.btnSignUp);
         signIN=findViewById(R.id.stoLogin);
@@ -68,7 +68,7 @@ public class SignUp extends AppCompatActivity {
 
                 String email = Email.getText().toString().trim();
                 String password = pass.getText().toString().trim();
-                //  String uName=name.getText().toString().trim();
+                String uName=name.getText().toString().trim();
 
                 //validation
 
@@ -86,7 +86,7 @@ public class SignUp extends AppCompatActivity {
 
 
                 else {
-                    registorUser(email, password);
+                    registorUser(email, password, uName);
                 }
 
             }
@@ -127,7 +127,7 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-    private void registorUser(String email, String password) {
+    private void registorUser(String email, String password, String uName) {
 
         progressDialog.show();
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -158,7 +158,7 @@ public class SignUp extends AppCompatActivity {
                             //put info in hashmap
                             hashMap.put("email",email);
                             hashMap.put("uid",uid);
-                            hashMap.put("name","");
+                            hashMap.put("username",uName);
                             hashMap.put("url","");
                             hashMap.put("cover","");
 
