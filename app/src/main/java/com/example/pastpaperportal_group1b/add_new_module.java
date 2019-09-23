@@ -95,13 +95,7 @@ public class add_new_module extends AppCompatActivity {
                         module.setKey(m_key);
                         module.setFaculty(m__faculty);
                         module.setYear(m__year);
-                        HashMap<String, Object> insert = new HashMap<>();
-                        insert.put("name", m_name);
-                        insert.put("abbrev", m_abbr);
-                        insert.put("key", m_key);
-                        insert.put("year", m__year);
-                        insert.put("faculty", m__faculty);
-                        databaseModules.child(m_pid).setValue(insert);
+                        databaseModules.child(m_pid).setValue(module);
                         Toast.makeText(add_new_module.this, "Module Added", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(add_new_module.this,view_all_modules.class));
                     } else {

@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.pastpaperportal_group1b.ui.main.AdapterModule;
 import com.example.pastpaperportal_group1b.ui.main.Module;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,12 +27,20 @@ public class view_all_modules extends AppCompatActivity {
     RecyclerView recyclerView;
     AdapterModule adapterModule;
     List<Module> moduleList;
+    FloatingActionButton btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_view_all_modules);
+        btn = findViewById(R.id.new_module);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(view_all_modules.this,add_new_module.class));
+            }
+        });
         //init recyclerview
         recyclerView = (RecyclerView)findViewById(R.id.modulerecycler1);
         findViewById(R.id.pbmodule).setVisibility(View.GONE);

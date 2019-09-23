@@ -57,6 +57,7 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
         int module_year = moduleList.get(position).getYear();
         String module_enrol = moduleList.get(position).getKey();
         String module_faculty = moduleList.get(position).getFaculty();
+        String module_pid = moduleList.get(position).getPushId();
 
         //set data
         holder.module_name.setText(module_name);
@@ -64,13 +65,6 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
         holder.module_key.setText(module_enrol);
         holder.module_faculty.setText(module_faculty);
         holder.module_year.setText("Year "+module_year);
-
-        holder.btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context, add_new_module.class));
-            }
-        });
 
         holder.module_menu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,12 +78,10 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
                         switch (item.getItemId()){
                             case R.id.item_update:
                                 editmodule(position);
-                                Toast.makeText(context,"Changed", Toast.LENGTH_LONG).show();
                                 break;
                             case R.id.item_delete:
-                                moduleList.remove(position);
-                                FirebaseDatabase.getInstance().getReference().child("Module").child(moduleList
-                                        .get(position).getPushId()).setValue(null);
+                                System.out.println(module_pid);
+                                FirebaseDatabase.getInstance().getReference().child("Module").child(module_pid).setValue(null);
                                 notifyDataSetChanged();
                                 Toast.makeText(context,"Removed",Toast.LENGTH_SHORT).show();
                                 break;
@@ -117,6 +109,8 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
         Spinner mfaculty = (Spinner) xx.findViewById(R.id.faculty_spinner);
         Spinner myear = (Spinner) xx.findViewById(R.id.year_spinner);
 
+
+
         mname.setText(moduleList.get(position).getName());
         mabbrev.setText(moduleList.get(position).getAbbrev());
         mkey.setText(moduleList.get(position).getKey());
@@ -126,15 +120,15 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
         builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                try{ dialog.wait(); }catch (Exception e) {}
                 DatabaseReference databaseModules = FirebaseDatabase.getInstance().getReference("Module");
 
+                if(!mkey.getText().toString().equals(mkey.getText().toString())){
                 Query getdata = databaseModules.orderByChild("key").equalTo(mkey.getText().toString().trim());
                 getdata.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()){
-                            try{ dialog.wait(); }catch (Exception e) {}
                             Toast.makeText(context,"Enrollment Key Exists",Toast.LENGTH_LONG).show();
                         }
                         else {
@@ -144,12 +138,25 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
                             result.put("key", mkey.getText().toString().trim());
                             result.put("year", Integer.parseInt(myear.getSelectedItem().toString().trim()));
                             result.put("faculty", mfaculty.getSelectedItem().toString().trim());
-                            FirebaseDatabase.getInstance().getReference().child("Messages").child(moduleList.get(position).getPushId()).updateChildren(result);
+                            System.out.println(moduleList.get(position).getPushId());
+                            FirebaseDatabase.getInstance().getReference().child("Messages")
+                                    .child(moduleList.get(position).getPushId())
+                                    .updateChildren(result);
                         }
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {}
                 });
+                }else {
+                    HashMap<String,Object> result = new HashMap<>();
+                    result.put("name", mname.getText().toString().trim());
+                    result.put("abbrev", mabbrev.getText().toString().trim());
+                    result.put("key", mkey.getText().toString().trim());
+                    result.put("year", Integer.parseInt(myear.getSelectedItem().toString().trim()));
+                    result.put("faculty", mfaculty.getSelectedItem().toString().trim());
+                    DatabaseReference db = FirebaseDatabase.getInstance().getReference("Module");
+                    db.child(moduleList.get(position).getPushId()).updateChildren(result);
+                }
             }
 
         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -157,7 +164,7 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-        });
+        });builder.create().show();
     }
 
     @Override
@@ -172,7 +179,6 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
         TextView module_faculty;
         TextView module_key;
         TextView module_menu;
-        FloatingActionButton btn;
 
         public MHolder(@NonNull View itemView) {
             super(itemView);
@@ -184,7 +190,6 @@ public class AdapterModule extends RecyclerView.Adapter<AdapterModule.MHolder> {
             module_faculty = itemView.findViewById(R.id.module__faculty);
             module_key = itemView.findViewById(R.id.module__key);
             module_menu = itemView.findViewById(R.id.module__menu);
-            btn = itemView.findViewById(R.id.new_module);
         }
     }
 

@@ -147,8 +147,9 @@ public class Login extends AppCompatActivity {
 
                 }
                 else if(email.equals("admin@gmail.com")&& (pass.equals("admin1"))){
-
-                    startActivity(new Intent(Login.this,admin_dashboard.class));
+                    Intent intent = new Intent(Login.this,admin_dashboard.class);
+                    intent.putExtra("user_name","Admin");
+                    startActivity(intent);
                     Toast.makeText(Login.this, "Welcome to Admin DashBoard", Toast.LENGTH_SHORT).show();
                 }
 
