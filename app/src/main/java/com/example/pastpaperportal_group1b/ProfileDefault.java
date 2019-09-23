@@ -596,22 +596,30 @@ public class ProfileDefault extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        int id=item.getItemId();
-        if(id ==R.id.action_logout){
-            firebaseAuth.signOut();
-            checkUserStatus();
-        }
-        else if(id==R.id.action_delete){
+        FirebaseUser user =firebaseAuth.getCurrentUser();
 
-            deleteAccount();
+        switch(item.getItemId()){
+            case R.id.action_logout:
+                firebaseAuth.signOut();
+                checkUserStatus();
+                break;
+            case R.id.action_delete:
+                String uid=user.getUid();
+                deleteAccount(uid);
+                System.out.println(user.getUid());
+
+                break;
+                default:
+                    break;
 
         }
+
 
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void deleteAccount() {
+    private void deleteAccount(String uid) {
         AlertDialog.Builder dialog=new AlertDialog.Builder(ProfileDefault.this);
         dialog.setTitle("Are You sure");
         dialog.setMessage("Delete this  account will ");
@@ -622,6 +630,7 @@ public class ProfileDefault extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
+                            firebaseDatabase.getInstance().getReference().child("Users").child(uid).setValue(null);
                             Toast.makeText(ProfileDefault.this, "Account Delete", Toast.LENGTH_SHORT).show();
 
                             startActivity(new Intent(ProfileDefault.this,SearchCommon.class));
@@ -638,8 +647,11 @@ public class ProfileDefault extends AppCompatActivity {
 
                 dialogInterface.dismiss();
 
+
             }
+
         });
+        dialog.create().show();
 
 
 
