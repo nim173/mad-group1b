@@ -66,7 +66,8 @@ public class AnswersForPapers extends AppCompatActivity {
     public Dialog dialog;
     private FirebaseAuth mAuth;
     public Uri url;
-    private String year;    private String paperName;
+    private String year;
+    private String paperName;
 
 
     @Override
@@ -92,7 +93,7 @@ public class AnswersForPapers extends AppCompatActivity {
 /*        pushId = intent.getStringExtra(UploadOrEdit.ID);*/
         year = intent.getStringExtra(ViewPaper.YEAR);
         pushId = intent.getStringExtra(ViewPaper.MODULE_ID);
-        Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
+    /*    Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();*/
         paperName = intent.getStringExtra(ViewPaper.VIEW_NAME);
 
 
@@ -216,23 +217,6 @@ public class AnswersForPapers extends AppCompatActivity {
 
     }
 
-    private void downloadFile(String url) throws IOException {
-        StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(url);
-
-        System.out.println("_____________________________________________________" + reference);
-        File localFile = File.createTempFile("application", "pdf");
-
-        reference.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
-            // Local temp file has been created
-            Toast.makeText(AnswersForPapers.this, "Downloaded", Toast.LENGTH_SHORT).show();
-        }).addOnFailureListener(exception -> {
-            // Handle any errors
-            System.out.println("error bro");
-
-        });
-    }
-
-
     class addAnswer {
         void display(Context context){
 
@@ -324,6 +308,7 @@ public class AnswersForPapers extends AppCompatActivity {
                    dbRef.child("name").setValue(name.getText().toString().trim());
                    dbRef.child("desc").setValue(desc.getText().toString().trim());
                    Toast.makeText(AnswersForPapers.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                   dialog.dismiss();
                });
 
                cancel.setOnClickListener(v -> dialog.dismiss());
@@ -401,18 +386,7 @@ public class AnswersForPapers extends AppCompatActivity {
         }
 
     }
-    /* public long downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
-        DownloadManager downloadmanager = (DownloadManager) context.
-                getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
 
-        return downloadmanager.enqueue(request);
-    }
-
-    }*/
     public void add(View view){
 
         addAnswer.display(AnswersForPapers.this);

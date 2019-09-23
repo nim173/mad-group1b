@@ -1,40 +1,40 @@
 package com.example.pastpaperportal_group1b;
+
+import android.app.Dialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import android.app.DownloadManager;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
+
 import com.example.pastpaperportal_group1b.ui.main.PaperUpload;
 import com.example.pastpaperportal_group1b.ui.main.PastPaperRV;
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.shreyaspatil.firebase.recyclerpagination.DatabasePagingOptions;
 import com.shreyaspatil.firebase.recyclerpagination.FirebaseRecyclerPagingAdapter;
 import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
 
 public class ViewPaper extends AppCompatActivity {
-
-
-    ExpandableRelativeLayout answers; //commented for now
 
     private String pushId;
     private RecyclerView mRecyclerView;
@@ -45,10 +45,10 @@ public class ViewPaper extends AppCompatActivity {
     private String year;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private String modName;
+    public Dialog dialog;
+    private FirebaseAuth mAuth;
 
     private DatabaseReference dbRef;
-    private StorageReference storageRef;
-    private StorageReference Ref;//used for downloading here
 
     FirebaseRecyclerPagingAdapter<PaperUpload, PastPaperRV> mAdapter;
 
@@ -64,14 +64,12 @@ public class ViewPaper extends AppCompatActivity {
         pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
         modName = intent.getStringExtra(SearchResult.MOD_NAME);
         System.out.println("!!!!!!!!!!!!!!!!!" + year +" " +pushId);
-        Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();
+   /*     Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();*/
         TextView name = findViewById(R.id.moduleId);
        name.setText(modName);
 
         downloadButton = findViewById(R.id.downloadButton);
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
-
-/*        downloadButton.setOnClickListener(view -> downloadFile( ));*/
 
         //Initialize RecyclerView
         mRecyclerView = findViewById(R.id.yearCard);
@@ -83,9 +81,6 @@ public class ViewPaper extends AppCompatActivity {
         //Initialize Database
         dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + "/Years" + '/' + year);
 
-        /*System.out.println("$$$$$$$$$$$$$$$$$$$$" + UploadOrEdit.ID);
-        System.out.println("00000000000000000000" + pushId);
-        System.out.println( pushId = intent.getStringExtra(UploadOrEdit.ID));*/
         System.out.println(" ^^^^ ^^^^ ^^^^ ^^^^ ^^^^ ^^^^ ^^^^ "+dbRef);
 
         PagedList.Config config = new PagedList.Config.Builder()
@@ -110,9 +105,43 @@ public class ViewPaper extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull PastPaperRV holder,
                                             int position,
                                             @NonNull PaperUpload model) {
+
+                holder.downloadPaper.setOnClickListener(view -> {
+                    //downloadFile(model.getUrl());
+                    Uri webpage = Uri.parse(model.getUrl());
+                    System.out.println("000000000000000000000000000000000000000000000 " + model.getUrl());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
+                    if (intent.resolveActivity(getPackageManager()) != null) {
+                        startActivity(intent);
+                        }
+                });
+
+                holder.options.setOnClickListener(view -> {
+                    //creating a popup menu
+                    PopupMenu popup = new PopupMenu(ViewPaper.this, holder.options, Gravity.END);
+                    //inflating menu from xml resource
+                    popup.inflate(R.menu.deletepaper);
+                    //adding click listener
+                    popup.setOnMenuItemClickListener(item -> {
+                        dbRef = FirebaseDatabase.getInstance().getReference("Module/" + pushId + '/' + "Years" + "/" + year + "/"+ getRef(position).getKey());
+                        if (item.getItemId() == (R.id.delete)) {
+                            dbRef.removeValue();
+                            mAdapter.refresh();
+                            Snackbar.make(findViewById(android.R.id.content), "Item deleted successfully",
+                                    Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
+                                    .setBackgroundTint(Color.rgb(0, 184, 212)).show();
+                            return true;
+                        } else {
+                            return false;
+                        }});
+                    //displaying the popup
+                    popup.show();
+
+                });
+
                 System.out.println("modelllllllllllllllll " + model.getPaperId() + model.getModuleId() );
-                //model.setPaperId(getRef(position).getKey());
                 holder.setParameters(model);
+
             }
 
             @Override
@@ -160,14 +189,14 @@ public class ViewPaper extends AppCompatActivity {
         });
     }
 
-   /* public void showAnswers(View view) {
-        answers = (ExpandableRelativeLayout) findViewById(R.id.answers);
-        answers.toggle();
-    }*/
-    public void uploadAnswer(View view){
-        Intent intentUpload =  new Intent(this, UploadOrEdit.class);
-/*        Button uploadButton = findViewById(R.id.uploadButton);*/
-        startActivity(intentUpload);
+
+    private void signInSnackBar(){
+        Snackbar.make(findViewById(android.R.id.content), "Please sign in", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(255, 174, 66))
+                .setAction("Sign In", v1 -> {
+                    Context context = v1.getContext();
+                    Intent intent = new Intent(context, Login.class);
+                    context.startActivity(intent);
+                }).setActionTextColor(Color.rgb(0,0,0)).show();
     }
 
 
@@ -191,30 +220,6 @@ public class ViewPaper extends AppCompatActivity {
         startActivity(intentForum);
     }
 
-    //IMPLEMENT LISTENER for download to work
-
-    public long downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
-        DownloadManager downloadmanager = (DownloadManager) context.
-                getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDestinationInExternalFilesDir(context, destinationDirectory, fileName + fileExtension);
-
-        return downloadmanager.enqueue(request);
-    }
-
-/*
-    public void downloadFile(Uri data){
-        StorageReference reference =
-                storageRef.child("UploadPaper/PastPaper/PDF" + System.currentTimeMillis() + ".pdf");
-        reference.getFile(data)
-                .addOnSuccessListener(taskSnapshot -> {
-
-                }).addOnProgressListener(taskSnapshot -> {
-
-                });
-    }
-*/
-
 }
+
+

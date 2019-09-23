@@ -160,9 +160,9 @@ public class UploadOrEdit extends AppCompatActivity{
                 Toast.makeText(getApplicationContext(), "enter any note", Toast.LENGTH_SHORT).show();
             else if (TextUtils.isEmpty(PaperId.getText().toString()))
                 Toast.makeText(getApplicationContext(), "enter a name to show others", Toast.LENGTH_SHORT).show();
-            /*else if(TextUtils.isEmpty((CharSequence) url))
-                Toast.makeText(getApplicationContext(), "Please select a file", Toast.LENGTH_SHORT).show();*/
-            else {
+         /*   else if(TextUtils.isEmpty((CharSequence) url) ){
+                Toast.makeText(getApplicationContext(), "Please select a file", Toast.LENGTH_SHORT).show();
+            }*/ else {
                 paperUpload.setPdfName(pdfName.getText().toString().trim()); //not sure about this
                 paperUpload.setModuleId(pushId);
                 paperUpload.setPaperId(PaperId.getText().toString().trim());
@@ -171,7 +171,7 @@ public class UploadOrEdit extends AppCompatActivity{
 
                 Intent newPaper = new Intent(this, PapersAfterSearch.class);
                 newPaper.putExtra(SearchCommon.MOD_ID, pushId);
-                System.out.println("***" + pushId);
+                System.out.println("***" + pushId + SearchCommon.MOD_ID);
                 startActivity(newPaper);
             }
         }
