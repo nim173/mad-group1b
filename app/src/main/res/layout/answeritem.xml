@@ -57,6 +57,7 @@
                     android:layout_marginStart="264dp"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/com_facebook_auth_dialog_header_background"
+                    android:clickable="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_down"
                     card_view:layout_constraintBottom_toBottomOf="@+id/options"

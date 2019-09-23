@@ -32,7 +32,6 @@
         <activity android:name=".add_new_module" />
         <activity android:name=".ChangedPassword" />
         <activity android:name=".send_message" />
-        <activity android:name=".requests" />
         <activity android:name=".manage_users" />
         <activity android:name=".admin_dashboard" />
         <activity android:name=".UploadOrEdit" />

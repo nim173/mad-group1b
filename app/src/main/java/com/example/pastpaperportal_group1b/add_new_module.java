@@ -51,6 +51,9 @@ public class add_new_module extends AppCompatActivity {
         m_faculty = (Spinner) findViewById(R.id.m_faculty);
         m_year = (Spinner) findViewById(R.id.m_year);
 
+        //clear all textfields
+        mname.setText(""); mabbr.setText(""); mkey.setText(""); m_faculty.setTag(""); m_year.setTag("");
+
         mmodulebtn = (ImageButton) findViewById(R.id.add_module);
 
         modules = new ArrayList<>();
