@@ -356,26 +356,4 @@ public class ViewQuestion extends AppCompatActivity {
             mDialog.show();
         }
     }
-
-    /*public void showMenu(View v) {
-        PopupMenu popup = new PopupMenu(this, v);
-        popup.setOnMenuItemClickListener();
-        popup.inflate(R.menu.menu_example);
-        popup.show();
-    }
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_logout:
-                return true;
-            default:
-                return false;
-        }
-    }*/
-    /*@Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent = new Intent(this, Forum.class);
-        intent.putExtra()
-    }*/
 }

@@ -8,7 +8,16 @@ public class PaperUpload {
     private String moduleId;
     //private String note;
     private String url; // check this issue
-    //private String pdfName;
+
+    public String getPdfName() {
+        return pdfName;
+    }
+
+    public void setPdfName(String pdfName) {
+        this.pdfName = pdfName;
+    }
+
+    private String pdfName;
 
     public PaperUpload() {
     }

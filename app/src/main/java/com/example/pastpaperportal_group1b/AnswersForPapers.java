@@ -65,8 +65,8 @@ public class AnswersForPapers extends AppCompatActivity {
     public Dialog dialog;
     private FirebaseAuth mAuth;
     public Uri url;
-    private String year;
-    private String paperName;
+    private String year;    private String paperName;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,18 +155,12 @@ public class AnswersForPapers extends AppCompatActivity {
                 holder.downloadPaper.setOnClickListener( view -> {
 
                         //downloadFile(model.getUrl());
-
-
-
                             Uri webpage = Uri.parse(model.getUrl());
                             System.out.println("000000000000000000000000000000000000000000000 " + model.getUrl());
                             Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
                             if (intent.resolveActivity(getPackageManager()) != null) {
                                 startActivity(intent);
                             }
-
-
-
                 });
 
             }
@@ -290,20 +284,24 @@ public class AnswersForPapers extends AppCompatActivity {
     }
 
 
-       public void edit(String answerName, String des){
+       public void edit(String answerName, String des) {
 
-            dialog = new Dialog(AnswersForPapers.this);
-            dialog.setContentView(R.layout.edit_dialog);
-            final EditText name = dialog.findViewById(R.id.nameText);
-            final EditText desc = dialog.findViewById(R.id.descText);
-            name.setText(answerName);
-            desc.setText(des);
-            Button submit = dialog.findViewById(R.id.submitEdit);
-            Button cancel = dialog.findViewById(R.id.cancel);
+           FirebaseUser currentUser = mAuth.getCurrentUser();
+           if (currentUser == null) {
+               signInSnackBar();
+           } else {
+               dialog = new Dialog(AnswersForPapers.this);
+               dialog.setContentView(R.layout.edit_dialog);
+               final EditText name = dialog.findViewById(R.id.nameText);
+               final EditText desc = dialog.findViewById(R.id.descText);
+               name.setText(answerName);
+               desc.setText(des);
+               Button submit = dialog.findViewById(R.id.submitEdit);
+               Button cancel = dialog.findViewById(R.id.cancel);
 
-            final  DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+               final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
-            submit.setOnClickListener(view1 -> {
+               submit.setOnClickListener(view1 -> {
 
             /*    FirebaseUser currentUser = mAuth.getCurrentUser();
                 if (currentUser == null) {
@@ -318,18 +316,18 @@ public class AnswersForPapers extends AppCompatActivity {
                 answerModel.setDesc(desc.getText().toString().trim());*/
 /*                DatabaseReference newRef = dbRef.push();
                 newRef.setValue( answerModel );*/
-                dbRef.child("name").setValue(name.getText().toString().trim());
-                dbRef.child("desc").setValue(desc.getText().toString().trim());
-                Toast.makeText(AnswersForPapers.this, "Uploaded", Toast.LENGTH_SHORT).show();
-            });
+                   dbRef.child("name").setValue(name.getText().toString().trim());
+                   dbRef.child("desc").setValue(desc.getText().toString().trim());
+                   Toast.makeText(AnswersForPapers.this, "Uploaded", Toast.LENGTH_SHORT).show();
+               });
 
-            cancel.setOnClickListener(v -> dialog.dismiss());
+               cancel.setOnClickListener(v -> dialog.dismiss());
 
-            //Finally, Show the dialog
-            dialog.show();
+               //Finally, Show the dialog
+               dialog.show();
 
-        }
-
+           }
+       }
 
     private void selectFile() {
             System.out.println("______________________________________________________ENTERED2");
@@ -361,10 +359,10 @@ public class AnswersForPapers extends AppCompatActivity {
 
 
     private void uploadFile(Uri data) {
-        /*    FirebaseUser currentUser = mAuth.getCurrentUser();
-            if (currentUser == null) {
-                signInSnackBar();
-            } else {*/
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            signInSnackBar();
+        } else {
             System.out.println("__________________________________________________ENTERED5");
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
@@ -377,12 +375,12 @@ public class AnswersForPapers extends AppCompatActivity {
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                             Task<Uri> uri = taskSnapshot.getStorage().getDownloadUrl();
-                            while(!uri.isComplete());
+                            while (!uri.isComplete()) ;
                             url = uri.getResult();
 
 
                             // AnswerModel answerModel;
-                           // answerModel = new AnswerModel(pdfName.getText().toString(), url.toString());
+                            // answerModel = new AnswerModel(pdfName.getText().toString(), url.toString());
                             // EditText pdfName = dialog.findViewById(R.id.noteText);
 
                             progressDialog.dismiss();
@@ -391,13 +389,13 @@ public class AnswersForPapers extends AppCompatActivity {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                    progressDialog.setMessage("Uploaded: " +(int) progress + "%");
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                    progressDialog.setMessage("Uploaded: " + (int) progress + "%");
                 }
             });
         }
 
-
+    }
     /* public long downloadFile(Context context, String fileName, String fileExtension, String destinationDirectory, String url) {
         DownloadManager downloadmanager = (DownloadManager) context.
                 getSystemService(Context.DOWNLOAD_SERVICE);
