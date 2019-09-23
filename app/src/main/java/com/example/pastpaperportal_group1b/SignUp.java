@@ -147,6 +147,7 @@ public class SignUp extends AppCompatActivity {
 
 
                             //get User email and uid from auth
+                            String personName=user.getDisplayName();
                             String email=user.getEmail();
                             String uid=user.getUid();
                           //  user.getPhotoUrl().toString();
