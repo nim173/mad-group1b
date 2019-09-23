@@ -1,6 +1,7 @@
 package com.example.pastpaperportal_group1b;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -152,8 +153,21 @@ public class PapersAfterSearch extends AppCompatActivity {
                 mAdapter.refresh();
             }
         });
+        ActionBar actionBar=getSupportActionBar();
+        //actionBar.setTitle("Manage Users");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
 
-
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();//go privious activity
+        return super.onSupportNavigateUp();
     }
 
     public void addPaper(View view) {

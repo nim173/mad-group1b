@@ -71,9 +71,6 @@ public class AdapterUser extends RecyclerView.Adapter<AdapterUser.MyHolder> {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
-                            case R.id.menu_item_change:
-                                Toast.makeText(context,"chngd",Toast.LENGTH_SHORT).show();
-                                break;
                             case R.id.menu_item_remove:
                                 userList.remove(position);
                                 FirebaseDatabase.getInstance().getReference().child("Users").child(user_id).setValue(null);

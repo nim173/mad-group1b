@@ -35,7 +35,7 @@ public class admin_dashboard extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+        getMenuInflater().inflate(R.menu.admin_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -46,6 +46,7 @@ public class admin_dashboard extends AppCompatActivity {
         int id=item.getItemId();
         if(id ==R.id.action_logout){
             firebaseAuth.signOut();
+            startActivity(new Intent(this, SearchCommon.class));
         }
 
         return super.onOptionsItemSelected(item);
