@@ -29,6 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
+    <!--
     <EditText
         android:id="@+id/mod"
         android:layout_width="wrap_content"
@@ -41,6 +42,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView24"
         app:layout_constraintTop_toBottomOf="@+id/PaperId" />
+-->
 
     <EditText
         android:id="@+id/pdfName"
@@ -52,7 +54,7 @@
         app:layout_constraintBottom_toTopOf="@+id/textView18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mod" />
+        app:layout_constraintTop_toBottomOf="@+id/PaperId" />
 
     <EditText
         android:id="@+id/PaperId"
@@ -60,9 +62,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/mod"
+        app:layout_constraintBottom_toTopOf="@+id/pdfName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/paperId"
         app:layout_constraintTop_toBottomOf="@+id/textView22" />
 
@@ -99,7 +100,7 @@
         app:layout_constraintEnd_toStartOf="@+id/username_sig"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.558" />
 
     <TextView
         android:id="@+id/username_sig"
@@ -122,6 +123,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/PaperId"
         app:layout_constraintVertical_bias="0.0" />
+    <!--
 
     <TextView
         android:id="@+id/textView24"
@@ -134,6 +136,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/mod"
         app:layout_constraintVertical_bias="0.52" />
+-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
