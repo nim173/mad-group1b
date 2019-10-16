@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.pastpaperportal_group1b.Search.SearchCommon;
+import com.example.pastpaperportal_group1b.IT18125658.Forum.Search.SearchCommon;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class admin_dashboard extends AppCompatActivity {

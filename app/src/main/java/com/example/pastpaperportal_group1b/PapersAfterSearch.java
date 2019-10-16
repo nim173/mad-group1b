@@ -16,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.pastpaperportal_group1b.Search.SearchCommon;
-import com.example.pastpaperportal_group1b.Search.SearchResult;
+import com.example.pastpaperportal_group1b.IT18125658.Forum.Search.SearchCommon;
+import com.example.pastpaperportal_group1b.IT18125658.Forum.Search.SearchResult;
 import com.example.pastpaperportal_group1b.ui.main.YearModel;
 import com.example.pastpaperportal_group1b.ui.main.YearRv;
 import com.google.firebase.database.DatabaseError;

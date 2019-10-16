@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b.Search;
+package com.example.pastpaperportal_group1b.IT18125658.Forum.Search;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +26,7 @@ import com.google.firebase.database.Query;
 
 import java.util.Locale;
 
-import static com.example.pastpaperportal_group1b.Search.SearchCommon.MOD_ID;
+import static com.example.pastpaperportal_group1b.IT18125658.Forum.Search.SearchCommon.MOD_ID;
 
 public class SearchResult extends AppCompatActivity {
 
