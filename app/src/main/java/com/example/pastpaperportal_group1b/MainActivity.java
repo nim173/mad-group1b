@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.pastpaperportal_group1b.IT18125658.Forum.FirebaseUIActivity;
-import com.example.pastpaperportal_group1b.IT18125658.Forum.Search.SearchCommon;
+import com.example.pastpaperportal_group1b.IT18125658.Search.SearchCommon;
 
 public class MainActivity extends AppCompatActivity {
 

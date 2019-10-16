@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b.IT18125658.Forum.Search;
+package com.example.pastpaperportal_group1b.IT18125658.Search;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

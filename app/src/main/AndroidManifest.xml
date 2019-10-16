@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view_all_modules" />
         <activity android:name=".AnswersForPapers" />
-        <activity android:name=".IT18125658.Forum.Search.SearchResult"
+        <activity android:name=".IT18125658.Search.SearchResult"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".view_all_messages" />
 
@@ -41,7 +41,7 @@
         <activity android:name=".manage_users" />
         <activity android:name=".admin_dashboard" />
         <activity android:name=".UploadOrEdit" />
-        <activity android:name=".IT18125658.Forum.Search.SearchCommon"
+        <activity android:name=".IT18125658.Search.SearchCommon"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".IT18125658.Forum.ViewQuestion"
             tools:ignore="InnerclassSeparator" />
