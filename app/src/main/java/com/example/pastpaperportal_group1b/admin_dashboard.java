@@ -2,8 +2,6 @@ package com.example.pastpaperportal_group1b;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -13,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.pastpaperportal_group1b.Search.SearchCommon;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class admin_dashboard extends AppCompatActivity {
@@ -28,7 +27,7 @@ public class admin_dashboard extends AppCompatActivity {
         hellomsg = findViewById(R.id.hellomsg);
         Intent intent = getIntent();
         String user_name = intent.getStringExtra("user_name");
-        hellomsg.setText("Hello "+user_name);
+        hellomsg.setText(String.format("Hello %s", user_name));
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
@@ -70,11 +69,11 @@ public class admin_dashboard extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void addnewModule(View view){
-        Intent intent = new Intent(this,add_new_module.class);
-        intent.putExtra("user_name","Admin");
-        startActivity(intent);
-    }
+//    public void addnewModule(View view){
+//        Intent intent = new Intent(this,add_new_module.class);
+//        intent.putExtra("user_name","Admin");
+//        startActivity(intent);
+//    }
 
     public void addpastpaper(View view) {
         Intent intent = new Intent(this,PapersAfterSearch.class);

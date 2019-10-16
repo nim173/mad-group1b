@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b;
+package com.example.pastpaperportal_group1b.IT18125658.Forum;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +12,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.pastpaperportal_group1b.ui.main.Question;
+import com.example.pastpaperportal_group1b.Login;
+import com.example.pastpaperportal_group1b.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.pastpaperportal_group1b.Search.SearchCommon;
 import com.example.pastpaperportal_group1b.ui.main.PaperUpload;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;

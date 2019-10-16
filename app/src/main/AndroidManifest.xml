@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.pastpaperportal_group1b">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +23,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".view_all_modules" />
         <activity android:name=".AnswersForPapers" />
-        <activity android:name=".SearchResult" />
+        <activity android:name=".Search.SearchResult"
+            tools:ignore="InnerclassSeparator" />
         <activity android:name=".view_all_messages" />
 
         <meta-data
@@ -35,20 +41,25 @@
         <activity android:name=".manage_users" />
         <activity android:name=".admin_dashboard" />
         <activity android:name=".UploadOrEdit" />
-        <activity android:name=".SearchCommon" />
-        <activity android:name=".ViewQuestion" />
+        <activity android:name=".Search.SearchCommon"
+            tools:ignore="InnerclassSeparator" />
+        <activity android:name=".IT18125658.Forum.ViewQuestion"
+            tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Comments_Image"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Profile" />
         <activity android:name=".SignUp" />
         <activity android:name=".Login" />
-        <activity android:name=".AddQuestionOrAnswer" />
-        <activity android:name=".Forum" />
+        <activity android:name=".IT18125658.Forum.AddQuestionOrAnswer"
+            tools:ignore="InnerclassSeparator" />
+        <activity android:name=".IT18125658.Forum.Forum"
+            tools:ignore="InnerclassSeparator" />
         <activity android:name=".AfterUpload" />
         <activity android:name=".ViewPaper" />
         <activity android:name=".PapersAfterSearch" />
-        <activity android:name=".FirebaseUIActivity" />
+        <activity android:name=".IT18125658.Forum.FirebaseUIActivity"
+            tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.Launcher">
@@ -67,11 +78,4 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
 </manifest>

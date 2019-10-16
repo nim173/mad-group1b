@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b;
+package com.example.pastpaperportal_group1b.IT18125658.Forum;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedList;
@@ -23,8 +23,9 @@ import android.widget.PopupMenu;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.pastpaperportal_group1b.ui.main.PostViewHolder;
-import com.example.pastpaperportal_group1b.ui.main.Replies;
+
+import com.example.pastpaperportal_group1b.Login;
+import com.example.pastpaperportal_group1b.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,8 +41,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
-import static com.example.pastpaperportal_group1b.AddQuestionOrAnswer.FROM_ADD;
-import static com.example.pastpaperportal_group1b.AddQuestionOrAnswer.FROM_EDIT;
+
+import static com.example.pastpaperportal_group1b.IT18125658.Forum.AddQuestionOrAnswer.FROM_ADD;
+import static com.example.pastpaperportal_group1b.IT18125658.Forum.AddQuestionOrAnswer.FROM_EDIT;
 
 public class ViewQuestion extends AppCompatActivity {
 

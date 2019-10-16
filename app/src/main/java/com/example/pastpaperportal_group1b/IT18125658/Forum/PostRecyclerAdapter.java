@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b.ui.main;
+package com.example.pastpaperportal_group1b.IT18125658.Forum;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pastpaperportal_group1b.R;
@@ -26,7 +25,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     private boolean isLoaderVisible = false;
     private List<Question> mPostItems;
 
-    public PostRecyclerAdapter(List<Question> postItems) {
+    PostRecyclerAdapter(List<Question> postItems) {
         this.mPostItems = postItems;
     }
 
@@ -63,19 +62,18 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         return mPostItems == null ? 0 : mPostItems.size();
     }
 
-    public void addItems(List<Question> postItems) {
+    void addItems(List<Question> postItems) {
         mPostItems.addAll(postItems);
         notifyDataSetChanged();
     }
 
-    public void addLoading(Question question) {
+    void addLoading(Question question) {
         isLoaderVisible = true;
         mPostItems.add(question);
-        //System.out.println("#####################"+question.getTitle());
         notifyItemInserted(mPostItems.size() - 1);
     }
 
-    public void removeLoading() {
+    void removeLoading() {
         isLoaderVisible = false;
         int position = mPostItems.size() - 1;
         Question item = getItem(position);
@@ -85,7 +83,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         }
     }
 
-    public void clear() {
+    void clear() {
         mPostItems.clear();
         notifyDataSetChanged();
     }
@@ -101,8 +99,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         TextView textViewUsername;
         @BindView(R.id.date)
         TextView textViewDate;
-        @BindView(R.id.card_view)
-        CardView cardView;
+//        @BindView(R.id.card_view)
+//        CardView cardView;
         @BindView((R.id.dp1))
         ImageView imageView;
 

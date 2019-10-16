@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b;
+package com.example.pastpaperportal_group1b.IT18125658.Forum;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.pastpaperportal_group1b.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 

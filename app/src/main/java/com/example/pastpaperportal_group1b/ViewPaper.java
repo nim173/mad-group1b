@@ -1,7 +1,5 @@
 package com.example.pastpaperportal_group1b;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -10,10 +8,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,14 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.pastpaperportal_group1b.IT18125658.Forum.Forum;
+import com.example.pastpaperportal_group1b.Search.SearchResult;
 import com.example.pastpaperportal_group1b.ui.main.PaperUpload;
 import com.example.pastpaperportal_group1b.ui.main.PastPaperRV;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.StorageReference;
 import com.shreyaspatil.firebase.recyclerpagination.DatabasePagingOptions;
 import com.shreyaspatil.firebase.recyclerpagination.FirebaseRecyclerPagingAdapter;
 import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
@@ -37,23 +33,16 @@ import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
 public class ViewPaper extends AppCompatActivity {
 
     private String pushId;
-    private RecyclerView mRecyclerView;
-    private String name;
     public static final String VIEW_NAME = "answer";
     public static final String MODULE_ID = "module_id";
     public static final String YEAR = "year";
     private String year;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private String modName;
-    public Dialog dialog;
-    private FirebaseAuth mAuth;
-
     private DatabaseReference dbRef;
-
     FirebaseRecyclerPagingAdapter<PaperUpload, PastPaperRV> mAdapter;
 
     public static final String FORUM_KEY = "PASTPAPERPORTAL.FORUM";
-    private ImageButton downloadButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,16 +52,13 @@ public class ViewPaper extends AppCompatActivity {
         year = intent.getStringExtra(PapersAfterSearch.VIEW_PAPER);
         pushId = intent.getStringExtra(PapersAfterSearch.PAPER_ID);
         modName = intent.getStringExtra(SearchResult.MOD_NAME);
-        System.out.println("!!!!!!!!!!!!!!!!!" + year +" " +pushId);
-   /*     Toast.makeText(this, year + " " + pushId, Toast.LENGTH_SHORT).show();*/
         TextView name = findViewById(R.id.moduleId);
-       name.setText(modName);
+        name.setText(modName);
 
-        downloadButton = findViewById(R.id.downloadButton);
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
         //Initialize RecyclerView
-        mRecyclerView = findViewById(R.id.yearCard);
+        RecyclerView mRecyclerView = findViewById(R.id.yearCard);
         mRecyclerView.setHasFixedSize(true);
 
         LinearLayoutManager mManager = new LinearLayoutManager(this);
@@ -80,8 +66,6 @@ public class ViewPaper extends AppCompatActivity {
 
         //Initialize Database
         dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + "/Years" + '/' + year);
-
-        System.out.println(" ^^^^ ^^^^ ^^^^ ^^^^ ^^^^ ^^^^ ^^^^ "+dbRef);
 
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
@@ -109,7 +93,6 @@ public class ViewPaper extends AppCompatActivity {
                 holder.downloadPaper.setOnClickListener(view -> {
                     //downloadFile(model.getUrl());
                     Uri webpage = Uri.parse(model.getUrl());
-                    System.out.println("000000000000000000000000000000000000000000000 " + model.getUrl());
                     Intent intent = new Intent(Intent.ACTION_VIEW, webpage);
                     if (intent.resolveActivity(getPackageManager()) != null) {
                         startActivity(intent);
@@ -154,12 +137,10 @@ public class ViewPaper extends AppCompatActivity {
                         break;
 
                     case LOADED:
-                        // Stop Animation
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        break;
 
                     case FINISHED:
                         //Reached end of Data set
+                        // Stop Animation
                         mSwipeRefreshLayout.setRefreshing(false);
                         break;
 
@@ -181,42 +162,31 @@ public class ViewPaper extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         //Set listener to SwipeRefreshLayout for refresh action
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mAdapter.refresh();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> mAdapter.refresh());
     }
 
-
-    private void signInSnackBar(){
-        Snackbar.make(findViewById(android.R.id.content), "Please sign in", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(255, 174, 66))
-                .setAction("Sign In", v1 -> {
-                    Context context = v1.getContext();
-                    Intent intent = new Intent(context, Login.class);
-                    context.startActivity(intent);
-                }).setActionTextColor(Color.rgb(0,0,0)).show();
-    }
-
+//    private void signInSnackBar(){
+//        Snackbar.make(findViewById(android.R.id.content), "Please sign in", Snackbar.LENGTH_LONG).setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE).setBackgroundTint(Color.rgb(255, 174, 66))
+//                .setAction("Sign In", v1 -> {
+//                    Context context = v1.getContext();
+//                    Intent intent = new Intent(context, Login.class);
+//                    context.startActivity(intent);
+//                }).setActionTextColor(Color.rgb(0,0,0)).show();
+//    }
 
     public void showAnswers(View view){
         Intent intent = new Intent(this, AnswersForPapers.class);
         intent.putExtra(VIEW_NAME,view.getTag().toString() );
         intent.putExtra(MODULE_ID, pushId);
-        System.out.println("showanswerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr "+name+ " " +pushId);
         intent.putExtra(YEAR, year);
         startActivity(intent);
     }
 
     public void goToForum(View view){
         Intent intentForum = new Intent(this, Forum.class);
-        TextView moduleId = findViewById(R.id.moduleId);                  //@Dinuli change textView5 to have the module name as well maybe?
-        String heading = moduleId.getText().toString();
         intentForum.putExtra(FORUM_KEY, modName + " - " + year);
         intentForum.putExtra(YEAR, year);
         intentForum.putExtra(MODULE_ID, pushId);
-
         startActivity(intentForum);
     }
 

@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.pastpaperportal_group1b.Search.SearchCommon;
+import com.example.pastpaperportal_group1b.Search.SearchResult;
 import com.example.pastpaperportal_group1b.ui.main.YearModel;
 import com.example.pastpaperportal_group1b.ui.main.YearRv;
 import com.google.firebase.database.DatabaseError;
@@ -25,12 +27,12 @@ import com.shreyaspatil.firebase.recyclerpagination.DatabasePagingOptions;
 import com.shreyaspatil.firebase.recyclerpagination.FirebaseRecyclerPagingAdapter;
 import com.shreyaspatil.firebase.recyclerpagination.LoadingState;
 
+import java.util.Objects;
+
 public class PapersAfterSearch extends AppCompatActivity {
 
     public static final String VIEW_PAPER = "view";
     public static final String PAPER_ID = "paper_id";
-    private DatabaseReference dbRef;
-    private RecyclerView mRecyclerView;
     private String pushId;
     private String modName;
     FirebaseRecyclerPagingAdapter<YearModel, YearRv> mAdapter;
@@ -44,7 +46,7 @@ public class PapersAfterSearch extends AppCompatActivity {
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
         //Initialize RecyclerView
-        mRecyclerView = findViewById(R.id.yearCard);
+        RecyclerView mRecyclerView = findViewById(R.id.yearCard);
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager mManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mManager);
@@ -57,10 +59,8 @@ public class PapersAfterSearch extends AppCompatActivity {
         TextView moduleId = findViewById(R.id.moduleId);
         moduleId.setText(modName);
 
-        System.out.println("***********************************************************" + pushId);
-
         //Initialize Database
-        dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + '/' + "Years" );
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Module" + '/' + pushId + '/' + "Years");
         System.out.println(dbRef);
         PagedList.Config config = new PagedList.Config.Builder()
                 .setEnablePlaceholders(false)
@@ -84,22 +84,17 @@ public class PapersAfterSearch extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull YearRv holder,
                                             int position,
                                             @NonNull YearModel  model) {
-                System.out.println("binddddddddddddddddd " + model.getName() + " " + getRef(position).getKey());
                 model.setName(getRef(position).getKey());
                 holder.setValue(model);
 
                 //listener
-                holder.viewButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Context context = view.getContext();
-                        Intent intent = new Intent(context, ViewPaper.class);
-                        intent.putExtra(VIEW_PAPER, getRef(position).getKey());
-                        System.out.println("hiiiiiiiiiiii"+pushId + " " + getRef(position).getKey());
-                        intent.putExtra(PAPER_ID, pushId);
-                        intent.putExtra(SearchResult.MOD_NAME, modName);
-                        context.startActivity(intent);
-                    }
+                holder.viewButton.setOnClickListener(view -> {
+                    Context context = view.getContext();
+                    Intent intent1 = new Intent(context, ViewPaper.class);
+                    intent1.putExtra(VIEW_PAPER, getRef(position).getKey());
+                    intent1.putExtra(PAPER_ID, pushId);
+                    intent1.putExtra(SearchResult.MOD_NAME, modName);
+                    context.startActivity(intent1);
                 }
 
                 );
@@ -115,12 +110,10 @@ public class PapersAfterSearch extends AppCompatActivity {
                         break;
 
                     case LOADED:
-                        // Stop Animation
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        break;
 
                     case FINISHED:
                         //Reached end of Data set
+                        // Stop Animation
                         mSwipeRefreshLayout.setRefreshing(false);
                         break;
 
@@ -143,15 +136,10 @@ public class PapersAfterSearch extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         //Set listener to SwipeRefreshLayout for refresh action
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mAdapter.refresh();
-            }
-        });
+        mSwipeRefreshLayout.setOnRefreshListener(() -> mAdapter.refresh());
         ActionBar actionBar=getSupportActionBar();
         //actionBar.setTitle("Manage Users");
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(actionBar).setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowHomeEnabled(true);
 
     }
@@ -162,15 +150,13 @@ public class PapersAfterSearch extends AppCompatActivity {
     }
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();//go privious activity
+        onBackPressed();//go to previous activity
         return super.onSupportNavigateUp();
     }
 
     public void addPaper(View view) {
         Intent intent = new Intent(this, UploadOrEdit.class);
         intent.putExtra(PAPER_ID, pushId);
-    /*    intent.putExtra();
-*/
         startActivity(intent);
     }
 

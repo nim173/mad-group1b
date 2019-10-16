@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b.ui.main;
+package com.example.pastpaperportal_group1b.IT18125658.Forum;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class PaginationListener extends RecyclerView.OnScrollListener {
 
-    public static final int PAGE_START = 1;
+    static final int PAGE_START = 1;
 
     @NonNull
     private LinearLayoutManager layoutManager;
@@ -14,12 +14,12 @@ public abstract class PaginationListener extends RecyclerView.OnScrollListener {
     /**
      * Set scrolling threshold here (for now i'm assuming 10 item in one page)
      */
-    public static final int PAGE_SIZE = 4;
+    static final int PAGE_SIZE = 4;
 
     /**
      * Supporting only LinearLayoutManager for now.
      */
-    protected PaginationListener(@NonNull LinearLayoutManager layoutManager) {
+    PaginationListener(@NonNull LinearLayoutManager layoutManager) {
         this.layoutManager = layoutManager;
     }
 

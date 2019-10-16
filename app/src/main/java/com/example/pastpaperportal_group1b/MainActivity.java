@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.pastpaperportal_group1b.IT18125658.Forum.FirebaseUIActivity;
+import com.example.pastpaperportal_group1b.Search.SearchCommon;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -28,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toadmin(View view) {
-
         Intent intent = new Intent(this, admin_dashboard.class);
         startActivity(intent);
     }

@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b;
+package com.example.pastpaperportal_group1b.Search;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.pastpaperportal_group1b.PapersAfterSearch;
+import com.example.pastpaperportal_group1b.R;
 import com.example.pastpaperportal_group1b.ui.main.Module;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -24,7 +26,7 @@ import com.google.firebase.database.Query;
 
 import java.util.Locale;
 
-import static com.example.pastpaperportal_group1b.SearchCommon.MOD_ID;
+import static com.example.pastpaperportal_group1b.Search.SearchCommon.MOD_ID;
 
 public class SearchResult extends AppCompatActivity {
 

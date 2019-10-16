@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b;
+package com.example.pastpaperportal_group1b.Search;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +16,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.pastpaperportal_group1b.Login;
+import com.example.pastpaperportal_group1b.PapersAfterSearch;
+import com.example.pastpaperportal_group1b.ProfileDefault;
+import com.example.pastpaperportal_group1b.R;
+import com.example.pastpaperportal_group1b.SignUp;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +38,6 @@ public class SearchCommon extends AppCompatActivity {
     private EditText mSearchField;
     public static final String MOD_ID = "moduleId";
     public static final String SEARCH = "search";
-    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,6 @@ public class SearchCommon extends AppCompatActivity {
 
         DatabaseReference mUserDatabase = FirebaseDatabase.getInstance().getReference("Module");
         mSearchField = findViewById(R.id.search_field);
-        FirebaseAuth firebaseAuth;
 
         Map<String,String> myMap = new HashMap<>();
         final ArrayAdapter<String> modules = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1);
@@ -127,7 +130,6 @@ public class SearchCommon extends AppCompatActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_profile,menu);
         return super.onCreateOptionsMenu(menu);
     }
@@ -140,10 +142,8 @@ public class SearchCommon extends AppCompatActivity {
 
         int id=item.getItemId();
         if(id ==R.id.action_profile){
-            startActivity(new Intent(SearchCommon.this,ProfileDefault.class));
-
+            startActivity(new Intent(SearchCommon.this, ProfileDefault.class));
         }
-
 
         return super.onOptionsItemSelected(item);
     }

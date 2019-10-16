@@ -1,4 +1,4 @@
-package com.example.pastpaperportal_group1b;
+package com.example.pastpaperportal_group1b.IT18125658.Forum;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,9 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.pastpaperportal_group1b.ui.main.PaginationListener;
-import com.example.pastpaperportal_group1b.ui.main.PostRecyclerAdapter;
-import com.example.pastpaperportal_group1b.ui.main.Question;
+import com.example.pastpaperportal_group1b.R;
+import com.example.pastpaperportal_group1b.ViewPaper;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,10 +29,10 @@ import butterknife.ButterKnife;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.example.pastpaperportal_group1b.ViewQuestion.EDIT;
-import static com.example.pastpaperportal_group1b.ViewQuestion.FROM_DELETE;
-import static com.example.pastpaperportal_group1b.ui.main.PaginationListener.PAGE_SIZE;
-import static com.example.pastpaperportal_group1b.ui.main.PaginationListener.PAGE_START;
+import static com.example.pastpaperportal_group1b.IT18125658.Forum.ViewQuestion.EDIT;
+import static com.example.pastpaperportal_group1b.IT18125658.Forum.ViewQuestion.FROM_DELETE;
+import static com.example.pastpaperportal_group1b.IT18125658.Forum.PaginationListener.PAGE_SIZE;
+import static com.example.pastpaperportal_group1b.IT18125658.Forum.PaginationListener.PAGE_START;
 
 public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
@@ -50,7 +49,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     private boolean isLastPage = false;
     private final int totalPage = 10;
     private boolean isLoading = false;
-    private int itemCount = 0;
+//    private int itemCount = 0;
     private Question question;
     private String moduleId;
     private String year;
@@ -282,7 +281,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     }
     @Override
     public void onRefresh() {
-        itemCount = 0;
+//        itemCount = 0;
         currentPage = PAGE_START;
         isLastPage = false;
         adapter.clear();
@@ -291,7 +290,7 @@ public class Forum extends AppCompatActivity implements SwipeRefreshLayout.OnRef
     @Override
     protected void onRestart() {
         super.onRestart();
-        itemCount = 0;
+//        itemCount = 0;
         currentPage = PAGE_START;
         isLastPage = false;
         adapter.clear();
